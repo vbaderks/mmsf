@@ -13,6 +13,11 @@ namespace MiniShellFramework.Interfaces
         ReadWrite = 0x2
     }
 
+    public static class HResults
+    {
+        public const int ErrorAlreadyInitialized = 300; //HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)
+    }
+
     [ComImport(), Guid("0000010c-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInitializeWithFile
     {

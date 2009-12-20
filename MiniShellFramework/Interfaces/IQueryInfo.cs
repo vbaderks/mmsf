@@ -1,4 +1,9 @@
-﻿using System;
+﻿//
+// (C) Copyright by Victor Derks
+//
+// See README.TXT for the details of the software licence.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
