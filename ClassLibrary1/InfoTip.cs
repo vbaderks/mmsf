@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MiniShellFramework.Interfaces;
+using System.Runtime.InteropServices;
+using Microsoft.Win32;
+using MiniShellFramework;
 
 namespace ClassLibrary1
 {
@@ -17,10 +20,28 @@ namespace ClassLibrary1
         SingleLine = 0x10 // only on Vista or higer
     }
 
+    internal static class VvvRootKey
+    {
+        static bool registered;
+
+        public const string ProgId = "VVVFile";
+
+        public static void Register()
+        {
+            if (registered)
+                return;
+
+            RootKey.Register(".vvv", ProgId);
+            registered = true;
+        }
+    }
+
     public class VvvFile
     {
         public VvvFile(string path)
         {
+            Label = "LABEL PLACEHOLDER";
+            FileCount = 5;
         }
 
         public string Label { get; set; }
@@ -28,28 +49,32 @@ namespace ClassLibrary1
         public int FileCount { get; set; }
     }
 
-
-    public class InfoTip : IInitializeWithFile, IQueryInfo
+    [ComVisible(true)]
+    [Guid("EDD37CEF-F1E0-42bb-9AEF-177E0306AA71")]
+    public class InfoTip : InfoTipBase
     {
         private VvvFile vvvFile;
 
-        public void Initialize(string filePath, int grfMode)
+        [ComRegisterFunction]
+        public static void ComRegisterFunction(Type type)
         {
-            if (vvvFile != null)
-
-            vvvFile = new VvvFile(filePath);
+            VvvRootKey.Register();
+            ComRegisterFunction(type, "VVV Sample ShellExtension (InfoTip)", VvvRootKey.ProgId);
         }
 
-        public void GetInfoTip(int dwFlags, out string ppwszTip)
+        [ComUnregisterFunction]
+        public static void ComUnregisterFunction(Type type)
         {
-            ppwszTip = string.Format("Label: {0}\nFile count: {1}", vvvFile.Label, vvvFile.FileCount);
         }
 
-        public void GetInfoFlags(int pdwFlags)
+        protected override void InitializeCore()
         {
-            throw new NotImplementedException();
+            vvvFile = new VvvFile(null /*filePath*/);
+        }
+
+        protected override string GetInfoTipCore()
+        {
+            return string.Format("Label: {0}\nFile count: {1}", vvvFile.Label, vvvFile.FileCount);
         }
     }
-
-
 }
