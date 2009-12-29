@@ -18,7 +18,7 @@ namespace MiniShellFramework.Interfaces
         public const int ErrorAlreadyInitialized = 300; //HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)
     }
 
-    [ComImport(), Guid("0000010c-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [ComImport(), Guid("b7d14566-0509-4cce-a71f-0a554233bd9b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInitializeWithFile
     {
         void Initialize(string filePath, int grfMode);

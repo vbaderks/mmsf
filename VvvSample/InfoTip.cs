@@ -6,8 +6,9 @@ using MiniShellFramework.Interfaces;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using MiniShellFramework;
+using System.IO;
 
-namespace ClassLibrary1
+namespace VvvSample
 {
     [Flags]
     public enum InfoTipOptions
@@ -51,6 +52,7 @@ namespace ClassLibrary1
 
     [ComVisible(true)]
     [Guid("EDD37CEF-F1E0-42bb-9AEF-177E0306AA71")]
+    [ClassInterface(ClassInterfaceType.None)]
     public class InfoTip : InfoTipBase
     {
         private VvvFile vvvFile;
@@ -67,7 +69,7 @@ namespace ClassLibrary1
         {
         }
 
-        protected override void InitializeCore()
+        protected override void InitializeCore(Stream stream)
         {
             vvvFile = new VvvFile(null /*filePath*/);
         }

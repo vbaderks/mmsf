@@ -5,9 +5,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniShellFramework", "MiniS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VvvSample", "VvvSample\VvvSample.csproj", "{8611B960-278E-45A7-82B6-45B03E14B4F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VvvSampleTest", "VvvSampleTest\VvvSampleTest.csproj", "{D1F3E964-25DD-4B2D-B2B3-A2009C151089}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51D2E537-353D-42C4-AAA7-6E9835636C49}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		MiniShellFramework.vsmdi = MiniShellFramework.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs02.codeplex.com/
 		SccLocalPath0 = .
@@ -17,6 +26,12 @@ Global
 		SccProjectUniqueName2 = VvvSample\\VvvSample.csproj
 		SccProjectName2 = VvvSample
 		SccLocalPath2 = VvvSample
+		SccProjectUniqueName3 = VvvSampleTest\\VvvSampleTest.csproj
+		SccProjectName3 = VvvSampleTest
+		SccLocalPath3 = VvvSampleTest
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = MiniShellFramework.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +46,10 @@ Global
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

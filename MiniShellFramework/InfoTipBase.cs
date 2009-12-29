@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using MiniShellFramework.Interfaces;
+using System.Runtime.InteropServices.ComTypes;
+using System.IO;
 
 namespace MiniShellFramework
 {
@@ -17,25 +19,32 @@ namespace MiniShellFramework
         }
     }
 
-    public abstract class InfoTipBase : IInitializeWithFile, IQueryInfo
+    public abstract class InfoTipBase : IInitializeWithStream, IQueryInfo
     {
-        bool initialized;
+        private bool initialized;
 
-        public void Initialize(string filePath, int grfMode)
+        protected InfoTipBase()
         {
-            Debug.WriteLine("InfoTipCore::Initialize (withfile) (instance={0}, mode={1}, filename={2})", this, grfMode, filePath);
+            Debug.WriteLine("InfoTipBase::Constructor (instance={0})", this);
+        }
 
+        public void Initialize(IStream stream, int grfMode)
+        {
+            Debug.WriteLine("InfoTipBase::Initialize (withstream) (instance={0}, mode={1})", this, grfMode);
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
 
-            InitializeCore();
-            initialized = true;
+            using (var comStream = new ComStream(stream))
+            {
+                InitializeCore(comStream);
+                initialized = true;
+            }
         }
 
         public void GetInfoTip(int dwFlags, out string ppwszTip)
         {
-            Debug.WriteLine("InfoTipCore::Initialize (withfile) (instance={0}, dwFlags={1})", this, dwFlags);
-            throw new NotImplementedException();
+            Debug.WriteLine("InfoTipBase::GetInfoTip (withfile) (instance={0}, dwFlags={1})", this, dwFlags);
+            ppwszTip = GetInfoTipCore();
         }
 
         public void GetInfoFlags(int pdwFlags)
@@ -59,7 +68,7 @@ namespace MiniShellFramework
             }
         }
 
-        abstract protected void InitializeCore();
+        abstract protected void InitializeCore(Stream stream);
 
         abstract protected string GetInfoTipCore();
     }
