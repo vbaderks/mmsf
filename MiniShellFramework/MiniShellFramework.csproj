@@ -49,9 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComStream.cs" />
+    <Compile Include="ContextMenuBase.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
     <Compile Include="Interfaces\IInitializeWithFile.cs" />
+    <Compile Include="Interfaces\InfoTipOptions.cs" />
+    <Compile Include="Interfaces\IContextMenu3.cs" />
+    <Compile Include="Interfaces\IShellExtInit.cs" />
     <Compile Include="Interfaces\IShellFolder.cs" />
     <Compile Include="Interfaces\IPersist.cs" />
     <Compile Include="Interfaces\IQueryInfo.cs" />

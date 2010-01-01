@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright company="Victor Derks">
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,49 +14,9 @@ using System.IO;
 
 namespace VvvSample
 {
-    [Flags]
-    public enum InfoTipOptions
-    {
-        Default = 0,
-        UseName = 1,
-        LinkNoTarget = 2,
-        LinkUseTarget = 4,
-        UseSlowTip = 8,
-        SingleLine = 0x10 // only on Vista or higer
-    }
-
-    internal static class VvvRootKey
-    {
-        static bool registered;
-
-        public const string ProgId = "VVVFile";
-
-        public static void Register()
-        {
-            if (registered)
-                return;
-
-            RootKey.Register(".vvv", ProgId);
-            registered = true;
-        }
-    }
-
-    public class VvvFile
-    {
-        public VvvFile(string path)
-        {
-            Label = "LABEL PLACEHOLDER";
-            FileCount = 5;
-        }
-
-        public string Label { get; set; }
-
-        public int FileCount { get; set; }
-    }
-
-    [ComVisible(true)]
-    [Guid("EDD37CEF-F1E0-42bb-9AEF-177E0306AA71")]
-    [ClassInterface(ClassInterfaceType.None)]
+    [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
+    [Guid("EDD37CEF-F1E0-42bb-9AEF-177E0306AA71")]  // Explicitly assign a GUID: easier to reference and to debug.
+    [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class InfoTip : InfoTipBase
     {
         private VvvFile vvvFile;
