@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardFormatDrop.cs" />
     <Compile Include="ComStream.cs" />
     <Compile Include="ContextMenuBase.cs" />
     <Compile Include="IInitializeWithStream.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="Interfaces\IShellFolder.cs" />
     <Compile Include="Interfaces\IPersist.cs" />
     <Compile Include="Interfaces\IQueryInfo.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MenuItemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

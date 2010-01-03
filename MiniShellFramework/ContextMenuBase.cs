@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using MiniShellFramework.Interfaces;
+using System.Runtime.InteropServices.ComTypes;
+using Microsoft.Win32;
 
 namespace MiniShellFramework
 {
@@ -20,7 +22,7 @@ namespace MiniShellFramework
             Debug.WriteLine("ContextMenuBase::Constructor (instance={0})", this);
         }
 
-        public void Initialize(IntPtr pidlFolder, System.Runtime.InteropServices.ComTypes.IDataObject dataObject, uint hkeyProgId)
+        public void Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
             throw new NotImplementedException();
         }
@@ -41,6 +43,8 @@ namespace MiniShellFramework
             ////CMenu menu(hmenu, indexMenu, nID, idCmdLast, this);
 
             ////static_cast<T*>(this)->OnQueryContextMenu(menu, GetFilenames());
+            var menu = new Menu(hmenu, indexMenu, idCmdFirst, idCmdLast);
+            QueryContextMenuCore(menu, null);
 
             return HResults.Create(Severity.Success, (ushort) (id - idCmdFirst));
         }
@@ -76,6 +80,34 @@ namespace MiniShellFramework
             throw new NotImplementedException();
         }
 
-        protected abstract void QueryContextMenuCore();
+        protected static void ComRegisterFunction(Type type, string description, string progId)
+        {
+            // Register the ContextMenu COM object as an approved shell extension. Explorer will only execute approved extensions.
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
+            {
+                key.SetValue(type.GUID.ToString("B"), description);
+            }
+
+            // Register the ContextMenu COM object as the ContextMenu handler.
+            using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\ContextMenuHandlers\" + description))
+            {
+                key.SetValue(string.Empty, type.GUID.ToString("B"));
+            }
+        }
+
+        protected static void ComUnregisterFunction(Type type, string description, string progId)
+        {
+            // Unregister the ContextMenu COM object as an approved shell extension.
+            using (var key =
+                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
+            {
+                key.DeleteValue(type.GUID.ToString("B"));
+            }
+
+            // Note: prog id should be removed by 1 global unregister function.
+        }
+
+        protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames);
     }
 }

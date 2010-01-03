@@ -16,8 +16,40 @@ namespace VvvSample
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class ContextMenu : ContextMenuBase
     {
-        protected override void QueryContextMenuCore()
+        [ComRegisterFunction]
+        public static void ComRegisterFunction(Type type)
         {
+            VvvRootKey.Register();
+            ComRegisterFunction(type, "VVV Sample ShellExtension (ContextMenu)", VvvRootKey.ProgId);
+        }
+
+        [ComUnregisterFunction]
+        public static void ComUnregisterFunction(Type type)
+        {
+            VvvRootKey.Unregister();
+            ComUnregisterFunction(type);
+        }
+
+        protected override void QueryContextMenuCore(Menu menu, IList<string> filenames)
+        {
+            ////if (ContainsUnknownExtension(filenames))
+            ////    return; // only extend the menu when only .vvv files are selected.
+
+            ////if (filenames.size() != 1)
+            ////    return; // only add to the context menu when 1 file is selected.
+
+            ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
+            ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
+
+            ////CContextCommandPtr qeditwithnotepadcommand(new CEditWithNotepadCommand());
+            ////menuVVV.AddItem(IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD,
+            ////                IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD_HELP, qeditwithnotepadcommand);
+
+            ////CContextCommandPtr qaboutmsfcommand(new CAboutMSFCommand());
+            ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
+            ////menuVVV.AddItem(IDS_CONTEXTMENU_ABOUT_MSF_HELP, qaboutmsfcommand, qsmallbitmaphandler2);
+
+            // ... optional add more submenu's or more menu items.
         }
     }
 }

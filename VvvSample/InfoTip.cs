@@ -31,6 +31,7 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
+            ComUnregisterFunction(type);
         }
 
         protected override void InitializeCore(Stream stream)
