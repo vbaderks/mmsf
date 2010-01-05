@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace MiniShellFramework
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct MENUITEMINFO
+    public struct MENUITEMINFO
     {
         public uint cbSize;
         public uint fMask;
@@ -35,9 +35,20 @@ namespace MiniShellFramework
         {
             set
             {
-                // fMask |= MIIM_TYPE;
-                // fType |= MFT_STRING;
+                //// fMask |= MIIM_TYPE;
+                //// fType |= MFT_STRING;
                 dwTypeData = value;
+            }
+        }
+
+        public bool OwnerDraw
+        {
+            set
+            {
+                if (value)
+                {
+                    //// fType |= MFT_OWNERDRAW;
+                }
             }
         }
 

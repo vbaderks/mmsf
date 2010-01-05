@@ -35,17 +35,21 @@ namespace VvvSample
             ////if (ContainsUnknownExtension(filenames))
             ////    return; // only extend the menu when only .vvv files are selected.
 
-            ////if (filenames.size() != 1)
-            ////    return; // only add to the context menu when 1 file is selected.
+            if (filenames.Count != 1)
+                return; // only add to the context menu when 1 file is selected.
 
+            var smallBitmapHandler = new SmallBitmapCustomMenuHandler("VVV", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
             ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
+            menu.AddSubMenu(/* "Special commands for VVV files" */);
 
             ////CContextCommandPtr qeditwithnotepadcommand(new CEditWithNotepadCommand());
+            menu.AddItem("&Open with notepad", "Open the VVV file with notepad");
             ////menuVVV.AddItem(IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD,
             ////                IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD_HELP, qeditwithnotepadcommand);
 
             ////CContextCommandPtr qaboutmsfcommand(new CAboutMSFCommand());
+            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MSF", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
             ////menuVVV.AddItem(IDS_CONTEXTMENU_ABOUT_MSF_HELP, qaboutmsfcommand, qsmallbitmaphandler2);
 

@@ -51,6 +51,7 @@
     <Compile Include="ClipboardFormatDrop.cs" />
     <Compile Include="ComStream.cs" />
     <Compile Include="ContextMenuBase.cs" />
+    <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
     <Compile Include="Interfaces\IInitializeWithFile.cs" />
@@ -60,9 +61,11 @@
     <Compile Include="Interfaces\IShellFolder.cs" />
     <Compile Include="Interfaces\IPersist.cs" />
     <Compile Include="Interfaces\IQueryInfo.cs" />
+    <Compile Include="MeasureItemStruct.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmallBitmapCustomMenuHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="KeyPair.snk" />

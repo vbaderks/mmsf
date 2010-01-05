@@ -25,7 +25,7 @@ namespace MiniShellFramework
         {
         }
 
-        void AddItem(string text, string help /*, CContextCommandPtr qcontextcommand */)
+        public void AddItem(string text, string help /*, CContextCommandPtr qcontextcommand */)
         {
             var menuItemInfo = new MENUITEMINFO();
             MENUITEMINFO.Initialize(ref menuItemInfo);
