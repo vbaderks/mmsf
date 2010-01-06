@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using MiniShellFramework.Interfaces;
 
 namespace MiniShellFramework
 {
@@ -21,11 +22,14 @@ namespace MiniShellFramework
             this.idCmdLast = idCmdLast;
         }
 
-        public void AddSubMenu()
+        public Menu AddSubMenu()
         {
+            return null;
         }
 
-        public void AddItem(string text, string help /*, CContextCommandPtr qcontextcommand */)
+        public delegate void ContextCommand(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames);
+
+        public void AddItem(string text, string help, ContextCommand contextCommand)
         {
             var menuItemInfo = new MENUITEMINFO();
             MENUITEMINFO.Initialize(ref menuItemInfo);
@@ -34,6 +38,11 @@ namespace MiniShellFramework
 
             ////CCustomMenuHandlerPtr qcustommenuhandler;
             InsertMenuItem(ref menuItemInfo, help /*, qcontextcommand, qcustommenuhandler*/);
+        }
+
+        public void AddItem(CustomMenuHandler customMenuHandler, string help, ContextCommand contextCommand)
+        {
+            //// TODO;
         }
 
         private void InsertMenuItem(ref MENUITEMINFO menuItemInfo, string help)

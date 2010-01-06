@@ -54,6 +54,7 @@
     <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
+    <Compile Include="Interfaces\CMINVOKECOMMANDINFO.cs" />
     <Compile Include="Interfaces\IInitializeWithFile.cs" />
     <Compile Include="Interfaces\InfoTipOptions.cs" />
     <Compile Include="Interfaces\IContextMenu3.cs" />

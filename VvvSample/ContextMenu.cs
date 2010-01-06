@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using MiniShellFramework;
+using MiniShellFramework.Interfaces;
+using System.Diagnostics;
+using System.Windows;
 
 namespace VvvSample
 {
@@ -41,19 +44,30 @@ namespace VvvSample
             var smallBitmapHandler = new SmallBitmapCustomMenuHandler("VVV", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
             ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
-            menu.AddSubMenu(/* "Special commands for VVV files" */);
+            var menuVvv = menu.AddSubMenu(/* "Special commands for VVV files" */);
 
-            ////CContextCommandPtr qeditwithnotepadcommand(new CEditWithNotepadCommand());
-            menu.AddItem("&Open with notepad", "Open the VVV file with notepad");
-            ////menuVVV.AddItem(IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD,
-            ////                IDS_CONTEXTMENU_EDIT_WITH_NOTEPAD_HELP, qeditwithnotepadcommand);
+            menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
 
-            ////CContextCommandPtr qaboutmsfcommand(new CAboutMSFCommand());
-            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MSF", 0);
+            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
-            ////menuVVV.AddItem(IDS_CONTEXTMENU_ABOUT_MSF_HELP, qaboutmsfcommand, qsmallbitmaphandler2);
+            menuVvv.AddItem(smallBitmapHandler2, "Show the version number of the MMSF", OnAboutMmsf);
 
             // ... optional add more submenu's or more menu items.
+        }
+
+        private void OnEditWithNotepadCommand(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
+        {
+            Debug.Assert(fileNames.Count == 1, "fileNames.Count == 1");
+
+            //// Use the command line param to pass the exe filename. This causes
+            //// Windows to use the path to find notepad.
+            Process.Start("notepad.exe", "\"" + fileNames[0] + "\"");
+        }
+
+        private void OnAboutMmsf(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
+        {
+            var text = string.Format("Build with MSF version {0}.{1}", 1, 0); // TODO: retrieve version info from mmsf assembly.
+            MessageBox.Show(text);
         }
     }
 }
