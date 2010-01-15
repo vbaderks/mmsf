@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Victor Derks">
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
 
 namespace MiniShellFramework
 {
     public class SmallBitmapCustomMenuHandler : CustomMenuHandler
     {
-        private string text;
+        private readonly string text;
 
         public SmallBitmapCustomMenuHandler(string text, int resIdBitmap)
         {

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright company="Victor Derks">
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -9,7 +10,7 @@ namespace MiniShellFramework
 {
     public class ComStream : Stream
     {
-        IStream stream;
+        private IStream stream;
 
         public ComStream(IStream stream)
         {
@@ -43,9 +44,9 @@ namespace MiniShellFramework
                 //if (m_pOrigStream == 0)
                 //        throw new ObjectDisposedException("m_pOrigStream");
 
-	            STATSTG statstg;
+                STATSTG statstg;
                 stream.Stat(out statstg, 1 /* STATFLAG_NONAME */);
-	            return statstg.cbSize;
+                return statstg.cbSize;
             }
         }
 
@@ -66,17 +67,17 @@ namespace MiniShellFramework
             uint bytesRead = 0;
 
             if (offset != 0)
-	        {
+            {
                 var tmpBuffer = new byte[count];
                 stream.Read(tmpBuffer, count, new IntPtr(&bytesRead));
                 Array.Copy(tmpBuffer, 0, buffer, offset, bytesRead);
-        	}
-        	else
+            }
+            else
             {
                 stream.Read(buffer, count, new IntPtr(&bytesRead));
             }
 
-        	return (int) bytesRead;
+            return (int) bytesRead;
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -96,14 +97,14 @@ namespace MiniShellFramework
 
         public override void Close()
         {
- 	        base.Close();
+            base.Close();
 
-            if (stream != null)
-            {
-                stream.Commit(0);  // STGC_DEFAULT
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
-                stream = null;
-            }
+            if (stream == null)
+                return;
+
+            stream.Commit(0);  // STGC_DEFAULT
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(stream);
+            stream = null;
         }
     }
 }

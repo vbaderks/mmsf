@@ -3,14 +3,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MiniShellFramework.Interfaces;
-using System.Runtime.InteropServices;
-using Microsoft.Win32;
-using MiniShellFramework;
 using System.IO;
+using System.Runtime.InteropServices;
+using MiniShellFramework;
 
 namespace VvvSample
 {
@@ -31,12 +26,12 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            ComUnregisterFunction(type);
+            ComUnregisterFunction(type, VvvRootKey.ProgId);
         }
 
         protected override void InitializeCore(Stream stream)
         {
-            vvvFile = new VvvFile(null /*filePath*/);
+            vvvFile = new VvvFile(stream);
         }
 
         protected override string GetInfoTipCore()

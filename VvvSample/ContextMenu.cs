@@ -4,8 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using MiniShellFramework;
 using MiniShellFramework.Interfaces;
@@ -55,7 +53,7 @@ namespace VvvSample
             // ... optional add more submenu's or more menu items.
         }
 
-        private void OnEditWithNotepadCommand(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
+        private static void OnEditWithNotepadCommand(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
         {
             Debug.Assert(fileNames.Count == 1, "fileNames.Count == 1");
 
@@ -64,7 +62,7 @@ namespace VvvSample
             Process.Start("notepad.exe", "\"" + fileNames[0] + "\"");
         }
 
-        private void OnAboutMmsf(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
+        private static void OnAboutMmsf(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames)
         {
             var text = string.Format("Build with MSF version {0}.{1}", 1, 0); // TODO: retrieve version info from mmsf assembly.
             MessageBox.Show(text);

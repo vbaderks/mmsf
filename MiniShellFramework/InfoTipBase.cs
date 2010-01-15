@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright company="Victor Derks">
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
@@ -121,7 +125,7 @@ namespace MiniShellFramework
             }
         }
 
-        protected static void ComUnregisterFunction(Type type, string description, string progId)
+        protected static void ComUnregisterFunction(Type type, string progId)
         {
             // Unregister the InfoTip COM object as an approved shell extension.
             using (var key =
