@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyHook.cs" />
     <Compile Include="ContextMenu.cs" />
     <Compile Include="InfoTip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

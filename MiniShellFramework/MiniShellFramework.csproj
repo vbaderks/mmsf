@@ -39,6 +39,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardFormatDrop.cs" />
+    <Compile Include="FileOperation.cs" />
     <Compile Include="ComStream.cs" />
     <Compile Include="ContextMenuBase.cs" />
+    <Compile Include="CopyHookBase.cs" />
     <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="Interfaces\IInitializeWithFile.cs" />
     <Compile Include="Interfaces\InfoTipOptions.cs" />
     <Compile Include="Interfaces\IContextMenu3.cs" />
+    <Compile Include="Interfaces\ICopyHook.cs" />
     <Compile Include="Interfaces\IShellExtInit.cs" />
     <Compile Include="Interfaces\IShellFolder.cs" />
     <Compile Include="Interfaces\IPersist.cs" />

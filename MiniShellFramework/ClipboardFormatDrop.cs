@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// <copyright company="Victor Derks">
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System;
 using System.Text;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices;
@@ -64,9 +66,9 @@ namespace MiniShellFramework
 
         public string GetFile(int index)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
-            char[] buffer = new char[255 + 1]; // MAX_PATH
+            var buffer = new char[255 + 1]; // MAX_PATH
             int queryFileLength = FormatEtcExtensions.DragQueryFile(medium.unionmember, index, buffer, 255);
             if (queryFileLength == 0)
                 throw new Win32Exception();

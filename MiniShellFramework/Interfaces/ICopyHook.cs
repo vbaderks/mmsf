@@ -1,4 +1,4 @@
-﻿// <copyright>
+﻿// <copyright company="Victor Derks">
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
@@ -10,8 +10,9 @@ namespace MiniShellFramework.Interfaces
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("0000010c-0000-0000-C000-000000000046")]
-    public interface IPersist
+    public interface ICopyHook
     {
-        void GetClassID(ref Guid pClassID);
+        void CopyCallback(IntPtr hwnd, FileOperation fileOperation, uint flags, string sourceFile, uint sourceAttributes,
+                          string destinationFile, uint destinationAttributes);
     }
 }
