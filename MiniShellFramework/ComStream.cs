@@ -1,4 +1,4 @@
-﻿// <copyright company="Victor Derks">
+﻿// <copyright>
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
@@ -8,6 +8,15 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace MiniShellFramework
 {
+    /// <summary>
+    /// Provides a managed wrapper around a COM object that supports the COM IStream interface.
+    /// </summary>
+    /// <remarks>
+    /// The Shell prefers to pass IStream interfaces to shell extensions rather then filenames.
+    /// This to abstract away that some shell items are not actually items on the filesystem.
+    /// Most .NET base class libary code expect a Stream derived object when dealing with file system items.
+    /// This class wraps the COM IStream interface and allows it to be used as a .NET stream object.
+    /// </remarks>
     public class ComStream : Stream
     {
         private IStream stream;

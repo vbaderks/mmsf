@@ -1,4 +1,4 @@
-﻿// <copyright company="Victor Derks">
+﻿// <copyright>
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
