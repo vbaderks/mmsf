@@ -26,6 +26,7 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
+            VvvRootKey.Unregister();
             ComUnregisterFunction(type, VvvRootKey.ProgId);
         }
 

@@ -42,6 +42,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,7 +54,7 @@
     <Compile Include="FileOperation.cs" />
     <Compile Include="ComStream.cs" />
     <Compile Include="ContextMenuBase.cs" />
-    <Compile Include="CopyHookBase.cs" />
+    <Compile Include="FolderCopyHookBase.cs" />
     <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />

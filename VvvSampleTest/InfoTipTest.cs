@@ -34,7 +34,7 @@ namespace VvvSampleTest
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void InfoTipCreate()
         {
             object infoTip = CreateInfoTip();
@@ -44,7 +44,7 @@ namespace VvvSampleTest
             //Marshal.ReleaseComObject(infoTip);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void FileNotFound()
         {
             var infoTip = (IInitializeWithFile)CreateInfoTip();

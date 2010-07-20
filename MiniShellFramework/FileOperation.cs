@@ -4,18 +4,29 @@
 
 namespace MiniShellFramework.Interfaces
 {
+    /// <summary>
+    /// Definitions of file operations ().
+    /// </summary>
     public enum FileOperation
     {
-        //  FO_MOVE                    0x0001
+        /// <summary>
+        /// Moves the files \ folders (FO_MOVE)
+        /// </summary>
         Move = 1,
 
-        // FO_COPY                    0x0002
+        /// <summary>
+        /// Copies the files \ folders (FO_COPY)
+        /// </summary>
         Copy = 2,
 
-        // FO_DELETE                  0x0003
+        /// <summary>
+        /// Deletes the files \ folders (FO_DELETE)
+        /// </summary>
         Delete = 3,
 
-        // FO_RENAME                  0x0004
+        /// <summary>
+        /// Renames the files \ folders (FO_RENAME)
+        /// </summary>
         Rename = 4
     }
 }
