@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -28,32 +29,37 @@ namespace MiniShellFramework
 
         protected static void ComRegister(Type type, string name, string description)
         {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(!string.IsNullOrEmpty(description));
+
             // Register the Folder CopyHook COM object as an approved shell extension. Explorer will only execute approved extensions.
             using (var key =
                 Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
             {
                 if (key == null)
-                {
-                    Debug.WriteLine(@"Failed to open registry key Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved");
-                    return;
-                }
+                    throw new ApplicationException(
+                            @"Failed to open registry key Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved");
+
                 key.SetValue(type.GUID.ToString("B"), description);
             }
 
             // Register the CopyHook COM object as a copy hook handler.
-            using (var key = Registry.ClassesRoot.CreateSubKey( @"Directory\ShellEx\CopyHookHandlers"))
+            var keyName = @"Directory\ShellEx\CopyHookHandlers\" + name;
+            using (var key = Registry.ClassesRoot.CreateSubKey(keyName))
             {
                 if (key == null)
-                {
-                    Debug.WriteLine(@"Failed to open registry key Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved");
-                    return;
-                }
-                key.SetValue(name, type.GUID.ToString("B"));
+                    throw new ApplicationException("Failed to open registry key: " + keyName);
+
+                key.SetValue(string.Empty, type.GUID.ToString("B"));
             }
         }
 
-        protected static void ComUnregister(Type type)
+        protected static void ComUnregister(Type type, string name)
         {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(name));
+
             // Unregister the Folder CopyHook COM object as an approved shell extension.
             // It is possible to unregister twice, need to be prepared to handle that case.
             using (var key =
@@ -65,7 +71,8 @@ namespace MiniShellFramework
                 }
             }
 
-            using (var key = Registry.ClassesRoot.CreateSubKey(@"Directory\ShellEx\CopyHookHandlers"))
+            var keyName = @"Directory\ShellEx\CopyHookHandlers\" + name;
+            using (var key = Registry.ClassesRoot.OpenSubKey(keyName))
             {
                 if (key != null)
                 {

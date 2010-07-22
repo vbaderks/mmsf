@@ -11,25 +11,27 @@ using MiniShellFramework.Interfaces;
 namespace VvvSample
 {
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
-    [Guid("B7096869-8E27-4f13-A9B9-3164F6D30BAB")]  // Explicitly assign a GUID: easier to reference and to debug.
+    [Guid("5070BD33-0BD4-4B4C-B5C6-9E09FCFD6DD2")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class FolderCopyHook : FolderCopyHookBase
     {
+        private const string RegistryName = "VVV FolderCopyHook (MMSF Sample)";
+
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
-            ComRegister(type, "VVV FolderCopyHook", "VVV Sample ShellExtension (FolderCopyHook)");
+            ComRegister(type, RegistryName, "MMSF Sample ShellExtension (FolderCopyHook)");
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            ComUnregister(type);
+            ComUnregister(type, RegistryName);
         }
 
         protected override DialogResult CopyCallbackCore(IWin32Window owner, FileOperation fileOperation, uint flags, string sourceFile, uint sourceAttributes, string destinationFile, uint destinationAttributes)
         {
-            if (fileOperation == FileOperation.Delete && sourceFile.Contains("VVV"))
+            if (fileOperation == FileOperation.Delete && sourceFile.Contains("VVV-MMSF"))
             {
                 return MessageBox.Show(owner, "are you sure to delete this folder?", "VVV Question",
                                 MessageBoxButtons.YesNoCancel);
