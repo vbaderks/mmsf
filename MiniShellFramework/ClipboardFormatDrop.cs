@@ -70,7 +70,7 @@ namespace MiniShellFramework
 
             var buffer = new char[255 + 1]; // MAX_PATH
             int queryFileLength = FormatEtcExtensions.DragQueryFile(medium.unionmember, index, buffer, 255);
-            if (queryFileLength == 0)
+            if (queryFileLength <= 0)
                 throw new Win32Exception();
 
             string filename = new String(buffer, 0, queryFileLength);

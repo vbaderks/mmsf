@@ -5,11 +5,21 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace MiniShellFramework
+namespace MiniShellFramework.ComTypes
 {
-    [ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    /// <summary>
+    /// Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.
+    /// </summary>
+    [ComImport]
+    [Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInitializeWithStream
     {
-        void Initialize([In] IStream stream, int grfMode);
+        /// <summary>
+        /// Initializes a handler with a stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="storageMode">The storage mode.</param>
+        void Initialize([In] IStream stream, StorageModes storageMode);
     }
 }

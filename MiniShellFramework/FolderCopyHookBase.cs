@@ -81,7 +81,7 @@ namespace MiniShellFramework
             }
         }
 
-        public uint CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
+        uint ICopyHook.CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
         {
             Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, fileOperation={1}, source={2}, destination={3})", id, fileOperation, source, destination);
 

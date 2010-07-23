@@ -12,35 +12,24 @@ using System.IO;
 
 namespace MiniShellFramework
 {
-    public static class RootKey
-    {
-        public static void Register(string fileExtension, string progId)
-        {
-            using (var key = Registry.ClassesRoot.CreateSubKey(fileExtension))
-            {
-                key.SetValue(string.Empty, progId);
-            }
-        }
-
-        public static void Unregister(string fileExtension)
-        {
-            Registry.ClassesRoot.DeleteSubKey(fileExtension);
-        }
-    }
-
+    /// <summary>
+    /// Base class for Infotip shell extension handlers.
+    /// </summary>
     public abstract class InfoTipBase : IInitializeWithStream, IQueryInfo, IPersistFile
     {
         private bool initialized;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InfoTipBase"/> class.
+        /// </summary>
         protected InfoTipBase()
         {
             Debug.WriteLine("InfoTipBase::Constructor (instance={0})", this);
         }
 
-        // IInitializeWithStream
-        public void Initialize(IStream stream, int grfMode)
+        void IInitializeWithStream.Initialize(IStream stream, StorageModes storageMode)
         {
-            Debug.WriteLine("InfoTipBase::Initialize (IInitializeWithStream) (instance={0}, mode={1})", this, grfMode);
+            Debug.WriteLine("InfoTipBase::Initialize (IInitializeWithStream) (instance={0}, mode={1})", this, storageMode);
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
 
@@ -51,39 +40,37 @@ namespace MiniShellFramework
             }
         }
 
-        // IQueryInfo
-        public void GetInfoTip(int dwFlags, out string ppwszTip)
+        void IQueryInfo.GetInfoTip(InfoTipOptions options, out string text)
         {
-            Debug.WriteLine("InfoTipBase.GetInfoTip (IQueryInfo) - instance={0}, dwFlags={1}", this, dwFlags);
-            ppwszTip = GetInfoTipCore();
+            Debug.WriteLine("InfoTipBase.GetInfoTip (IQueryInfo) - instance={0}, dwFlags={1}", this, options);
+            text = GetInfoTipCore();
         }
 
-        public void GetInfoFlags(out int pdwFlags)
+        void IQueryInfo.GetInfoFlags(out InfoTipOptions options)
         {
             Debug.WriteLine("InfoTipBase.GetInfoFlags (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
         }
 
-        // IPersistFile
-        public void GetClassID(out Guid pClassID)
+        void IPersistFile.GetClassID(out Guid pClassID)
         {
             Debug.WriteLine("InfoTipBase.GetClassID (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
         }
 
-        public void GetCurFile(out string ppszFileName)
+        void IPersistFile.GetCurFile(out string ppszFileName)
         {
             Debug.WriteLine("InfoTipBase.GetCurFile (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
         }
 
-        public int IsDirty()
+        int IPersistFile.IsDirty()
         {
             Debug.WriteLine("InfoTipBase.IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
         }
 
-        public void Load(string pszFileName, int dwMode)
+        void IPersistFile.Load(string pszFileName, int dwMode)
         {
             Debug.WriteLine("InfoTipBase::Load (IQueryInfo) (instance={0}, dwMode={1})", this, dwMode);
 
@@ -97,7 +84,7 @@ namespace MiniShellFramework
             }
         }
 
-        public void Save(string pszFileName, bool fRemember)
+        void IPersistFile.Save(string pszFileName, bool fRemember)
         {
             Debug.WriteLine("InfoTipBase::IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
@@ -109,6 +96,12 @@ namespace MiniShellFramework
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Adds additional info to the registry to allow the shell to discover the oject as shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="progId">The prog id.</param>
         protected static void ComRegisterFunction(Type type, string description, string progId)
         {
             // Register the InfoTip COM object as an approved shell extension. Explorer will only execute approved extensions.
@@ -125,6 +118,11 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="progId">The prog id.</param>
         protected static void ComUnregisterFunction(Type type, string progId)
         {
             // Unregister the InfoTip COM object as an approved shell extension.

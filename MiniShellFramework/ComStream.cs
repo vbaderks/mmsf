@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -21,8 +22,13 @@ namespace MiniShellFramework
     {
         private IStream stream;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComStream"/> class.
+        /// </summary>
+        /// <param name="stream">The COM stream interface.</param>
         public ComStream(IStream stream)
         {
+            Contract.Requires(stream != null);
             this.stream = stream;
         }
 
@@ -55,6 +61,7 @@ namespace MiniShellFramework
 
                 STATSTG statstg;
                 stream.Stat(out statstg, 1 /* STATFLAG_NONAME */);
+                Contract.Assume(statstg.cbSize >= 0);
                 return statstg.cbSize;
             }
         }
@@ -99,6 +106,20 @@ namespace MiniShellFramework
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+        /// </summary>
+        /// <param name="buffer">An array of bytes. This method copies <paramref name="count"/> bytes from <paramref name="buffer"/> to the current stream.</param>
+        /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.</param>
+        /// <param name="count">The number of bytes to be written to the current stream.</param>
+        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset"/> and <paramref name="count"/> is greater than the buffer length. </exception>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// <paramref name="buffer"/> is null. </exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
+        /// <paramref name="offset"/> or <paramref name="count"/> is negative. </exception>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        /// <exception cref="T:System.NotSupportedException">The stream does not support writing. </exception>
+        /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
             throw new NotImplementedException();

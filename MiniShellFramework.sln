@@ -34,18 +34,25 @@ Global
 		CategoryFile = MiniShellFramework.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Checked|Any CPU = Checked|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Checked|Any CPU.ActiveCfg = Checked|Any CPU
+		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Checked|Any CPU.Build.0 = Checked|Any CPU
 		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06EBF505-2594-4CCF-889E-CEE8C4715629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Checked|Any CPU.ActiveCfg = Checked|Any CPU
+		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Checked|Any CPU.Build.0 = Checked|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8611B960-278E-45A7-82B6-45B03E14B4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Checked|Any CPU.ActiveCfg = Checked|Any CPU
+		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Checked|Any CPU.Build.0 = Checked|Any CPU
 		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1F3E964-25DD-4B2D-B2B3-A2009C151089}.Release|Any CPU.ActiveCfg = Release|Any CPU
