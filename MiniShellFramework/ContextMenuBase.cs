@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using MiniShellFramework.Interfaces;
+using MiniShellFramework.ComTypes;
 using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Win32;
 

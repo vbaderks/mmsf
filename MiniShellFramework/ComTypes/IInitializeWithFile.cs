@@ -3,12 +3,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     [Flags]
     public enum StorageModes
@@ -44,9 +41,11 @@ namespace MiniShellFramework.Interfaces
         }
     }
 
-    [ComImport(), Guid("b7d14566-0509-4cce-a71f-0a554233bd9b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("b7d14566-0509-4cce-a71f-0a554233bd9b")]
     public interface IInitializeWithFile
     {
-        void Initialize(string filePath, int grfMode);
+        void Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string filePath, int grfMode);
     }
 }

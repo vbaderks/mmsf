@@ -4,14 +4,15 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("0000010c-0000-0000-C000-000000000046")]
-    public interface IPersist
+    [Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f")]
+    public interface IShellExtInit
     {
-        void GetClassID(ref Guid pClassID);
+        void Initialize(IntPtr pidlFolder, [In] IDataObject dataObject, uint hkeyProgId);
     }
 }

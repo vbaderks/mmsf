@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright>
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.CompilerServices;
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     [ComImport, Guid("00021500-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), ComConversionLoss]
     internal interface IShellFolder

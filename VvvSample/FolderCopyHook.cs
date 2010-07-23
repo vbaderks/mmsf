@@ -6,7 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using MiniShellFramework;
-using MiniShellFramework.Interfaces;
+using MiniShellFramework.ComTypes;
 
 namespace VvvSample
 {

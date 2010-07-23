@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using MiniShellFramework.Interfaces;
+using MiniShellFramework.ComTypes;
 using System.Runtime.InteropServices;
 
 namespace VvvSampleTest

@@ -58,15 +58,15 @@
     <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
-    <Compile Include="Interfaces\CMINVOKECOMMANDINFO.cs" />
-    <Compile Include="Interfaces\IInitializeWithFile.cs" />
-    <Compile Include="Interfaces\InfoTipOptions.cs" />
-    <Compile Include="Interfaces\IContextMenu3.cs" />
-    <Compile Include="Interfaces\ICopyHook.cs" />
-    <Compile Include="Interfaces\IShellExtInit.cs" />
-    <Compile Include="Interfaces\IShellFolder.cs" />
-    <Compile Include="Interfaces\IPersist.cs" />
-    <Compile Include="Interfaces\IQueryInfo.cs" />
+    <Compile Include="ComTypes\CMINVOKECOMMANDINFO.cs" />
+    <Compile Include="ComTypes\IInitializeWithFile.cs" />
+    <Compile Include="ComTypes\InfoTipOptions.cs" />
+    <Compile Include="ComTypes\IContextMenu3.cs" />
+    <Compile Include="ComTypes\ICopyHook.cs" />
+    <Compile Include="ComTypes\IShellExtInit.cs" />
+    <Compile Include="ComTypes\IShellFolder.cs" />
+    <Compile Include="ComTypes\IPersist.cs" />
+    <Compile Include="ComTypes\IQueryInfo.cs" />
     <Compile Include="MeasureItemStruct.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItemInfo.cs" />
@@ -75,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="KeyPair.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

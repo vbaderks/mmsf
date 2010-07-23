@@ -2,7 +2,7 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     /// <summary>
     /// Definitions of file operations ().

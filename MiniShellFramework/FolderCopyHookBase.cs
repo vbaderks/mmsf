@@ -8,7 +8,7 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using MiniShellFramework.Interfaces;
+using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {

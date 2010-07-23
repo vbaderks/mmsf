@@ -3,12 +3,10 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     [Flags]
     public enum QueryContextMenuOptions
@@ -49,26 +47,26 @@ namespace MiniShellFramework.Interfaces
         public IntPtr hIcon;
     }
 
-    [ComImport()]
+    [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [GuidAttribute("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
     public interface IContextMenu3
     {
         // IContextMenu
-        [PreserveSig()]
+        [PreserveSig]
         int QueryContextMenu(IntPtr hMenu, uint iMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuOptions flags);
 
         void InvokeCommand([In] ref InvokeCommandInfo invokeCommandInfo);
 
-        [PreserveSig()]
+        [PreserveSig]
         void GetCommandString(int idCmd, uint uflags, int reserved, StringBuilder commandString, int cch);
 
         // IContextMenu2
-        [PreserveSig()]
+        [PreserveSig]
         int HandleMenuMsg(uint uMsg, uint wParam, uint lParam);
 
         // IContextMenu3
-        [PreserveSig()]
+        [PreserveSig]
         int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult);
     }
 }

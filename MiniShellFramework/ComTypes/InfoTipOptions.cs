@@ -4,7 +4,7 @@
 
 using System;
 
-namespace MiniShellFramework.Interfaces
+namespace MiniShellFramework.ComTypes
 {
     [Flags]
     public enum InfoTipOptions

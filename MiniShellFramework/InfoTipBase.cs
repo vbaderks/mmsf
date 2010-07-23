@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using MiniShellFramework.Interfaces;
+using MiniShellFramework.ComTypes;
 using System.Runtime.InteropServices.ComTypes;
 using System.IO;
 
@@ -58,7 +58,7 @@ namespace MiniShellFramework
             ppwszTip = GetInfoTipCore();
         }
 
-        public void GetInfoFlags(int pdwFlags)
+        public void GetInfoFlags(out int pdwFlags)
         {
             Debug.WriteLine("InfoTipBase.GetInfoFlags (IQueryInfo) - Not Implemented (functionality not used)");
             throw new NotImplementedException();
