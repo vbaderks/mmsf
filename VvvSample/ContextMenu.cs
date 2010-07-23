@@ -17,11 +17,16 @@ namespace VvvSample
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class ContextMenu : ContextMenuBase
     {
+        public ContextMenu()
+        {
+            RegisterExtension(".mvvv");
+        }
+
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
             VvvRootKey.Register();
-            ComRegisterFunction(type, "VVV Sample ShellExtension (ContextMenu)", VvvRootKey.ProgId);
+            ComRegisterFunction(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
 
         [ComUnregisterFunction]
@@ -33,8 +38,8 @@ namespace VvvSample
 
         protected override void QueryContextMenuCore(Menu menu, IList<string> filenames)
         {
-            ////if (ContainsUnknownExtension(filenames))
-            ////    return; // only extend the menu when only .vvv files are selected.
+            if (ContainsUnknownExtension(filenames))
+                return; // only extend the menu when only .mvvv files are selected.
 
             if (filenames.Count != 1)
                 return; // only add to the context menu when 1 file is selected.

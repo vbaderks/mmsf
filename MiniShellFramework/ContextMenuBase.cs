@@ -5,6 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -21,6 +24,7 @@ namespace MiniShellFramework
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3
     {
         private uint idCmdFirst;
+        private List<string> extensions = new List<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextMenuBase"/> class.
@@ -134,5 +138,41 @@ namespace MiniShellFramework
         /// <param name="menu">The menu.</param>
         /// <param name="filenames">The filenames.</param>
         protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames);
+
+        /// <summary>
+        /// Registers a file extension.
+        /// </summary>
+        /// <param name="extension">The file extension.</param>
+        protected void RegisterExtension(string extension)
+        {
+            extensions.Add(extension.ToUpperInvariant());
+        }
+
+        /// <summary>
+        /// Determines whether [contains unknown extension] [the specified file names].
+        /// </summary>
+        /// <param name="fileNames">The file names.</param>
+        /// <returns>
+        /// <c>true</c> if [contains unknown extension] [the specified file names]; otherwise, <c>false</c>.
+        /// </returns>
+        protected bool ContainsUnknownExtension(IEnumerable<string> fileNames)
+        {
+            Contract.Requires(fileNames != null);
+            return fileNames.Any(IsUnknownExtension);
+        }
+
+        /// <summary>
+        /// Determines whether [is unknown extension] [the specified file name].
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>
+        /// <c>true</c> if [is unknown extension] [the specified file name]; otherwise, <c>false</c>.
+        /// </returns>
+        protected bool IsUnknownExtension(string fileName)
+        {
+            Contract.Requires(fileName != null);
+            var extension = Path.GetExtension(fileName).ToUpperInvariant();
+            return extensions.FindIndex(x => x == extension) == -1;
+        }
     }
 }
