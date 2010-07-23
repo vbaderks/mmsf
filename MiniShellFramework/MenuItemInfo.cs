@@ -8,22 +8,69 @@ using System.Runtime.InteropServices;
 namespace MiniShellFramework
 {
     /// <summary>
-    /// 
+    /// (MENUITEMINFO)
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MENUITEMINFO
+    public struct MenuItemInfo
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public uint cbSize;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint fMask;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint fType;           // used if MIIM_TYPE (4.0) or MIIM_FTYPE (>4.0)
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint fState;          // used if MIIM_STATE
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint wID;             // used if MIIM_ID
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IntPtr hSubMenu;      // used if MIIM_SUBMENU
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IntPtr hbmpChecked;   // used if MIIM_CHECKMARKS
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IntPtr hbmpUnchecked; // used if MIIM_CHECKMARKS
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IntPtr dwItemData;    // used if MIIM_DATA
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string dwTypeData;    // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint cch;             // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IntPtr hbmpItem;      // used if MIIM_BITMAP
 
         /// <summary>
@@ -72,9 +119,9 @@ namespace MiniShellFramework
         /// Initializes the specified info.
         /// </summary>
         /// <param name="info">The info.</param>
-        public static void Initialize(ref MENUITEMINFO info)
+        public static void Initialize(ref MenuItemInfo info)
         {
-            info.cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO));
+            info.cbSize = (uint)Marshal.SizeOf(typeof(MenuItemInfo));
             info.fMask = 0;
             info.fType = 0;
         }

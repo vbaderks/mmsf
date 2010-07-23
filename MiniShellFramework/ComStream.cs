@@ -63,15 +63,6 @@ namespace MiniShellFramework
         }
 
         /// <summary>
-        /// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
-        /// </summary>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        public override void Flush()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Gets the length in bytes of the stream.
         /// </summary>
         /// <value></value>
@@ -82,8 +73,8 @@ namespace MiniShellFramework
         {
             get 
             { 
-                //if (m_pOrigStream == 0)
-                //        throw new ObjectDisposedException("m_pOrigStream");
+                ////if (m_pOrigStream == 0)
+                ////        throw new ObjectDisposedException("m_pOrigStream");
 
                 STATSTG statstg;
                 stream.Stat(out statstg, 1 /* STATFLAG_NONAME */);
@@ -104,12 +95,21 @@ namespace MiniShellFramework
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
+
             set
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
+        }
+
+        /// <summary>
+        /// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+        /// </summary>
+        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+        public override void Flush()
+        {
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace MiniShellFramework
                 stream.Read(buffer, count, new IntPtr(&bytesRead));
             }
 
-            return (int) bytesRead;
+            return (int)bytesRead;
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override void SetLength(long value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>

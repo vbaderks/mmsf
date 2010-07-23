@@ -15,7 +15,7 @@ namespace MiniShellFramework
         None = 0,
 
         /// <summary>
-        /// The interface facility. The HResult value is unique in the scope of the COM interface (FACILITY_ITF)
+        /// The interface facility. The HResult value is unique in the scope of the COM interface (FACILITY_ITF).
         /// </summary>
         Interface = 4
     }

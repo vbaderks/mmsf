@@ -4,11 +4,11 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
-using System.Runtime.InteropServices.ComTypes;
-using System.IO;
 
 namespace MiniShellFramework
 {
@@ -139,12 +139,12 @@ namespace MiniShellFramework
         /// When overridden in a derived class initializes the extension.
         /// </summary>
         /// <param name="stream">The stream the extension should compute the infotip text for.</param>
-        abstract protected void InitializeCore(Stream stream);
+        protected abstract void InitializeCore(Stream stream);
 
         /// <summary>
         /// When overridden in a derived class initializes the extension.
         /// </summary>
         /// <returns>a string that can be used as text for a infotip.</returns>
-        abstract protected string GetInfoTipCore();
+        protected abstract string GetInfoTipCore();
     }
 }

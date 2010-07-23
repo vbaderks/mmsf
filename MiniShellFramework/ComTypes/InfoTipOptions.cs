@@ -23,7 +23,7 @@ namespace MiniShellFramework.ComTypes
         UseName = 1,
 
         /// <summary>
-        /// If the item is a shortcut, retrieve the info tip text of the shortcut rather than its target. QITIPF_LINKNOTARGET (2)
+        /// If the item is a shortcut, retrieve the info tip text of the shortcut rather than its target. QITIPF_LINKNOTARGET (2).
         /// </summary>
         LinkNoTarget = 2,
 

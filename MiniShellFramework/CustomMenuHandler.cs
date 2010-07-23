@@ -15,7 +15,7 @@ namespace MiniShellFramework
         /// Initializes the item info.
         /// </summary>
         /// <param name="menuiteminfo">The menuiteminfo.</param>
-        public virtual void InitializeItemInfo(ref MENUITEMINFO menuiteminfo)
+        public virtual void InitializeItemInfo(ref MenuItemInfo menuiteminfo)
         {
             menuiteminfo.OwnerDraw = true;
         }

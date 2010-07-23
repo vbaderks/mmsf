@@ -3,9 +3,9 @@
 // </copyright>
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.CompilerServices;
 
 namespace MiniShellFramework.ComTypes
 {

@@ -10,22 +10,22 @@ namespace MiniShellFramework.ComTypes
     public enum FileOperation
     {
         /// <summary>
-        /// Moves the files \ folders (FO_MOVE)
+        /// Moves the files \ folders (FO_MOVE).
         /// </summary>
         Move = 1,
 
         /// <summary>
-        /// Copies the files \ folders (FO_COPY)
+        /// Copies the files \ folders (FO_COPY).
         /// </summary>
         Copy = 2,
 
         /// <summary>
-        /// Deletes the files \ folders (FO_DELETE)
+        /// Deletes the files \ folders (FO_DELETE).
         /// </summary>
         Delete = 3,
 
         /// <summary>
-        /// Renames the files \ folders (FO_RENAME)
+        /// Renames the files \ folders (FO_RENAME).
         /// </summary>
         Rename = 4
     }

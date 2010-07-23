@@ -25,7 +25,7 @@ namespace MiniShellFramework
         /// Initializes the item info.
         /// </summary>
         /// <param name="menuiteminfo">The menuiteminfo.</param>
-        public override void InitializeItemInfo(ref MENUITEMINFO menuiteminfo)
+        public override void InitializeItemInfo(ref MenuItemInfo menuiteminfo)
         {
             menuiteminfo.Text = text;
             ////menuiteminfo.SetCheckMarkBmps(NULL, m_bitmap.GetHandle());

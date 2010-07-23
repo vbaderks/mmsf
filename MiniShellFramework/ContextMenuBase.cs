@@ -4,11 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using MiniShellFramework.ComTypes;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using Microsoft.Win32;
+using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
@@ -51,7 +51,7 @@ namespace MiniShellFramework
             var menu = new Menu(hmenu, indexMenu, idCmdFirst, idCmdLast);
             QueryContextMenuCore(menu, null);
 
-            return HResults.Create(Severity.Success, (ushort) (id - idCmdFirst));
+            return HResults.Create(Severity.Success, (ushort)(id - idCmdFirst));
         }
 
         void IContextMenu3.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)

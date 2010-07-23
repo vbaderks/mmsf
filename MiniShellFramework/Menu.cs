@@ -56,8 +56,8 @@ namespace MiniShellFramework
         /// <param name="contextCommand">The context command.</param>
         public void AddItem(string text, string help, ContextCommand contextCommand)
         {
-            var menuItemInfo = new MENUITEMINFO();
-            MENUITEMINFO.Initialize(ref menuItemInfo);
+            var menuItemInfo = new MenuItemInfo();
+            MenuItemInfo.Initialize(ref menuItemInfo);
             menuItemInfo.Id = idCmd;
             menuItemInfo.Text = text;
 
@@ -76,10 +76,10 @@ namespace MiniShellFramework
             //// TODO;
         }
 
-        private void InsertMenuItem(ref MENUITEMINFO menuItemInfo, string help)
+        private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string help)
         {
             bool result = InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
-            // TODO: throw if false;
+            //// TODO: throw if false;
         }
 
         ////void InsertMenuItem(const CMenuItemInfo& menuiteminfo,
@@ -96,6 +96,6 @@ namespace MiniShellFramework
         ////}
 
         [DllImport("user32.dll")]
-        static extern bool InsertMenuItem(IntPtr hMenu, uint uItem, bool fByPosition, [In] ref MENUITEMINFO lpmii);
+        static extern bool InsertMenuItem(IntPtr hMenu, uint uItem, bool fByPosition, [In] ref MenuItemInfo lpmii);
     }
 }

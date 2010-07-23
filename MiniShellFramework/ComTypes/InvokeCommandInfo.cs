@@ -20,7 +20,7 @@ namespace MiniShellFramework.ComTypes
         public int Size;           // sizeof(CMINVOKECOMMANDINFO)
 
         /// <summary>
-        /// Any combination of CMIC_MASK_*
+        /// Any combination of CMIC_MASK_*.
         /// </summary>
         public int fMask;
 
@@ -30,22 +30,22 @@ namespace MiniShellFramework.ComTypes
         public IntPtr parentWindow;
 
         /// <summary>
-        /// either a string or MAKEINTRESOURCE(idOffset)
+        /// either a string or MAKEINTRESOURCE(idOffset).
         /// </summary>
         public IntPtr lpVerb;
 
         /// <summary>
-        /// might be NULL (indicating no parameter)
+        /// might be NULL (indicating no parameter).
         /// </summary>
         public string lpParameters;
 
         /// <summary>
-        /// Might be NULL (indicating no specific directory)
+        /// Might be NULL (indicating no specific directory).
         /// </summary>
         public string lpDirectory;
 
         /// <summary>
-        /// one of SW_ values for ShowWindow() API
+        /// one of SW_ values for ShowWindow() API.
         /// </summary>
         public int nShow;
 

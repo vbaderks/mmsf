@@ -3,10 +3,10 @@
 // </copyright>
 
 using System;
-using System.Text;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace MiniShellFramework
 {
@@ -34,7 +34,7 @@ namespace MiniShellFramework
         public static FORMATETC CreateFORMATETC(ClipFormat clipFormat)
         {
             FORMATETC format = new FORMATETC();
-            format.cfFormat = (short) clipFormat;
+            format.cfFormat = (short)clipFormat;
             format.tymed = TYMED.TYMED_HGLOBAL;
             format.dwAspect = DVASPECT.DVASPECT_CONTENT;
             format.ptd = IntPtr.Zero;
@@ -78,7 +78,7 @@ namespace MiniShellFramework
     /// </summary>
     public class ClipboardFormatDrop : IDisposable
     {
-        STGMEDIUM medium;
+        private STGMEDIUM medium;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClipboardFormatDrop"/> class.
@@ -89,11 +89,6 @@ namespace MiniShellFramework
             FORMATETC format = FormatEtcExtensions.CreateFORMATETC(ClipFormat.CF_HDROP);
 
             dataObject.GetData(ref format, out medium);
-        }
-
-        int GetFileCount()
-        {
-            return FormatEtcExtensions.DragQueryFile(medium.unionmember, -1, null, 0);
         }
 
         /// <summary>
@@ -118,8 +113,12 @@ namespace MiniShellFramework
             if (queryFileLength <= 0)
                 throw new Win32Exception();
 
-            string filename = new String(buffer, 0, queryFileLength);
-            return filename;
+            return new string(buffer, 0, queryFileLength);
+        }
+
+        private int GetFileCount()
+        {
+            return FormatEtcExtensions.DragQueryFile(medium.unionmember, -1, null, 0);
         }
     }
 }
