@@ -49,25 +49,25 @@ namespace MiniShellFramework
         void IQueryInfo.GetInfoFlags(out InfoTipOptions options)
         {
             Debug.WriteLine("InfoTipBase.GetInfoFlags (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         void IPersistFile.GetClassID(out Guid pClassID)
         {
             Debug.WriteLine("InfoTipBase.GetClassID (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         void IPersistFile.GetCurFile(out string ppszFileName)
         {
             Debug.WriteLine("InfoTipBase.GetCurFile (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         int IPersistFile.IsDirty()
         {
             Debug.WriteLine("InfoTipBase.IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         void IPersistFile.Load(string pszFileName, int dwMode)
@@ -87,13 +87,13 @@ namespace MiniShellFramework
         void IPersistFile.Save(string pszFileName, bool fRemember)
         {
             Debug.WriteLine("InfoTipBase::IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public void SaveCompleted(string pszFileName)
+        void IPersistFile.SaveCompleted(string pszFileName)
         {
-            Debug.WriteLine("InfoTipBase::IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
-            throw new NotImplementedException();
+            Debug.WriteLine("InfoTipBase::SaveCompleted (IPersistFile) - Not Supported (functionality not used)");
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -135,8 +135,16 @@ namespace MiniShellFramework
             // Note: prog id should be removed by 1 global unregister function.
         }
 
+        /// <summary>
+        /// When overridden in a derived class initializes the extension.
+        /// </summary>
+        /// <param name="stream">The stream the extension should compute the infotip text for.</param>
         abstract protected void InitializeCore(Stream stream);
 
+        /// <summary>
+        /// When overridden in a derived class initializes the extension.
+        /// </summary>
+        /// <returns>a string that can be used as text for a infotip.</returns>
         abstract protected string GetInfoTipCore();
     }
 }

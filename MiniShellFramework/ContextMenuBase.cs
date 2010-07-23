@@ -12,21 +12,27 @@ using Microsoft.Win32;
 
 namespace MiniShellFramework
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3
     {
         private uint idCmdFirst;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContextMenuBase"/> class.
+        /// </summary>
         protected ContextMenuBase()
         {
             Debug.WriteLine("ContextMenuBase::Constructor (instance={0})", this);
         }
 
-        public void Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
+        void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
             throw new NotImplementedException();
         }
 
-        public int QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, QueryContextMenuOptions flags)
+        int IContextMenu3.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
         {
             Debug.WriteLine("ContextMenuBase::QueryContextMenu (instance={0}, indexMenu={1}, idCmdFirst={2}, idLast={3}, flag={4})",
                 this, indexMenu, idCmdFirst, idCmdLast, flags);
@@ -37,7 +43,7 @@ namespace MiniShellFramework
 
             ////ClearMenuItems();
 
-            this.idCmdFirst = idCmdFirst;
+            this.idCmdFirst = idCommandFirst;
             uint id = idCmdFirst;
             ////CMenu menu(hmenu, indexMenu, nID, idCmdLast, this);
 
@@ -48,7 +54,7 @@ namespace MiniShellFramework
             return HResults.Create(Severity.Success, (ushort) (id - idCmdFirst));
         }
 
-        public void InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
+        void IContextMenu3.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
         {
             Debug.WriteLine("ContextMenuBase::InvokeCommand (instance={0})", this);
 
@@ -59,26 +65,32 @@ namespace MiniShellFramework
             ////GetMenuItem(LOWORD(pici->lpVerb)).GetContextCommand()(pici, GetFilenames());
         }
 
-        public void InvokeCommand(IntPtr pici)
+        ////public void InvokeCommand(IntPtr pici)
+        ////{
+        ////    throw new NotImplementedException();
+        ////}
+
+        int IContextMenu3.GetCommandString(IntPtr idCommand, uint uflags, int reserved, StringBuilder commandString, int cch)
         {
             throw new NotImplementedException();
         }
 
-        public void GetCommandString(int idCmd, uint uflags, int reserved, StringBuilder commandString, int cch)
+        void IContextMenu3.HandleMenuMsg(uint uMsg, uint wParam, uint lParam)
         {
             throw new NotImplementedException();
         }
 
-        public int HandleMenuMsg(uint uMsg, uint wParam, uint lParam)
+        void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult)
         {
             throw new NotImplementedException();
         }
 
-        public int HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Adds additional info to the registry to allow the shell to discover the oject as shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="progId">The prog id.</param>
         protected static void ComRegisterFunction(Type type, string description, string progId)
         {
             // Register the ContextMenu COM object as an approved shell extension. Explorer will only execute approved extensions.
@@ -95,6 +107,12 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="progId">The prog id.</param>
         protected static void ComUnregisterFunction(Type type, string description, string progId)
         {
             // Unregister the ContextMenu COM object as an approved shell extension.
@@ -107,6 +125,11 @@ namespace MiniShellFramework
             // Note: prog id should be removed by 1 global unregister function.
         }
 
+        /// <summary>
+        /// Queries the context menu core.
+        /// </summary>
+        /// <param name="menu">The menu.</param>
+        /// <param name="filenames">The filenames.</param>
         protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames);
     }
 }

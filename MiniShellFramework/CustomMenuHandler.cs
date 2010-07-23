@@ -6,24 +6,41 @@ using System;
 
 namespace MiniShellFramework
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public abstract class CustomMenuHandler
     {
+        /// <summary>
+        /// Initializes the item info.
+        /// </summary>
+        /// <param name="menuiteminfo">The menuiteminfo.</param>
         public virtual void InitializeItemInfo(ref MENUITEMINFO menuiteminfo)
         {
             menuiteminfo.OwnerDraw = true;
         }
 
-        // Purpose: called by OS to require the size of the menu item.
+        /// <summary>
+        /// Called by OS to require the size of the menu item.
+        /// </summary>
+        /// <param name="measureItem">The measure item.</param>
         public virtual void Measure(ref MEASUREITEMSTRUCT measureItem)
         {
         }
 
-        // Purpose: called by the OS when the item must be draw.
+        /// <summary>
+        /// Called by the OS when the item must be draw.
+        /// </summary>
         public virtual void Draw(/* DRAWITEMSTRUCT&  */ /*drawitem*/)
         {
         }
 
-        // Purpose: override this function to handle accelerator keys
+        /// <summary>
+        /// Override this function to handle accelerator keys
+        /// </summary>
+        /// <param name="hmenu">The hmenu.</param>
+        /// <param name="nChar">The n char.</param>
+        /// <returns></returns>
         public virtual bool OnMenuChar(IntPtr hmenu, ushort nChar /*, LRESULT& */ /*lresult*/)
         {
             return false; // not handled.

@@ -7,6 +7,9 @@ using System.Runtime.InteropServices;
 
 namespace MiniShellFramework
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MENUITEMINFO
     {
@@ -23,6 +26,10 @@ namespace MiniShellFramework
         public uint cch;             // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
         public IntPtr hbmpItem;      // used if MIIM_BITMAP
 
+        /// <summary>
+        /// Sets the id.
+        /// </summary>
+        /// <value>The id.</value>
         public uint Id
         {
             set
@@ -32,6 +39,10 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Sets the text.
+        /// </summary>
+        /// <value>The text.</value>
         public string Text
         {
             set
@@ -42,6 +53,10 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Sets a value indicating whether [owner draw].
+        /// </summary>
+        /// <value><c>true</c> if [owner draw]; otherwise, <c>false</c>.</value>
         public bool OwnerDraw
         {
             set
@@ -53,6 +68,10 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Initializes the specified info.
+        /// </summary>
+        /// <param name="info">The info.</param>
         public static void Initialize(ref MENUITEMINFO info)
         {
             info.cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO));

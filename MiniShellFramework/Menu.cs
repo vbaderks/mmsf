@@ -9,6 +9,9 @@ using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
+    /// <summary>
+    /// Wrapper class for a Win32 menu
+    /// </summary>
     public class Menu
     {
         private IntPtr hmenu;
@@ -16,6 +19,13 @@ namespace MiniShellFramework
         private uint idCmd;
         private uint idCmdLast;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Menu"/> class.
+        /// </summary>
+        /// <param name="hmenu">The hmenu.</param>
+        /// <param name="indexMenu">The index menu.</param>
+        /// <param name="idCmd">The id CMD.</param>
+        /// <param name="idCmdLast">The id CMD last.</param>
         public Menu(IntPtr hmenu, uint indexMenu, uint idCmd, uint idCmdLast)
         {
             this.hmenu = hmenu;
@@ -24,13 +34,26 @@ namespace MiniShellFramework
             this.idCmdLast = idCmdLast;
         }
 
+        /// <summary>
+        /// Adds the sub menu.
+        /// </summary>
+        /// <returns></returns>
         public Menu AddSubMenu()
         {
             return null;
         }
 
-        public delegate void ContextCommand(ref CMINVOKECOMMANDINFO invokeCommandInfo, IList<string> fileNames);
+        /// <summary>
+        /// defines the command.
+        /// </summary>
+        public delegate void ContextCommand(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames);
 
+        /// <summary>
+        /// Adds the item.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="help">The help.</param>
+        /// <param name="contextCommand">The context command.</param>
         public void AddItem(string text, string help, ContextCommand contextCommand)
         {
             var menuItemInfo = new MENUITEMINFO();
@@ -42,6 +65,12 @@ namespace MiniShellFramework
             InsertMenuItem(ref menuItemInfo, help /*, qcontextcommand, qcustommenuhandler*/);
         }
 
+        /// <summary>
+        /// Adds the item.
+        /// </summary>
+        /// <param name="customMenuHandler">The custom menu handler.</param>
+        /// <param name="help">The help.</param>
+        /// <param name="contextCommand">The context command.</param>
         public void AddItem(CustomMenuHandler customMenuHandler, string help, ContextCommand contextCommand)
         {
             //// TODO;

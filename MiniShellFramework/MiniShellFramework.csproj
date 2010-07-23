@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="RootKey.cs" />
     <Compile Include="Severity.cs" />
@@ -106,7 +107,7 @@
     <Compile Include="CustomMenuHandler.cs" />
     <Compile Include="IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
-    <Compile Include="ComTypes\CMINVOKECOMMANDINFO.cs" />
+    <Compile Include="ComTypes\InvokeCommandInfo.cs" />
     <Compile Include="ComTypes\IInitializeWithFile.cs" />
     <Compile Include="ComTypes\InfoTipOptions.cs" />
     <Compile Include="ComTypes\IContextMenu3.cs" />

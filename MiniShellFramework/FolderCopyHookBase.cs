@@ -22,11 +22,20 @@ namespace MiniShellFramework
         private readonly int id = Interlocked.Increment(ref nextId);
 #endif
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderCopyHookBase"/> class.
+        /// </summary>
         protected FolderCopyHookBase()
         {
             Debug.WriteLine("FolderCopyHookBase::Constructor (instance={0})", this);
         }
 
+        /// <summary>
+        /// Adds additional info to the registry to allow the shell to discover the oject as shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
         protected static void ComRegister(Type type, string name, string description)
         {
             Contract.Requires(type != null);
@@ -55,6 +64,11 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="name">The name.</param>
         protected static void ComUnregister(Type type, string name)
         {
             Contract.Requires(type != null);
@@ -101,6 +115,17 @@ namespace MiniShellFramework
             }
         }
 
+        /// <summary>
+        /// When overridden in a derived class handles the actual copy hook.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="fileOperation">The file operation.</param>
+        /// <param name="flags">The flags.</param>
+        /// <param name="sourceFolder">The source folder.</param>
+        /// <param name="sourceAttributes">The source attributes.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
+        /// <param name="destinationAttributes">The destination attributes.</param>
+        /// <returns></returns>
         protected abstract DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder,
                                               uint sourceAttributes, string destinationFolder, uint destinationAttributes);
     }
