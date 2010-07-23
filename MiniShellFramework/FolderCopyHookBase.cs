@@ -81,18 +81,18 @@ namespace MiniShellFramework
             }
         }
 
-        public uint CopyCallback(IntPtr parent, FileOperation fileOperation, uint flags, string sourceFolder, uint sourceAttributes, string destinationFolder, uint destinationAttributes)
+        public uint CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
         {
-            Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, fileOperation={1}, sourceFolder={2})", id, fileOperation, sourceFolder);
+            Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, fileOperation={1}, source={2}, destination={3})", id, fileOperation, source, destination);
 
             // Note: FOF_SILENT indicates that the operation should be silent, but the win32 .H file states that confirmation dialogs are still to be shown.
             var owner = new NativeWindow();
-            owner.AssignHandle(parent);
+            owner.AssignHandle(parentWindow);
             try
             {
-                var result = CopyCallbackCore(owner, fileOperation, flags, sourceFolder, sourceAttributes, destinationFolder, destinationAttributes);
+                var result = CopyCallbackCore(owner, fileOperation, flags, source, sourceAttributes, destination, destinationAttributes);
                 Debug.Assert(result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Yes);
-                Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, result={1}", id, result);
+                Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, result={1})", id, result);
                 return (uint)result;
             }
             finally 

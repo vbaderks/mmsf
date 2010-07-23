@@ -41,7 +41,7 @@ namespace VvvSampleTest
 
         private static object CreateFolderCopyHook()
         {
-            return Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("B7096869-8E27-4f13-A9B9-3164F6D30BAB")));
+            return Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("5070BD33-0BD4-4B4C-B5C6-9E09FCFD6DD2")));
         }
     }
 }

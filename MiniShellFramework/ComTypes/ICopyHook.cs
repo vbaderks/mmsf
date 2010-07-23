@@ -23,12 +23,12 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Callback called by the Shell. Determines whether the Shell will be allowed to move, copy, delete, or rename a folder or printer object.
         /// </summary>
-        /// <param name="hwnd">A handle to the window that the copy hook handler should use as the parent for any user interface elements the handler may need to display.</param>
+        /// <param name="parentWindow">A handle to the window that the copy hook handler should use as the parent for any user interface elements the handler may need to display.</param>
         /// <param name="fileOperation">The file operation that will be performed.</param>
         /// <param name="flags">The flags.</param>
-        /// <param name="sourceFile">The source file.</param>
+        /// <param name="source">The source folder or printer.</param>
         /// <param name="sourceAttributes">The source attributes.</param>
-        /// <param name="destinationFile">The destination file.</param>
+        /// <param name="destination">The destination folder or printer.</param>
         /// <param name="destinationAttributes">The destination attributes.</param>
         /// <returns>
         /// IDYES: to allow the operation.
@@ -36,12 +36,12 @@ namespace MiniShellFramework.ComTypes
         /// IDCANCEL: Prevents the current operation and cancels any pending operations.
         /// </returns>
         [PreserveSig]
-        uint CopyCallback(IntPtr hwnd,
+        uint CopyCallback(IntPtr parentWindow,
                           FileOperation fileOperation,
                           uint flags,
-                          [In, MarshalAs(UnmanagedType.LPWStr)] string sourceFile,
+                          [In, MarshalAs(UnmanagedType.LPWStr)] string source,
                           uint sourceAttributes,
-                          [In, MarshalAs(UnmanagedType.LPWStr)] string destinationFile,
+                          [In, MarshalAs(UnmanagedType.LPWStr)] string destination,
                           uint destinationAttributes);
     }
 }
