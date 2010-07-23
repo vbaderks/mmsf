@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -21,12 +22,14 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
+            Contract.Requires(type != null);
             ComRegister(type, RegistryName, "MMSF Sample ShellExtension (FolderCopyHook)");
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
+            Contract.Requires(type != null);
             ComUnregister(type, RegistryName);
         }
 
@@ -35,8 +38,7 @@ namespace VvvSample
             if (fileOperation == FileOperation.Delete && sourceFolder.Contains("VVV-MMSF"))
             {
                 return MessageBox.Show(owner,
-                                       string.Format(CultureInfo.CurrentCulture,
-                                                     "Are you sure to delete the folder: {0} ?", sourceFolder),
+                                       string.Format(CultureInfo.CurrentCulture, "Are you sure to delete the folder: {0} ?", sourceFolder),
                                        "VVV Question",
                                        MessageBoxButtons.YesNoCancel);
             }

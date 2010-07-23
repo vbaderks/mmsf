@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Microsoft.Win32;
@@ -13,8 +14,10 @@ using MiniShellFramework.ComTypes;
 namespace MiniShellFramework
 {
     /// <summary>
-    /// 
+    /// Base class for Context Menu shell extension handlers.
     /// </summary>
+    [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
+    [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3
     {
         private uint idCmdFirst;

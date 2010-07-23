@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
 namespace MiniShellFramework.ComTypes
@@ -18,6 +19,7 @@ namespace MiniShellFramework.ComTypes
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("000214FC-0000-0000-c000-000000000046")]
+    [ContractClass(typeof(CopyHookContract))]
     public interface ICopyHook
     {
         /// <summary>
@@ -43,5 +45,15 @@ namespace MiniShellFramework.ComTypes
                           uint sourceAttributes,
                           [In, MarshalAs(UnmanagedType.LPWStr)] string destination,
                           uint destinationAttributes);
+    }
+
+    [ContractClassFor(typeof(ICopyHook))]
+    abstract class CopyHookContract : ICopyHook
+    {
+        public uint CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
+        {
+            Contract.Requires(source != null);
+            return default(uint);
+        }
     }
 }

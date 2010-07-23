@@ -8,10 +8,9 @@ namespace VvvSample
 {
     internal static class VvvRootKey
     {
-        static bool registered;
-
         public const string ProgId = "VVVFile";
         public const string FileExtension = ".vvv";
+        private static bool registered;
 
         public static void Register()
         {

@@ -4,11 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows;
 using MiniShellFramework;
 using MiniShellFramework.ComTypes;
-using System.Diagnostics;
-using System.Windows;
 
 namespace VvvSample
 {

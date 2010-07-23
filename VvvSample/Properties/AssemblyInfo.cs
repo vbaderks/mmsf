@@ -1,5 +1,8 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// <copyright>
+//     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
+// </copyright>
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

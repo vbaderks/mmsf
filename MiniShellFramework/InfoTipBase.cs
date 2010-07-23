@@ -15,6 +15,8 @@ namespace MiniShellFramework
     /// <summary>
     /// Base class for Infotip shell extension handlers.
     /// </summary>
+    [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
+    [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class InfoTipBase : IInitializeWithStream, IQueryInfo, IPersistFile
     {
         private bool initialized;

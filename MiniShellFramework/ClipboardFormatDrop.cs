@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -110,6 +111,7 @@ namespace MiniShellFramework
 
             var buffer = new char[255 + 1]; // MAX_PATH
             int queryFileLength = FormatEtcExtensions.DragQueryFile(medium.unionmember, index, buffer, 255);
+            Contract.Assume(queryFileLength <= 255);
             if (queryFileLength <= 0)
                 throw new Win32Exception();
 

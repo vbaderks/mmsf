@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -15,6 +16,9 @@ namespace MiniShellFramework
     /// <summary>
     /// Provide a base class for copy hook shell extensions.
     /// </summary>
+    [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
+    [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
+    [ContractClass(typeof(FolderCopyHookBaseContract))]
     public abstract class FolderCopyHookBase : ICopyHook
     {
 #if DEBUG
@@ -128,5 +132,20 @@ namespace MiniShellFramework
         /// <returns></returns>
         protected abstract DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder,
                                               uint sourceAttributes, string destinationFolder, uint destinationAttributes);
+    }
+
+    [ContractClassFor(typeof(FolderCopyHookBase))]
+    abstract class FolderCopyHookBaseContract : FolderCopyHookBase
+    {
+        protected override DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder, uint sourceAttributes, string destinationFolder, uint destinationAttributes)
+        {
+            Contract.Requires(parent != null);
+            Contract.Requires(sourceFolder != null);
+            Contract.Ensures(Contract.Result<DialogResult>() == DialogResult.Yes ||
+                             Contract.Result<DialogResult>() == DialogResult.No ||
+                             Contract.Result<DialogResult>() == DialogResult.Cancel);
+
+            return default(DialogResult);
+        }
     }
 }

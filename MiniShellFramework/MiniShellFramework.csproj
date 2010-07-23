@@ -105,7 +105,7 @@
     <Compile Include="ContextMenuBase.cs" />
     <Compile Include="FolderCopyHookBase.cs" />
     <Compile Include="CustomMenuHandler.cs" />
-    <Compile Include="IInitializeWithStream.cs" />
+    <Compile Include="ComTypes\IInitializeWithStream.cs" />
     <Compile Include="InfoTipBase.cs" />
     <Compile Include="ComTypes\InvokeCommandInfo.cs" />
     <Compile Include="ComTypes\IInitializeWithFile.cs" />
