@@ -13,7 +13,7 @@ namespace MiniShellFramework.ComTypes
     /// </summary>
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f")]
+    [Guid("000214E8-0000-0000-c000-000000000046")]
     public interface IShellExtInit
     {
         /// <summary>
