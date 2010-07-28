@@ -2,6 +2,8 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
+using MiniShellFramework.ComTypes;
+
 namespace MiniShellFramework
 {
     /// <summary>

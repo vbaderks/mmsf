@@ -5,28 +5,87 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace MiniShellFramework
+namespace MiniShellFramework.ComTypes
 {
     /// <summary>
-    /// (MENUITEMINFO)
+    /// The menu item type. 
+    /// </summary>
+    public enum MenuItemInfoType
+    {
+        /// <summary>
+        /// Assigns responsibility for drawing the menu item to the window that owns the menu (MFT_OWNERDRAW).
+        /// </summary>
+        OwnerDraw = 100
+    }
+
+    /// <summary>
+    /// Indicates the members to be retrieved or set from a MenuItemInfo struct.
+    /// </summary>
+    [Flags]
+    public enum MenuItemInfoMask
+    {
+        /// <summary>
+        /// Retrieves or sets the fState member (MIIM_STATE).
+        /// </summary>
+        State = 1,
+
+        /// <summary>
+        /// Retrieves or sets the wID member (MIIM_ID).
+        /// </summary>
+        Id = 2,
+
+        /// <summary>
+        /// Retrieves or sets the hSubMenu member (MIIM_SUBMENU).
+        /// </summary>
+        SubMenu = 4,
+
+        /// <summary>
+        /// Retrieves or sets the hbmpChecked and hbmpUnchecked members (MIIM_CHECKMARKS).
+        /// </summary>
+        CheckMarks = 8,
+
+        /// <summary>
+        /// Retrieves or sets the dwItemData member (MIIM_DATA).
+        /// </summary>
+        Data = 20,
+
+        /// <summary>
+        /// Retrieves or sets the dwTypeData member (MIIM_STRING).
+        /// </summary>
+        String = 40,
+
+        /// <summary>
+        /// Retrieves or sets the hbmpItem member (MIIM_BITMAP).
+        /// </summary>
+        Bitmap = 80,
+
+        /// <summary>
+        /// Retrieves or sets the fType member (MIIM_FTYPE).
+        /// </summary>
+        FType = 100
+    }
+
+
+    /// <summary>
+    /// Contains information about a menu item (MENUITEMINFO).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MenuItemInfo
     {
         /// <summary>
-        /// 
+        /// The size of the structure, in bytes. The caller must set this member to sizeof(MENUITEMINFO) (cbSize).
         /// </summary>
-        public uint cbSize;
+        public uint Size;
+
+        /// <summary>
+        /// Indicates the members to be retrieved or set (fMask).
+        /// </summary>
+        public MenuItemInfoMask Mask;
 
         /// <summary>
         /// 
         /// </summary>
-        public uint fMask;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint fType;           // used if MIIM_TYPE (4.0) or MIIM_FTYPE (>4.0)
+        public MenuItemInfoType Type;           // used if MIIM_TYPE (4.0) or MIIM_FTYPE (>4.0)
 
         /// <summary>
         /// 
@@ -81,7 +140,7 @@ namespace MiniShellFramework
         {
             set
             {
-                //// fMask |= MIIM_ID;
+                Mask |= MenuItemInfoMask.Id;
                 wID = value;
             }
         }
@@ -94,8 +153,7 @@ namespace MiniShellFramework
         {
             set
             {
-                //// fMask |= MIIM_TYPE;
-                //// fType |= MFT_STRING;
+                Mask |= MenuItemInfoMask.String;
                 dwTypeData = value;
             }
         }
@@ -110,20 +168,30 @@ namespace MiniShellFramework
             {
                 if (value)
                 {
-                    //// fType |= MFT_OWNERDRAW;
+                    Type |= MenuItemInfoType.OwnerDraw;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the sub menu.
+        /// </summary>
+        /// <value>The sub menu.</value>
+        public IntPtr SubMenu
+        {
+            set
+            {
+                Mask |= MenuItemInfoMask.SubMenu;
+                hSubMenu = value;
             }
         }
 
         /// <summary>
         /// Initializes the specified info.
         /// </summary>
-        /// <param name="info">The info.</param>
-        public static void Initialize(ref MenuItemInfo info)
+        public void InitializeSize()
         {
-            info.cbSize = (uint)Marshal.SizeOf(typeof(MenuItemInfo));
-            info.fMask = 0;
-            info.fType = 0;
+            Size = (uint)Marshal.SizeOf(typeof(MenuItemInfo));
         }
     }
 }

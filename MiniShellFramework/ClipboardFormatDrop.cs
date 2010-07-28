@@ -74,9 +74,11 @@ namespace MiniShellFramework
         public static extern void ReleaseStgMedium([In] ref STGMEDIUM medium);
     }
 
-    /// <summary>
-    /// TODO
-    /// </summary>
+    /// <summary>Support class to handle the CF_HDROP format.</summary>
+    /// <remarks>
+    /// The CF_HDROP format is used by the shell to transfer a group of existing files.
+    /// The handle refers to a set of DROPFILES structures.
+    /// </remarks>
     public class ClipboardFormatDrop : IDisposable
     {
         private STGMEDIUM medium;
@@ -98,6 +100,8 @@ namespace MiniShellFramework
         public void Dispose()
         {
             FormatEtcExtensions.ReleaseStgMedium(ref medium);
+
+            // TODO: add finalizer to ensure unmanaged memory is always released.
         }
 
         /// <summary>
@@ -118,7 +122,11 @@ namespace MiniShellFramework
             return new string(buffer, 0, queryFileLength);
         }
 
-        private int GetFileCount()
+        /// <summary>
+        /// Gets the file count.
+        /// </summary>
+        /// <returns></returns>
+        public int GetFileCount()
         {
             return FormatEtcExtensions.DragQueryFile(medium.unionmember, -1, null, 0);
         }

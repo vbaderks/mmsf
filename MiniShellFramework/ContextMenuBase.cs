@@ -19,12 +19,14 @@ namespace MiniShellFramework
     /// <summary>
     /// Base class for Context Menu shell extension handlers.
     /// </summary>
-    [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
+    [ComVisible(true)]                        // Make this .NET class COM visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3
     {
         private uint idCmdFirst;
-        private List<string> extensions = new List<string>();
+        private readonly List<string> extensions = new List<string>();
+        private readonly List<string> fileNames = new List<string>();
+        private readonly List<MenuItem> menuItems = new List<MenuItem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextMenuBase"/> class.
@@ -36,7 +38,8 @@ namespace MiniShellFramework
 
         void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("{0}.IShellExtInit.Initialize (ContextMenuBase)", this);
+            CacheFiles(dataObject);
         }
 
         int IContextMenu3.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
@@ -98,7 +101,7 @@ namespace MiniShellFramework
         /// <param name="type">The type.</param>
         /// <param name="description">The description.</param>
         /// <param name="progId">The prog id.</param>
-        protected static void ComRegisterFunction(Type type, string description, string progId)
+        protected static void ComRegister(Type type, string description, string progId)
         {
             // Register the ContextMenu COM object as an approved shell extension. Explorer will only execute approved extensions.
             using (var key =
@@ -120,7 +123,7 @@ namespace MiniShellFramework
         /// <param name="type">The type.</param>
         /// <param name="description">The description.</param>
         /// <param name="progId">The prog id.</param>
-        protected static void ComUnregisterFunction(Type type, string description, string progId)
+        protected static void ComUnregister(Type type, string description, string progId)
         {
             // Unregister the ContextMenu COM object as an approved shell extension.
             using (var key =
@@ -173,6 +176,42 @@ namespace MiniShellFramework
             Contract.Requires(fileName != null);
             var extension = Path.GetExtension(fileName).ToUpperInvariant();
             return extensions.FindIndex(x => x == extension) == -1;
+        }
+
+        // 'IMenuHost'
+        internal void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
+        {
+            menuItems.Add(new MenuItem(helpText, contextCommand, customMenuHandler));
+        }
+
+        private void CacheFiles(IDataObject dataObject)
+        {
+            Contract.Requires(dataObject != null);
+
+            fileNames.Clear();
+
+            using (var clipboardFormatDrop = new ClipboardFormatDrop(dataObject))
+            {
+                var count = clipboardFormatDrop.GetFileCount();
+                for (int i = 0; i < count; i++)
+                {
+                    fileNames.Add(clipboardFormatDrop.GetFile(i));
+                }
+            }
+        }
+
+        private class MenuItem
+        {
+            private string helpText;
+            private Menu.ContextCommand contextcommand;
+            private CustomMenuHandler custommenuhandler;
+
+            public MenuItem(string helpText, Menu.ContextCommand contextcommand, CustomMenuHandler custommenuhandler)
+            {
+                this.helpText = helpText;
+                this.contextcommand = contextcommand;
+                this.custommenuhandler = custommenuhandler;
+            }
         }
     }
 }

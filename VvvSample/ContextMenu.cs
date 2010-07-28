@@ -13,7 +13,7 @@ using MiniShellFramework.ComTypes;
 namespace VvvSample
 {
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
-    [Guid("B498A476-9EB6-46c3-8146-CE77FF7EA063")]  // Explicitly assign a GUID: easier to reference and to debug.
+    [Guid("1B40F482-7ECC-48C2-BA0A-D7D940DAA7AA")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class ContextMenu : ContextMenuBase
     {
@@ -26,14 +26,14 @@ namespace VvvSample
         public static void ComRegisterFunction(Type type)
         {
             VvvRootKey.Register();
-            ComRegisterFunction(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
+            ComRegister(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
             VvvRootKey.Unregister();
-            ComUnregisterFunction(type);
+            ComUnregister(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
 
         protected override void QueryContextMenuCore(Menu menu, IList<string> filenames)
@@ -44,15 +44,16 @@ namespace VvvSample
             if (filenames.Count != 1)
                 return; // only add to the context menu when 1 file is selected.
 
-            var smallBitmapHandler = new SmallBitmapCustomMenuHandler("VVV", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
+            var smallBitmapHandler = new SmallBitmapCustomMenuHandler("MVVV", 0);
+
             ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
-            var menuVvv = menu.AddSubMenu(/* "Special commands for VVV files" */);
+            var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
 
             menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
 
-            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
+            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
             menuVvv.AddItem(smallBitmapHandler2, "Show the version number of the MMSF", OnAboutMmsf);
 
             // ... optional add more submenu's or more menu items.

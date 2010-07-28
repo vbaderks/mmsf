@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
