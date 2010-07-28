@@ -10,7 +10,7 @@ using MiniShellFramework;
 namespace VvvSample
 {
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
-    [Guid("EDD37CEF-F1E0-42bb-9AEF-177E0306AA71")]  // Explicitly assign a GUID: easier to reference and to debug.
+    [Guid("6FA9260E-F61C-48C0-A0E8-0297C8FAE0D8")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class InfoTip : InfoTipBase
     {
