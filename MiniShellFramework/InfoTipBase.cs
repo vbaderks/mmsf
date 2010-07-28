@@ -26,12 +26,12 @@ namespace MiniShellFramework
         /// </summary>
         protected InfoTipBase()
         {
-            Debug.WriteLine("InfoTipBase::Constructor (instance={0})", this);
+            Debug.WriteLine("{0}.Constructor (InfoTipBase)", this);
         }
 
         void IInitializeWithStream.Initialize(IStream stream, StorageModes storageMode)
         {
-            Debug.WriteLine("InfoTipBase::Initialize (IInitializeWithStream) (instance={0}, mode={1})", this, storageMode);
+            Debug.WriteLine("{0}.IInitializeWithStream.Initialize (InfoTipBase), mode={1})", this, storageMode);
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
 
@@ -44,37 +44,37 @@ namespace MiniShellFramework
 
         void IQueryInfo.GetInfoTip(InfoTipOptions options, out string text)
         {
-            Debug.WriteLine("InfoTipBase.GetInfoTip (IQueryInfo) - instance={0}, dwFlags={1}", this, options);
+            Debug.WriteLine("{0}.IQueryInfo.GetInfoTip (InfoTipBase), dwFlags={1}", this, options);
             text = GetInfoTipCore();
         }
 
         void IQueryInfo.GetInfoFlags(out InfoTipOptions options)
         {
-            Debug.WriteLine("InfoTipBase.GetInfoFlags (IQueryInfo) - Not Implemented (functionality not used)");
+            Debug.WriteLine("{0}.IQueryInfo.GetInfoFlags (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
         void IPersistFile.GetClassID(out Guid pClassID)
         {
-            Debug.WriteLine("InfoTipBase.GetClassID (IQueryInfo) - Not Implemented (functionality not used)");
+            Debug.WriteLine("{0}.IQueryInfo.InfoTipBase.GetClassID (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
         void IPersistFile.GetCurFile(out string ppszFileName)
         {
-            Debug.WriteLine("InfoTipBase.GetCurFile (IQueryInfo) - Not Implemented (functionality not used)");
+            Debug.WriteLine("{0}.IQueryInfo.GetCurFile (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
         int IPersistFile.IsDirty()
         {
-            Debug.WriteLine("InfoTipBase.IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
+            Debug.WriteLine("{0}.IPersistFile.IsDirty (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
         void IPersistFile.Load(string pszFileName, int dwMode)
         {
-            Debug.WriteLine("InfoTipBase::Load (IQueryInfo) (instance={0}, dwMode={1})", this, dwMode);
+            Debug.WriteLine("{0}.IPersistFile.Load (InfoTipBase), dwMode={1}", this, dwMode);
 
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
@@ -88,13 +88,13 @@ namespace MiniShellFramework
 
         void IPersistFile.Save(string pszFileName, bool fRemember)
         {
-            Debug.WriteLine("InfoTipBase::IsDirty (IQueryInfo) - Not Implemented (functionality not used)");
+            Debug.WriteLine("{0}.IPersistFile.Save (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
         void IPersistFile.SaveCompleted(string pszFileName)
         {
-            Debug.WriteLine("InfoTipBase::SaveCompleted (IPersistFile) - Not Supported (functionality not used)");
+            Debug.WriteLine("{0}.IPersistFile.SaveCompleted (InfoTipBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
 
