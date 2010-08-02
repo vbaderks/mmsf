@@ -38,23 +38,20 @@ namespace VvvSample
 
         protected override void QueryContextMenuCore(Menu menu, IList<string> filenames)
         {
-            if (ContainsUnknownExtension(filenames))
-                return; // only extend the menu when only .mvvv files are selected.
-
-            if (filenames.Count != 1)
-                return; // only add to the context menu when 1 file is selected.
+            if (filenames.Count != 1 || ContainsUnknownExtension(filenames))
+                return; // In this sample only extend the menu when only 1 .mvvv file is selected.
 
             ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
-            var smallBitmapHandler = new SmallBitmapCustomMenuHandler("MVVV", 0);
+            //// TODO: var smallBitmapHandler = new SmallBitmapCustomMenuHandler("MVVV", 0);
 
             ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
-            var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
+            //// TODO: var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
 
-            menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
+            ////menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
 
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
-            var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
-            menuVvv.AddItem(smallBitmapHandler2, "Show the version number of the MMSF", OnAboutMmsf);
+            //// TODO: var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
+            menu.AddItem("&About MMSF", "Show the version number of the MMSF", OnAboutMmsf);
 
             // ... optional add more submenu's or more menu items.
         }
