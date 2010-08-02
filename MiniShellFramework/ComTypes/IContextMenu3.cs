@@ -16,7 +16,7 @@ namespace MiniShellFramework.ComTypes
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [GuidAttribute("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
-    public interface IContextMenu3
+    public interface IContextMenu3 : IContextMenu
     {
         /// <summary>
         /// Queries the context menu (from IContextMenu).
@@ -28,13 +28,14 @@ namespace MiniShellFramework.ComTypes
         /// <param name="flags">Optional flags that specify how the shortcut menu can be changed.</param>
         /// <returns></returns>
         [PreserveSig]
-        int QueryContextMenu(IntPtr handleMenu, uint indexMenu, uint idCommandFirst, uint idCommandLast, QueryContextMenuOptions flags);
+        [return: MarshalAs(UnmanagedType.Error)]
+        new int QueryContextMenu(IntPtr handleMenu, uint indexMenu, uint idCommandFirst, uint idCommandLast, QueryContextMenuOptions flags);
 
         /// <summary>
         /// Carries out the command associated with a shortcut menu item (from IContextMenu).
         /// </summary>
         /// <param name="invokeCommandInfo">The invoke command info.</param>
-        void InvokeCommand([In] ref InvokeCommandInfo invokeCommandInfo);
+        new void InvokeCommand([In] ref InvokeCommandInfo invokeCommandInfo);
 
         /// <summary>
         /// Gets information about a shortcut menu command, including the help string and the
@@ -43,10 +44,11 @@ namespace MiniShellFramework.ComTypes
         /// <param name="idCommand">Menu command identifier offset.</param>
         /// <param name="flags">The uflags.</param>
         /// <param name="reserved">The reserved.</param>
-        /// <param name="commandString">The command string.</param>
+        /// <param name="name">The command string.</param>
         /// <param name="cch">The CCH.</param>
         [PreserveSig]
-        int GetCommandString(IntPtr idCommand, uint flags, int reserved, StringBuilder commandString, int cch);
+        [return: MarshalAs(UnmanagedType.Error)]
+        new int GetCommandString(IntPtr idCommand, GetCommandStringOptions flags, int reserved, IntPtr name, int cch);
 
         /// <summary>
         /// Enables client objects of the IContextMenu interface to handle messages

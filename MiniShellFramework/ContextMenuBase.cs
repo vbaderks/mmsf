@@ -16,14 +16,37 @@ using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
+    [StructLayout(LayoutKind.Sequential)]
+    struct MENUITEMINFO
+    {
+        public uint cbSize;
+        public uint fMask;
+        public uint fType;
+        public uint fState;
+        public uint wID;
+        public IntPtr hSubMenu;
+        public IntPtr hbmpChecked;
+        public IntPtr hbmpUnchecked;
+        public IntPtr dwItemData;
+        public string dwTypeData;
+        public uint cch;
+        public IntPtr hbmpItem;
+
+        // return the size of the structure
+        public static uint sizeOf
+        {
+            get { return (uint)Marshal.SizeOf(typeof(MENUITEMINFO)); }
+        }
+    }
+
     /// <summary>
     /// Base class for Context Menu shell extension handlers.
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class COM visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
-    public abstract class ContextMenuBase : IShellExtInit, IContextMenu3
+    public abstract class ContextMenuBase : IShellExtInit, IContextMenu3, IMenuHost
     {
-        private uint idCmdFirst;
+        private uint currentCommandId;
         private readonly List<string> extensions = new List<string>();
         private readonly List<string> fileNames = new List<string>();
         private readonly List<MenuItem> menuItems = new List<MenuItem>();
@@ -33,7 +56,7 @@ namespace MiniShellFramework
         /// </summary>
         protected ContextMenuBase()
         {
-            Debug.WriteLine("ContextMenuBase::Constructor (instance={0})", this);
+            Debug.WriteLine("{0}.Constructor (ContextMenuBase)", this);
         }
 
         void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
@@ -42,29 +65,43 @@ namespace MiniShellFramework
             CacheFiles(dataObject);
         }
 
-        int IContextMenu3.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
+        [DllImport("user32.dll")]
+        static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
+
+        int IContextMenu.QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags)
         {
-            Debug.WriteLine("ContextMenuBase::QueryContextMenu (instance={0}, indexMenu={1}, idCmdFirst={2}, idLast={3}, flag={4})",
-                this, indexMenu, idCmdFirst, idCmdLast, flags);
+            Debug.WriteLine("{0}.IContextMenu.QueryContextMenu (ContextMenuBase), position={1}, firstCommandId={2}, lastCommandId={3}, flag={4})",
+                this, position, firstCommandId, lastCommandId, flags);
 
-            // If the flags include CMF_DEFAULTONLY then we shouldn't do anything.
             if (flags.HasFlag(QueryContextMenuOptions.DefaultOnly))
-                return HResults.Create(Severity.Success, 0);
+                return HResults.Create(Severity.Success, 0); // don't add anything, only default menu items allowed.
 
-            ////ClearMenuItems();
+            menuItems.Clear();
 
-            this.idCmdFirst = idCommandFirst;
-            uint id = idCmdFirst;
-            ////CMenu menu(hmenu, indexMenu, nID, idCmdLast, this);
+            currentCommandId = firstCommandId;
 
-            ////static_cast<T*>(this)->OnQueryContextMenu(menu, GetFilenames());
-            var menu = new Menu(hmenu, indexMenu, idCmdFirst, idCmdLast);
-            QueryContextMenuCore(menu, null);
+            MenuItemInfo mii = new MenuItemInfo();
+            mii.InitializeSize();
+            mii.Id = currentCommandId;
+            mii.Text = "Send file(s) to CheapFTP member(s)";
 
-            return HResults.Create(Severity.Success, (ushort)(id - idCmdFirst));
+            //MENUITEMINFO mii = new MENUITEMINFO();
+            //mii.cbSize = 48;
+            //mii.fMask = (uint)MenuItemInfoMask.Id | (uint)MenuItemInfoMask.String | (uint)MenuItemInfoMask.State;
+            //mii.wID = commandId;
+            ////mii.fType = (uint)MF.STRING;
+            //mii.dwTypeData = "Send file(s) to CheapFTP member(s)";
+            //mii.fState = (uint)MF.ENABLED;
+            // Add it to the item
+            var result = InsertMenuItem(menuHandle, position, true, ref mii);
+            currentCommandId++;
+
+            //QueryContextMenuCore(new Menu(hmenu, indexMenu, idCmdLast, this), this.fileNames);
+
+            return HResults.Create(Severity.Success, (ushort)(currentCommandId - firstCommandId));
         }
 
-        void IContextMenu3.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
+        void IContextMenu.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
         {
             Debug.WriteLine("ContextMenuBase::InvokeCommand (instance={0})", this);
 
@@ -75,19 +112,42 @@ namespace MiniShellFramework
             ////GetMenuItem(LOWORD(pici->lpVerb)).GetContextCommand()(pici, GetFilenames());
         }
 
-        ////public void InvokeCommand(IntPtr pici)
-        ////{
-        ////    throw new NotImplementedException();
-        ////}
-
-        int IContextMenu3.GetCommandString(IntPtr idCommand, uint uflags, int reserved, StringBuilder commandString, int cch)
+        int IContextMenu.GetCommandString(IntPtr commandId, GetCommandStringOptions flags, int reserved, IntPtr name, int cch)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("{0}.IContextMenu.GetCommandString (ContextMenuBase), commandId={1}, flags={2}, name={3}, cch={4}", this, commandId, flags, name, cch);
+
+            if (flags == GetCommandStringOptions.HelpText)
+            {
+                //commandString.Append("help text", 0, cch);
+                return HResults.OK;
+            }
+
+            if (flags == GetCommandStringOptions.Verb)
+            {
+                return HResults.OK;
+            }
+
+            throw new NotSupportedException();
         }
 
         void IContextMenu3.HandleMenuMsg(uint uMsg, uint wParam, uint lParam)
         {
             throw new NotImplementedException();
+        }
+
+        int IContextMenu3.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
+        {
+            return ((IContextMenu)this).QueryContextMenu(hmenu, indexMenu, idCommandFirst, idCmdLast, flags);
+        }
+
+        void IContextMenu3.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
+        {
+            ((IContextMenu)this).InvokeCommand(ref invokeCommandInfo);
+        }
+
+        int IContextMenu3.GetCommandString(IntPtr idCommand, GetCommandStringOptions uflags, int reserved, IntPtr name, int cch)
+        {
+            return ((IContextMenu)this).GetCommandString(idCommand, uflags, reserved, name, cch);
         }
 
         void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult)
@@ -178,12 +238,6 @@ namespace MiniShellFramework
             return extensions.FindIndex(x => x == extension) == -1;
         }
 
-        // 'IMenuHost'
-        internal void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
-        {
-            menuItems.Add(new MenuItem(helpText, contextCommand, customMenuHandler));
-        }
-
         private void CacheFiles(IDataObject dataObject)
         {
             Contract.Requires(dataObject != null);
@@ -212,6 +266,21 @@ namespace MiniShellFramework
                 this.contextcommand = contextcommand;
                 this.custommenuhandler = custommenuhandler;
             }
+        }
+
+        uint IMenuHost.GetCommandId()
+        {
+            return currentCommandId;
+        }
+
+        void IMenuHost.IncrementCommandId()
+        {
+            currentCommandId++;
+        }
+
+        void IMenuHost.OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
+        {
+            menuItems.Add(new MenuItem(helpText, contextCommand, customMenuHandler));
         }
     }
 }

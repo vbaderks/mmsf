@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="RootKey.cs" />
