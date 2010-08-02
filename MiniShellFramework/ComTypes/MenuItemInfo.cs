@@ -27,42 +27,42 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Retrieves or sets the fState member (MIIM_STATE).
         /// </summary>
-        State = 1,
+        State = 0x1,
 
         /// <summary>
         /// Retrieves or sets the wID member (MIIM_ID).
         /// </summary>
-        Id = 2,
+        Id = 0x2,
 
         /// <summary>
         /// Retrieves or sets the hSubMenu member (MIIM_SUBMENU).
         /// </summary>
-        SubMenu = 4,
+        SubMenu = 0x4,
 
         /// <summary>
         /// Retrieves or sets the hbmpChecked and hbmpUnchecked members (MIIM_CHECKMARKS).
         /// </summary>
-        CheckMarks = 8,
+        CheckMarks = 0x8,
 
         /// <summary>
         /// Retrieves or sets the dwItemData member (MIIM_DATA).
         /// </summary>
-        Data = 20,
+        Data = 0x20,
 
         /// <summary>
         /// Retrieves or sets the dwTypeData member (MIIM_STRING).
         /// </summary>
-        String = 40,
+        String = 0x40,
 
         /// <summary>
         /// Retrieves or sets the hbmpItem member (MIIM_BITMAP).
         /// </summary>
-        Bitmap = 80,
+        Bitmap = 0x80,
 
         /// <summary>
         /// Retrieves or sets the fType member (MIIM_FTYPE).
         /// </summary>
-        FType = 100
+        FType = 0x100
     }
 
 

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using MiniShellFramework.ComTypes;
 
@@ -92,49 +93,52 @@ namespace MiniShellFramework
         /// <summary>
         /// Adds the item.
         /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="help">The help.</param>
+        /// <param name="menuText">The text.</param>
+        /// <param name="helpText">The help.</param>
         /// <param name="contextCommand">The context command.</param>
-        public void AddItem(string text, string help, ContextCommand contextCommand)
+        public void AddItem(string menuText, string helpText, ContextCommand contextCommand)
         {
             var menuItemInfo = new MenuItemInfo();
             menuItemInfo.InitializeSize();
-            menuItemInfo.Id = idCmd;
-            menuItemInfo.Text = text;
+            menuItemInfo.Id = menuHost.GetCommandId();
+            menuItemInfo.Text = menuText;
 
-            ////CCustomMenuHandlerPtr qcustommenuhandler;
-            InsertMenuItem(ref menuItemInfo, help /*, qcontextcommand, qcustommenuhandler*/);
+            InsertMenuItem(ref menuItemInfo, helpText, contextCommand, null);
         }
 
         /// <summary>
         /// Adds the item.
         /// </summary>
         /// <param name="customMenuHandler">The custom menu handler.</param>
-        /// <param name="help">The help.</param>
+        /// <param name="helpText">The help.</param>
         /// <param name="contextCommand">The context command.</param>
-        public void AddItem(CustomMenuHandler customMenuHandler, string help, ContextCommand contextCommand)
+        public void AddItem(CustomMenuHandler customMenuHandler, string helpText, ContextCommand contextCommand)
         {
             //// TODO;
         }
 
-        private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string help)
+        private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
-            bool result = InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
-            //// TODO: throw if false;
-        }
-
-        private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string help, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
-        {
-            ////    CheckID();
-
+            CheckIdSpace();
             bool result = InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
             if (!result)
                 throw new Win32Exception();
 
-            ////    PostAddItem(strHelp, qcontextcommand, qcustommenuhandler);
+            PostAddItem(helpText, contextCommand, customMenuHandler);
         }
 
-        void PostAddItem(string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
+        private void CheckIdSpace()
+        {
+            if (menuHost.GetCommandId() >= idCmdLast)
+                throw new COMException(
+                        string.Format(
+                                CultureInfo.InvariantCulture,
+                                "Out of id space (idCmd={0}, idCmdLast={1})",
+                                menuHost.GetCommandId(),
+                                idCmdLast));
+        }
+
+        private void PostAddItem(string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
             menuHost.OnAddMenuItem(helpText, contextCommand, customMenuHandler);
 

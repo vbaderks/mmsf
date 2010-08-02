@@ -16,6 +16,11 @@ namespace MiniShellFramework
         public const int ErrorAlreadyInitialized = 300; // TODO: HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)
 
         /// <summary>
+        /// Operation completed oK (S_OK).
+        /// </summary>
+        public const int OK = 0;
+
+        /// <summary>
         /// Creates the specified HResult value with facility none.
         /// </summary>
         /// <param name="severity">The severity.</param>
