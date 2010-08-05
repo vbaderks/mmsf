@@ -48,6 +48,7 @@ namespace VvvSample
             //// TODO: var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
 
             ////menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
+            menu.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
 
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
             //// TODO: var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);

@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComTypes\IContextMenu.cs" />
+    <Compile Include="ComTypes\IContextMenu2.cs" />
     <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="RootKey.cs" />

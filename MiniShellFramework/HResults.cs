@@ -21,6 +21,11 @@ namespace MiniShellFramework
         public const int OK = 0;
 
         /// <summary>
+        /// E_FAIL
+        /// </summary>
+        public const int ErrorFail = unchecked((int)0x80004005);
+
+        /// <summary>
         /// Creates the specified HResult value with facility none.
         /// </summary>
         /// <param name="severity">The severity.</param>

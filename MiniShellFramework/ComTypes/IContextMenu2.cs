@@ -14,8 +14,8 @@ namespace MiniShellFramework.ComTypes
     /// </summary>
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [GuidAttribute("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
-    public interface IContextMenu3 : IContextMenu2
+    [Guid("000214F4-0000-0000-c000-000000000046")]
+    public interface IContextMenu2 : IContextMenu
     {
         /// <summary>
         /// Queries the context menu (from IContextMenu).
@@ -57,15 +57,6 @@ namespace MiniShellFramework.ComTypes
         /// <param name="wParam">The w param.</param>
         /// <param name="lParam">The l param.</param>
         /// <returns></returns>
-        new void HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam);
-
-        /// <summary>
-        /// Allows client objects of the IContextMenu3 interface to handle messages associated with owner-drawn menu items.
-        /// </summary>
-        /// <param name="uMsg">The u MSG.</param>
-        /// <param name="wParam">The w param.</param>
-        /// <param name="lParam">The l param.</param>
-        /// <param name="plResult">The pl result.</param>
-        void HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult);
+        void HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam);
     }
 }

@@ -14,12 +14,17 @@ namespace MiniShellFramework.ComTypes
     public enum GetCommandStringOptions
     {
         /// <summary>
-        /// Sets pszName to a Unicode string containing the language-independent command name for the menu item.
+        /// Sets pszName to an ANSI string containing the help text for the command (GCS_VERBA).
         /// </summary>
-        Verb = 0x4,
+        CanonicalVerbAnsi = 0x0,
 
         /// <summary>
-        /// Sets pszName to a Unicode string containing the help text for the command.
+        /// Sets pszName to a Unicode string containing the language-independent command name for the menu item (GCS_VERBW).
+        /// </summary>
+        CanonicalVerb = 0x4,
+
+        /// <summary>
+        /// Sets pszName to a Unicode string containing the help text for the command (GCS_HELPTEXTW).
         /// </summary>
         HelpText = 0x5,
 

@@ -10,35 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
-    [StructLayout(LayoutKind.Sequential)]
-    struct MENUITEMINFO
-    {
-        public uint cbSize;
-        public uint fMask;
-        public uint fType;
-        public uint fState;
-        public uint wID;
-        public IntPtr hSubMenu;
-        public IntPtr hbmpChecked;
-        public IntPtr hbmpUnchecked;
-        public IntPtr dwItemData;
-        public string dwTypeData;
-        public uint cch;
-        public IntPtr hbmpItem;
-
-        // return the size of the structure
-        public static uint sizeOf
-        {
-            get { return (uint)Marshal.SizeOf(typeof(MENUITEMINFO)); }
-        }
-    }
-
     /// <summary>
     /// Base class for Context Menu shell extension handlers.
     /// </summary>
@@ -46,6 +22,7 @@ namespace MiniShellFramework
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3, IMenuHost
     {
+        private uint firstCommandId;
         private uint currentCommandId;
         private readonly List<string> extensions = new List<string>();
         private readonly List<string> fileNames = new List<string>();
@@ -65,74 +42,78 @@ namespace MiniShellFramework
             CacheFiles(dataObject);
         }
 
-        [DllImport("user32.dll")]
-        static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
-
         int IContextMenu.QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags)
         {
-            Debug.WriteLine("{0}.IContextMenu.QueryContextMenu (ContextMenuBase), position={1}, firstCommandId={2}, lastCommandId={3}, flag={4})",
-                this, position, firstCommandId, lastCommandId, flags);
+            Debug.WriteLine("{0}.IContextMenu.QueryContextMenu (ContextMenuBase), menuHandle={1}, position={2}, firstCommandId={3}, lastCommandId={4}, flag={5}",
+                this, menuHandle, position, firstCommandId, lastCommandId, flags);
 
             if (flags.HasFlag(QueryContextMenuOptions.DefaultOnly))
                 return HResults.Create(Severity.Success, 0); // don't add anything, only default menu items allowed.
 
             menuItems.Clear();
-
             currentCommandId = firstCommandId;
-
-            MenuItemInfo mii = new MenuItemInfo();
-            mii.InitializeSize();
-            mii.Id = currentCommandId;
-            mii.Text = "Send file(s) to CheapFTP member(s)";
-
-            //MENUITEMINFO mii = new MENUITEMINFO();
-            //mii.cbSize = 48;
-            //mii.fMask = (uint)MenuItemInfoMask.Id | (uint)MenuItemInfoMask.String | (uint)MenuItemInfoMask.State;
-            //mii.wID = commandId;
-            ////mii.fType = (uint)MF.STRING;
-            //mii.dwTypeData = "Send file(s) to CheapFTP member(s)";
-            //mii.fState = (uint)MF.ENABLED;
-            // Add it to the item
-            var result = InsertMenuItem(menuHandle, position, true, ref mii);
-            currentCommandId++;
-
-            //QueryContextMenuCore(new Menu(hmenu, indexMenu, idCmdLast, this), this.fileNames);
-
+            this.firstCommandId = firstCommandId;
+            QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), fileNames);
             return HResults.Create(Severity.Success, (ushort)(currentCommandId - firstCommandId));
         }
 
         void IContextMenu.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
         {
-            Debug.WriteLine("ContextMenuBase::InvokeCommand (instance={0})", this);
+            Debug.WriteLine("{0}.IContextMenu.InvokeCommand (ContextMenuBase), Size={1}", this, invokeCommandInfo.Size);
 
-            ////if (HIWORD(pici->lpVerb) != 0)
-            if (invokeCommandInfo.lpVerb.ToInt32() != 0)
+            if (invokeCommandInfo.lpVerb.ToInt32() >> 16 != 0)
                 throw new ArgumentException("Verbs not supported");
 
-            ////GetMenuItem(LOWORD(pici->lpVerb)).GetContextCommand()(pici, GetFilenames());
+            menuItems[(ushort)invokeCommandInfo.lpVerb.ToInt32()].Command(ref invokeCommandInfo, fileNames);
         }
 
-        int IContextMenu.GetCommandString(IntPtr commandId, GetCommandStringOptions flags, int reserved, IntPtr name, int cch)
+        int IContextMenu.GetCommandString(IntPtr commandIdOffset, GetCommandStringOptions flags, int reserved, IntPtr result, int charCount)
         {
-            Debug.WriteLine("{0}.IContextMenu.GetCommandString (ContextMenuBase), commandId={1}, flags={2}, name={3}, cch={4}", this, commandId, flags, name, cch);
+            Debug.WriteLine("{0}.IContextMenu.GetCommandString (ContextMenuBase), commandIdOffset={1}, flags={2}, result={3}, charCount={4}",
+                this, commandIdOffset, flags, result, charCount);
 
-            if (flags == GetCommandStringOptions.HelpText)
+            switch (flags)
             {
-                //commandString.Append("help text", 0, cch);
-                return HResults.OK;
-            }
+                case GetCommandStringOptions.HelpText:
+                    StringToPtr(menuItems[commandIdOffset.ToInt32()].HelpText, result, charCount);
+                    return HResults.OK;
 
-            if (flags == GetCommandStringOptions.Verb)
-            {
-                return HResults.OK;
-            }
+                case GetCommandStringOptions.CanonicalVerb:
+                case GetCommandStringOptions.CanonicalVerbAnsi:
+                    return HResults.ErrorFail;
 
-            throw new NotSupportedException();
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
-        void IContextMenu3.HandleMenuMsg(uint uMsg, uint wParam, uint lParam)
+        private static void StringToPtr(string text, IntPtr destination, int charCount)
         {
-            throw new NotImplementedException();
+            var array = text.ToCharArray();
+            var length = Math.Min(array.Length, charCount - 1);
+            Marshal.Copy(array, 0, destination, length);
+            Marshal.WriteInt16(destination, 2 * length, 0);
+        }
+
+        int IContextMenu2.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
+        {
+            return ((IContextMenu)this).QueryContextMenu(hmenu, indexMenu, idCommandFirst, idCmdLast, flags);
+        }
+
+        void IContextMenu2.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
+        {
+            ((IContextMenu)this).InvokeCommand(ref invokeCommandInfo);
+        }
+
+        int IContextMenu2.GetCommandString(IntPtr idCommand, GetCommandStringOptions uflags, int reserved, IntPtr name, int cch)
+        {
+            return ((IContextMenu)this).GetCommandString(idCommand, uflags, reserved, name, cch);
+        }
+
+        void IContextMenu2.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            Debug.WriteLine("{0}.IContextMenu2.HandleMenuMsg (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}", this, uMsg, wParam, lParam);
+            ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
         int IContextMenu3.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
@@ -150,9 +131,56 @@ namespace MiniShellFramework
             return ((IContextMenu)this).GetCommandString(idCommand, uflags, reserved, name, cch);
         }
 
+        void IContextMenu3.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
+        {
+            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}",
+                this, uMsg, wParam, lParam.ToInt32());
+            ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
+        }
+
+        private const uint InitializeMenuPopup = 0x117; // WM_INITMENUPOPUP
+
+        private const uint DrawItem = 0x2B; // WM_DRAWITEM
+
+        private const uint MeasureItem = 0x2C; // WM_MEASUREITEM
+
         void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg2 (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}, plResult",
+                this, uMsg, wParam, lParam, plResult);
+
+            // Note: The SDK docs tell that this function is only called for WM_MENUCHAR but this is not true (seen on XP sp3).
+            //       HandleMenuMsg2 is called also directly for WM_INITMENUPOPUP, etc when the shell detects that IContextMenu3 is supported.
+            switch (uMsg)
+            {
+                case InitializeMenuPopup:
+                    Debug.WriteLine("{0}.IContextMenu3.OnInitMenuPopup (ContextMenuBase)", this);
+                    OnInitMenuPopup(wParam, (ushort)lParam);
+                    break;
+
+                case DrawItem:
+                    Debug.WriteLine("{0}.IContextMenu3.OnDrawItem (ContextMenuBase)", this);
+                    ////    return static_cast<T*>(this)->OnDrawItem(reinterpret_cast<DRAWITEMSTRUCT*>(lParam));
+                    OnDrawItem();
+                    break;
+
+                case MeasureItem:
+                    Debug.WriteLine("{0}.IContextMenu3.OnMeasureItem (ContextMenuBase)", this);
+                    ////    return static_cast<T*>(this)->OnMeasureItem(reinterpret_cast<MEASUREITEMSTRUCT*>(lParam));
+                    OnMeasureItem();
+                    break;
+
+                    //case WM_MENUCHAR:
+                    //    ATLTRACE2(atlTraceCOM, 0, _T("IContextMenuImpl::HandleMenuMsg (OnMenuChar)\n"));
+                    //    if (plResult == NULL)
+                    //        return E_FAIL;
+
+                    //    *plResult = static_cast<T*>(this)->OnMenuChar(reinterpret_cast<HMENU>(lParam), LOWORD(wParam));
+                    //    return S_OK;
+
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         /// <summary>
@@ -238,6 +266,28 @@ namespace MiniShellFramework
             return extensions.FindIndex(x => x == extension) == -1;
         }
 
+        /// <summary>
+        /// Called when [init menu popup].
+        /// </summary>
+        /// <param name="menuHandle">The menu handle.</param>
+        /// <param name="index">The index.</param>
+        protected virtual void OnInitMenuPopup(IntPtr menuHandle, ushort index)
+        {
+        }
+
+        private void OnDrawItem(/*DRAWITEMSTRUCT* pdrawitem*/)
+        {
+            ////if (pdrawitem->CtlType != ODT_MENU)
+            ////    return E_INVALIDARG;
+
+            ////GetMenuItem(pdrawitem->itemID - m_idCmdFirst).GetCustomMenuHandler().Draw(*pdrawitem);
+        }
+
+        private void OnMeasureItem(/*MEASUREITEMSTRUCT* pmeasureitem*/)
+        {
+            //GetMenuItem(pmeasureitem->itemID - m_idCmdFirst).GetCustomMenuHandler().Measure(*pmeasureitem
+        }
+
         private void CacheFiles(IDataObject dataObject)
         {
             Contract.Requires(dataObject != null);
@@ -256,8 +306,8 @@ namespace MiniShellFramework
 
         private class MenuItem
         {
-            private string helpText;
-            private Menu.ContextCommand contextcommand;
+            private readonly string helpText;
+            private readonly Menu.ContextCommand contextcommand;
             private CustomMenuHandler custommenuhandler;
 
             public MenuItem(string helpText, Menu.ContextCommand contextcommand, CustomMenuHandler custommenuhandler)
@@ -265,6 +315,16 @@ namespace MiniShellFramework
                 this.helpText = helpText;
                 this.contextcommand = contextcommand;
                 this.custommenuhandler = custommenuhandler;
+            }
+
+            public string HelpText
+            {
+                get { return helpText; }
+            }
+
+            public Menu.ContextCommand Command
+            {
+                get { return contextcommand; }
             }
         }
 
