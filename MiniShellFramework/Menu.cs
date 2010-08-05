@@ -65,6 +65,26 @@ namespace MiniShellFramework
             return hmenu;
         }
 
+
+        /// <summary>
+        /// Adds the sub menu.
+        /// </summary>
+        /// <returns></returns>
+        public Menu AddSubMenu(string menuText, string helpText)
+        {
+            IntPtr subMenu = CreateSubMenu();
+
+            var menuItemInfo = new MenuItemInfo();
+            menuItemInfo.InitializeSize();
+            menuItemInfo.Id = menuHost.GetCommandId();
+            menuItemInfo.Text = menuText;
+            menuItemInfo.SubMenu = subMenu;
+
+            InsertMenuItem(ref menuItemInfo, helpText, null, null);
+
+            return new Menu(subMenu, indexMenu, idCmdLast, menuHost);
+        }
+
         /// <summary>
         /// Adds the sub menu.
         /// </summary>

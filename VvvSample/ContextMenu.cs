@@ -44,15 +44,13 @@ namespace VvvSample
             ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
             //// TODO: var smallBitmapHandler = new SmallBitmapCustomMenuHandler("MVVV", 0);
 
-            ////CMenu menuVVV = menu.AddSubMenu(IDS_CONTEXTMENU_VVV_SUBMENU_HELP, qsmallbitmaphandler);
             //// TODO: var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
-
-            ////menuVvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
-            menu.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
+            var menuMvvv = menu.AddSubMenu("MVVV", "Special commands for MVVV files");
+            menuMvvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
 
             ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
             //// TODO: var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
-            menu.AddItem("&About MMSF", "Show the version number of the MMSF", OnAboutMmsf);
+            menuMvvv.AddItem("&About MMSF", "Show the version number of the MMSF", OnAboutMmsf);
 
             // ... optional add more submenu's or more menu items.
         }

@@ -22,7 +22,12 @@ namespace MiniShellFramework
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class ContextMenuBase : IShellExtInit, IContextMenu3, IMenuHost
     {
-        private uint firstCommandId;
+        private const uint InitializeMenuPopup = 0x117; // WM_INITMENUPOPUP
+        private const uint DrawItem = 0x2B; // WM_DRAWITEM
+        private const uint MeasureItem = 0x2C; // WM_MEASUREITEM
+        private const uint MenuChar = 0x120; // WM_MENUCHAR
+
+        private uint startCommandId;
         private uint currentCommandId;
         private readonly List<string> extensions = new List<string>();
         private readonly List<string> fileNames = new List<string>();
@@ -52,7 +57,7 @@ namespace MiniShellFramework
 
             menuItems.Clear();
             currentCommandId = firstCommandId;
-            this.firstCommandId = firstCommandId;
+            startCommandId = firstCommandId;
             QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), fileNames);
             return HResults.Create(Severity.Success, (ushort)(currentCommandId - firstCommandId));
         }
@@ -85,14 +90,6 @@ namespace MiniShellFramework
                 default:
                     throw new NotSupportedException();
             }
-        }
-
-        private static void StringToPtr(string text, IntPtr destination, int charCount)
-        {
-            var array = text.ToCharArray();
-            var length = Math.Min(array.Length, charCount - 1);
-            Marshal.Copy(array, 0, destination, length);
-            Marshal.WriteInt16(destination, 2 * length, 0);
         }
 
         int IContextMenu2.QueryContextMenu(IntPtr hmenu, uint indexMenu, uint idCommandFirst, uint idCmdLast, QueryContextMenuOptions flags)
@@ -138,16 +135,10 @@ namespace MiniShellFramework
             ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
-        private const uint InitializeMenuPopup = 0x117; // WM_INITMENUPOPUP
-
-        private const uint DrawItem = 0x2B; // WM_DRAWITEM
-
-        private const uint MeasureItem = 0x2C; // WM_MEASUREITEM
-
-        void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult)
+        void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr result)
         {
-            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg2 (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}, plResult",
-                this, uMsg, wParam, lParam, plResult);
+            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg2 (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}, result",
+                this, uMsg, wParam, lParam, result);
 
             // Note: The SDK docs tell that this function is only called for WM_MENUCHAR but this is not true (seen on XP sp3).
             //       HandleMenuMsg2 is called also directly for WM_INITMENUPOPUP, etc when the shell detects that IContextMenu3 is supported.
@@ -170,13 +161,13 @@ namespace MiniShellFramework
                     OnMeasureItem();
                     break;
 
-                    //case WM_MENUCHAR:
-                    //    ATLTRACE2(atlTraceCOM, 0, _T("IContextMenuImpl::HandleMenuMsg (OnMenuChar)\n"));
-                    //    if (plResult == NULL)
-                    //        return E_FAIL;
+                case MenuChar:
+                    Debug.WriteLine("{0}.IContextMenu3.OnMenuChar (ContextMenuBase)", this);
+                    if (result == IntPtr.Zero)
+                        throw new InvalidOperationException();
 
                     //    *plResult = static_cast<T*>(this)->OnMenuChar(reinterpret_cast<HMENU>(lParam), LOWORD(wParam));
-                    //    return S_OK;
+                    break;
 
                 default:
                     throw new NotSupportedException();
@@ -231,6 +222,15 @@ namespace MiniShellFramework
         protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames);
 
         /// <summary>
+        /// Called when [init menu popup].
+        /// </summary>
+        /// <param name="menuHandle">The menu handle.</param>
+        /// <param name="index">The index.</param>
+        protected virtual void OnInitMenuPopup(IntPtr menuHandle, ushort index)
+        {
+        }
+
+        /// <summary>
         /// Registers a file extension.
         /// </summary>
         /// <param name="extension">The file extension.</param>
@@ -266,13 +266,12 @@ namespace MiniShellFramework
             return extensions.FindIndex(x => x == extension) == -1;
         }
 
-        /// <summary>
-        /// Called when [init menu popup].
-        /// </summary>
-        /// <param name="menuHandle">The menu handle.</param>
-        /// <param name="index">The index.</param>
-        protected virtual void OnInitMenuPopup(IntPtr menuHandle, ushort index)
+        private static void StringToPtr(string text, IntPtr destination, int charCount)
         {
+            var array = text.ToCharArray();
+            var length = Math.Min(array.Length, charCount - 1);
+            Marshal.Copy(array, 0, destination, length);
+            Marshal.WriteInt16(destination, 2 * length, 0);
         }
 
         private void OnDrawItem(/*DRAWITEMSTRUCT* pdrawitem*/)
