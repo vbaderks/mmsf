@@ -90,6 +90,7 @@
     <Compile Include="ContextMenu.cs" />
     <Compile Include="InfoTip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShellPropertySheet.cs" />
     <Compile Include="VvvFile.cs" />
     <Compile Include="VvvRootKey.cs" />
   </ItemGroup>

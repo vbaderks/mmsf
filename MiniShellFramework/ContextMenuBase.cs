@@ -20,7 +20,7 @@ namespace MiniShellFramework
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class COM visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
-    public abstract class ContextMenuBase : IShellExtInit, IContextMenu3, IMenuHost
+    public abstract class ContextMenuBase : ShellExtensionInit, IContextMenu3, IMenuHost
     {
         private const uint InitializeMenuPopup = 0x117; // WM_INITMENUPOPUP
         private const uint DrawItem = 0x2B; // WM_DRAWITEM
@@ -30,7 +30,6 @@ namespace MiniShellFramework
         private uint startCommandId;
         private uint currentCommandId;
         private readonly List<string> extensions = new List<string>();
-        private readonly List<string> fileNames = new List<string>();
         private readonly List<MenuItem> menuItems = new List<MenuItem>();
 
         /// <summary>
@@ -39,12 +38,6 @@ namespace MiniShellFramework
         protected ContextMenuBase()
         {
             Debug.WriteLine("{0}.Constructor (ContextMenuBase)", this);
-        }
-
-        void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
-        {
-            Debug.WriteLine("{0}.IShellExtInit.Initialize (ContextMenuBase)", this);
-            CacheFiles(dataObject);
         }
 
         int IContextMenu.QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags)
@@ -58,7 +51,7 @@ namespace MiniShellFramework
             menuItems.Clear();
             currentCommandId = firstCommandId;
             startCommandId = firstCommandId;
-            QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), fileNames);
+            QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), FilesNames);
             return HResults.Create(Severity.Success, (ushort)(currentCommandId - firstCommandId));
         }
 
@@ -69,7 +62,7 @@ namespace MiniShellFramework
             if (invokeCommandInfo.lpVerb.ToInt32() >> 16 != 0)
                 throw new ArgumentException("Verbs not supported");
 
-            menuItems[(ushort)invokeCommandInfo.lpVerb.ToInt32()].Command(ref invokeCommandInfo, fileNames);
+            menuItems[(ushort)invokeCommandInfo.lpVerb.ToInt32()].Command(ref invokeCommandInfo, FilesNames);
         }
 
         int IContextMenu.GetCommandString(IntPtr commandIdOffset, GetCommandStringOptions flags, int reserved, IntPtr result, int charCount)
@@ -285,22 +278,6 @@ namespace MiniShellFramework
         private void OnMeasureItem(/*MEASUREITEMSTRUCT* pmeasureitem*/)
         {
             //GetMenuItem(pmeasureitem->itemID - m_idCmdFirst).GetCustomMenuHandler().Measure(*pmeasureitem
-        }
-
-        private void CacheFiles(IDataObject dataObject)
-        {
-            Contract.Requires(dataObject != null);
-
-            fileNames.Clear();
-
-            using (var clipboardFormatDrop = new ClipboardFormatDrop(dataObject))
-            {
-                var count = clipboardFormatDrop.GetFileCount();
-                for (int i = 0; i < count; i++)
-                {
-                    fileNames.Add(clipboardFormatDrop.GetFile(i));
-                }
-            }
         }
 
         private class MenuItem
