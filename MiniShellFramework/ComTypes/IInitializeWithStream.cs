@@ -26,7 +26,7 @@ namespace MiniShellFramework.ComTypes
     }
 
     [ContractClassFor(typeof(IInitializeWithStream))]
-    abstract class InitializeWithStreamContract : IInitializeWithStream
+    internal abstract class InitializeWithStreamContract : IInitializeWithStream
     {
         public void Initialize(IStream stream, StorageModes storageMode)
         {

@@ -160,8 +160,13 @@ namespace MiniShellFramework
         /// <param name="destinationFolder">The destination folder.</param>
         /// <param name="destinationAttributes">The destination attributes.</param>
         /// <returns></returns>
-        protected abstract DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder,
-                                              uint sourceAttributes, string destinationFolder, uint destinationAttributes);
+        protected abstract DialogResult CopyCallbackCore(IWin32Window parent,
+                                                         FileOperation fileOperation,
+                                                         uint flags,
+                                                         string sourceFolder,
+                                                         uint sourceAttributes,
+                                                         string destinationFolder,
+                                                         uint destinationAttributes);
     }
 
     [ContractClassFor(typeof(FolderCopyHookBase))]
