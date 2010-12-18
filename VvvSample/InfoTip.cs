@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using MiniShellFramework;
@@ -19,6 +20,8 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
+            Contract.Requires(type != null);
+
             VvvRootKey.Register();
             ComRegister(type, "VVV Sample ShellExtension (InfoTip)", VvvRootKey.ProgId);
         }
@@ -26,6 +29,8 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
+            Contract.Requires(type != null);
+
             VvvRootKey.Unregister();
             ComUnregister(type, VvvRootKey.ProgId);
         }
@@ -37,6 +42,7 @@ namespace VvvSample
 
         protected override string GetInfoTipCore()
         {
+            Contract.Assume(vvvFile != null);
             return string.Format("Label: {0}\nFile count: {1}", vvvFile.Label, vvvFile.FileCount);
         }
     }

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -29,6 +30,8 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
+            Contract.Requires(type != null);
+
             VvvRootKey.Register();
             ComRegister(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
@@ -36,6 +39,8 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
+            Contract.Requires(type != null);
+
             VvvRootKey.Unregister();
             ComUnregister(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
@@ -61,10 +66,11 @@ namespace VvvSample
 
         private static void OnEditWithNotepadCommand(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames)
         {
-            Debug.Assert(fileNames.Count == 1, "fileNames.Count == 1");
+            Contract.Requires(fileNames != null);
+            Contract.Requires(fileNames.Count == 1);
 
-            //// Use the command line param to pass the exe filename. This causes
-            //// Windows to use the path to find notepad.
+            // Use the command line param to pass the exe filename. This causes
+            // Windows to use the path to find notepad.
             Process.Start("notepad.exe", "\"" + fileNames[0] + "\"");
         }
 

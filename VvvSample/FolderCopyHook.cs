@@ -37,10 +37,12 @@ namespace VvvSample
         {
             if (fileOperation == FileOperation.Delete && sourceFolder.Contains("VVV-MMSF"))
             {
-                return MessageBox.Show(owner,
+                var result = MessageBox.Show(owner,
                                        string.Format(CultureInfo.CurrentCulture, "Are you sure to delete the folder: {0} ?", sourceFolder),
                                        "VVV Question",
                                        MessageBoxButtons.YesNoCancel);
+                Contract.Assume(result == DialogResult.Yes || result == DialogResult.No || result == DialogResult.Cancel);
+                return result;
             }
 
             return DialogResult.Yes;

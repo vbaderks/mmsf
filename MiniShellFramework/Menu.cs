@@ -87,6 +87,7 @@ namespace MiniShellFramework
         public Menu AddSubMenu(string menuText, string helpText)
         {
             Contract.Requires(helpText != null);
+            Contract.Ensures(Contract.Result<Menu>() != null);
 
             IntPtr subMenu = CreateSubMenu();
 
