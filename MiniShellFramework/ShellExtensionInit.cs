@@ -42,19 +42,21 @@ namespace MiniShellFramework
         /// <param name="extension">The file extension.</param>
         protected void RegisterExtension(string extension)
         {
+            Contract.Requires(extension != null);
+
             extensions.Add(extension.ToUpperInvariant());
         }
 
         /// <summary>
         /// Determines whether [contains unknown extension] [the specified file names].
         /// </summary>
-        /// <param name="fileNames">The file names.</param>
+        /// <param name="names">The file names.</param>
         /// <returns>
         /// <c>true</c> if [contains unknown extension] [the specified file names]; otherwise, <c>false</c>.
         /// </returns>
-        protected bool ContainsUnknownExtension(IEnumerable<string> fileNames)
+        protected bool ContainsUnknownExtension(IEnumerable<string> names)
         {
-            Contract.Requires(fileNames != null);
+            Contract.Requires(names != null);
             return fileNames.Any(IsUnknownExtension);
         }
 
@@ -86,6 +88,13 @@ namespace MiniShellFramework
                     fileNames.Add(clipboardFormatDrop.GetFile(i));
                 }
             }
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(fileNames != null);
+            Contract.Invariant(extensions != null);
         }
     }
 }

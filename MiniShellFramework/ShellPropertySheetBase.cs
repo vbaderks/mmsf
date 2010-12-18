@@ -55,8 +55,12 @@ namespace MiniShellFramework
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
             // Register the object as a property sheet handler.
-            using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\PropertySheetHandlers\" + description))
+            var subKeyName = progId + @"\ShellEx\PropertySheetHandlers\" + description;
+            using (var key = Registry.ClassesRoot.CreateSubKey(subKeyName))
             {
+                if (key == null)
+                    throw new ApplicationException("Failed to create sub key: " + subKeyName);
+
                 key.SetValue(string.Empty, type.GUID.ToString("B"));
             }
         }
@@ -75,10 +79,12 @@ namespace MiniShellFramework
 
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
 
-            using (var key =
-                Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\PropertySheetHandlers\", true))
+            using (var key = Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\PropertySheetHandlers\", true))
             {
-                key.DeleteSubKey(description);
+                if (key != null)
+                {
+                    key.DeleteSubKey(description);
+                }
             }
         }
 

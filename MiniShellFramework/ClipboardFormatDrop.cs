@@ -89,8 +89,9 @@ namespace MiniShellFramework
         /// <param name="dataObject">The data object.</param>
         public ClipboardFormatDrop(IDataObject dataObject)
         {
-            FORMATETC format = FormatEtcExtensions.CreateFORMATETC(ClipFormat.CF_HDROP);
+            Contract.Requires(dataObject != null);
 
+            FORMATETC format = FormatEtcExtensions.CreateFORMATETC(ClipFormat.CF_HDROP);
             dataObject.GetData(ref format, out medium);
         }
 

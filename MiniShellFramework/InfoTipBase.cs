@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -106,11 +107,19 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComRegister(Type type, string description, string progId)
         {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
+            Contract.Requires(!string.IsNullOrEmpty(progId));
+
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
             // Register the InfoTip COM object as the InfoTip handler. Only 1 handler can be installed for a file type.
-            using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\{00021500-0000-0000-C000-000000000046}"))
+            var subKeyName = progId + @"\ShellEx\{00021500-0000-0000-C000-000000000046}";
+            using (var key = Registry.ClassesRoot.CreateSubKey(subKeyName))
             {
+                if (key == null)
+                    throw new ApplicationException("Failed to create registry key: " + subKeyName);
+
                 key.SetValue(string.Empty, type.GUID.ToString("B"));
             }
         }
@@ -122,6 +131,8 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComUnregister(Type type, string progId)
         {
+            Contract.Requires(type != null);
+
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 

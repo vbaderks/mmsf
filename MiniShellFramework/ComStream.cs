@@ -71,10 +71,10 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override long Length
         {
-            get 
-            { 
-                ////if (m_pOrigStream == 0)
-                ////        throw new ObjectDisposedException("m_pOrigStream");
+            get
+            {
+                if (stream == null)
+                    throw new ObjectDisposedException("stream");
 
                 STATSTG statstg;
                 stream.Stat(out statstg, 1 /* STATFLAG_NONAME */);
@@ -131,6 +131,9 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public unsafe override int Read(byte[] buffer, int offset, int count)
         {
+            if (stream == null)
+                throw new ObjectDisposedException("stream");
+
             uint bytesRead = 0;
 
             if (offset != 0)

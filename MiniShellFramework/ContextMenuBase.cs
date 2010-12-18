@@ -6,10 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
 
@@ -61,7 +58,12 @@ namespace MiniShellFramework
             if (invokeCommandInfo.lpVerb.ToInt32() >> 16 != 0)
                 throw new ArgumentException("Verbs not supported");
 
-            menuItems[(ushort)invokeCommandInfo.lpVerb.ToInt32()].Command(ref invokeCommandInfo, FilesNames);
+            var index = (ushort)invokeCommandInfo.lpVerb.ToInt32();
+            Contract.Assume(index < menuItems.Count);
+            var item = menuItems[index];
+            Contract.Assume(item != null);
+            Contract.Assume(item.Command != null);
+            item.Command(ref invokeCommandInfo, FilesNames);
         }
 
         int IContextMenu.GetCommandString(IntPtr commandIdOffset, GetCommandStringOptions flags, int reserved, IntPtr result, int charCount)
@@ -72,7 +74,11 @@ namespace MiniShellFramework
             switch (flags)
             {
                 case GetCommandStringOptions.HelpText:
-                    StringToPtr(menuItems[commandIdOffset.ToInt32()].HelpText, result, charCount);
+                    var index = commandIdOffset.ToInt32();
+                    Contract.Assume(index >= 0 && index < menuItems.Count);
+                    var item = menuItems[index];
+                    Contract.Assume(item != null);
+                    StringToPtr(item.HelpText, result, charCount);
                     return HResults.OK;
 
                 case GetCommandStringOptions.CanonicalVerb:
@@ -174,11 +180,18 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComRegister(Type type, string description, string progId)
         {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
+
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
             // Register the ContextMenu COM object as the ContextMenu handler.
-            using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\ContextMenuHandlers\" + description))
+            var subKeyName = progId + @"\ShellEx\ContextMenuHandlers\" + description;
+            using (var key = Registry.ClassesRoot.CreateSubKey(subKeyName))
             {
+                if (key == null)
+                    throw new ApplicationException("Failed to create sub key: " + subKeyName);
+
                 key.SetValue(string.Empty, type.GUID.ToString("B"));
             }
         }
@@ -217,6 +230,8 @@ namespace MiniShellFramework
 
         private static void StringToPtr(string text, IntPtr destination, int charCount)
         {
+            Contract.Requires(text != null);
+
             var array = text.ToCharArray();
             var length = Math.Min(array.Length, charCount - 1);
             Marshal.Copy(array, 0, destination, length);
@@ -244,6 +259,8 @@ namespace MiniShellFramework
 
             public MenuItem(string helpText, Menu.ContextCommand contextcommand, CustomMenuHandler custommenuhandler)
             {
+                Contract.Requires(helpText != null);
+
                 this.helpText = helpText;
                 this.contextcommand = contextcommand;
                 this.custommenuhandler = custommenuhandler;
@@ -251,12 +268,25 @@ namespace MiniShellFramework
 
             public string HelpText
             {
-                get { return helpText; }
+                get
+                {
+                    Contract.Ensures(Contract.Result<string>() != null);
+                    return helpText;
+                }
             }
 
             public Menu.ContextCommand Command
             {
-                get { return contextcommand; }
+                get
+                {
+                    return contextcommand;
+                }
+            }
+
+            [ContractInvariantMethod]
+            private void ObjectInvariant()
+            {
+                Contract.Invariant(helpText != null);
             }
         }
 
@@ -273,6 +303,12 @@ namespace MiniShellFramework
         void IMenuHost.OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
             menuItems.Add(new MenuItem(helpText, contextCommand, customMenuHandler));
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(menuItems != null);
         }
     }
 }

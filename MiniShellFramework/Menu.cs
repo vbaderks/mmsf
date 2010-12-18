@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
+    [ContractClass(typeof(MenuHostContract))]
     internal interface IMenuHost
     {
         uint GetCommandId();
@@ -20,36 +22,49 @@ namespace MiniShellFramework
         void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler);
     }
 
+    [ContractClassFor(typeof(IMenuHost))]
+    internal abstract class MenuHostContract : IMenuHost
+    {
+        public uint GetCommandId()
+        {
+            return default(uint);
+        }
+
+        public void IncrementCommandId()
+        {
+        }
+
+        public void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
+        {
+            Contract.Requires(helpText != null);
+        }
+    }
+
 
     /// <summary>
     /// Wrapper class for a Win32 menu
     /// </summary>
     public class Menu
     {
-        private IntPtr hmenu;
+        private readonly IntPtr hmenu;
+        private readonly uint idCmdLast;
+        private readonly IMenuHost menuHost;
         private uint indexMenu;
-        private uint idCmd;
-        private uint idCmdLast;
+        ////private uint idCmd;
 
-        private IMenuHost menuHost;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Menu"/> class.
-        /// </summary>
-        /// <param name="hmenu">The hmenu.</param>
-        /// <param name="indexMenu">The index menu.</param>
-        /// <param name="idCmd">The id CMD.</param>
-        /// <param name="idCmdLast">The id CMD last.</param>
-        public Menu(IntPtr hmenu, uint indexMenu, uint idCmd, uint idCmdLast)
-        {
-            this.hmenu = hmenu;
-            this.indexMenu = indexMenu;
-            this.idCmd = idCmd;
-            this.idCmdLast = idCmdLast;
-        }
+        ////public Menu(IntPtr hmenu, uint indexMenu, uint idCmd, uint idCmdLast)
+        ////{
+        ////    this.hmenu = hmenu;
+        ////    this.indexMenu = indexMenu;
+        ////    this.idCmd = idCmd;
+        ////    this.idCmdLast = idCmdLast;
+        ////}
 
         internal Menu(IntPtr hmenu, uint indexMenu, uint idCmdLast, IMenuHost menuHost)
         {
+            Contract.Requires(hmenu != null);
+            Contract.Requires(menuHost != null);
+
             this.hmenu = hmenu;
             this.indexMenu = indexMenu;
             this.idCmdLast = idCmdLast;
@@ -65,13 +80,14 @@ namespace MiniShellFramework
             return hmenu;
         }
 
-
         /// <summary>
         /// Adds the sub menu.
         /// </summary>
         /// <returns></returns>
         public Menu AddSubMenu(string menuText, string helpText)
         {
+            Contract.Requires(helpText != null);
+
             IntPtr subMenu = CreateSubMenu();
 
             var menuItemInfo = new MenuItemInfo();
@@ -91,6 +107,9 @@ namespace MiniShellFramework
         /// <returns></returns>
         public Menu AddSubMenu(string helpText, CustomMenuHandler customMenuHandler)
         {
+            Contract.Requires(helpText != null);
+            Contract.Requires(customMenuHandler != null);
+
             IntPtr subMenu = CreateSubMenu();
 
             var menuItemInfo = new MenuItemInfo();
@@ -118,6 +137,9 @@ namespace MiniShellFramework
         /// <param name="contextCommand">The context command.</param>
         public void AddItem(string menuText, string helpText, ContextCommand contextCommand)
         {
+            Contract.Requires(helpText != null);
+            Contract.Requires(contextCommand != null);
+
             var menuItemInfo = new MenuItemInfo();
             menuItemInfo.InitializeSize();
             menuItemInfo.Id = menuHost.GetCommandId();
@@ -139,6 +161,8 @@ namespace MiniShellFramework
 
         private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
+            Contract.Requires(helpText != null);
+
             CheckIdSpace();
             bool result = InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
             if (!result)
@@ -160,6 +184,8 @@ namespace MiniShellFramework
 
         private void PostAddItem(string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
+            Contract.Requires(helpText != null);
+
             menuHost.OnAddMenuItem(helpText, contextCommand, customMenuHandler);
 
             indexMenu++;
@@ -167,9 +193,15 @@ namespace MiniShellFramework
         }
 
         [DllImport("user32.dll")]
-        static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
+        private static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
 
         [DllImport("user32.dll")]
         private static extern IntPtr CreatePopupMenu();
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(menuHost != null);
+        }
     }
 }
