@@ -20,14 +20,14 @@ namespace VvvSample
         public static void ComRegisterFunction(Type type)
         {
             VvvRootKey.Register();
-            ComRegisterFunction(type, "VVV Sample ShellExtension (InfoTip)", VvvRootKey.ProgId);
+            ComRegister(type, "VVV Sample ShellExtension (InfoTip)", VvvRootKey.ProgId);
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
             VvvRootKey.Unregister();
-            ComUnregisterFunction(type, VvvRootKey.ProgId);
+            ComUnregister(type, VvvRootKey.ProgId);
         }
 
         protected override void InitializeCore(Stream stream)

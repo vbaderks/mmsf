@@ -29,7 +29,6 @@ namespace MiniShellFramework
 
         private uint startCommandId;
         private uint currentCommandId;
-        private readonly List<string> extensions = new List<string>();
         private readonly List<MenuItem> menuItems = new List<MenuItem>();
 
         /// <summary>
@@ -175,12 +174,7 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComRegister(Type type, string description, string progId)
         {
-            // Register the ContextMenu COM object as an approved shell extension. Explorer will only execute approved extensions.
-            using (var key =
-                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                key.SetValue(type.GUID.ToString("B"), description);
-            }
+            RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
             // Register the ContextMenu COM object as the ContextMenu handler.
             using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\ContextMenuHandlers\" + description))
@@ -197,12 +191,10 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComUnregister(Type type, string description, string progId)
         {
-            // Unregister the ContextMenu COM object as an approved shell extension.
-            using (var key =
-                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                key.DeleteValue(type.GUID.ToString("B"));
-            }
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(progId));
+
+            RegistryExtensions.RemoveAsApprovedShellExtension(type);
 
             // Note: prog id should be removed by 1 global unregister function.
         }
@@ -221,42 +213,6 @@ namespace MiniShellFramework
         /// <param name="index">The index.</param>
         protected virtual void OnInitMenuPopup(IntPtr menuHandle, ushort index)
         {
-        }
-
-        /// <summary>
-        /// Registers a file extension.
-        /// </summary>
-        /// <param name="extension">The file extension.</param>
-        protected void RegisterExtension(string extension)
-        {
-            extensions.Add(extension.ToUpperInvariant());
-        }
-
-        /// <summary>
-        /// Determines whether [contains unknown extension] [the specified file names].
-        /// </summary>
-        /// <param name="fileNames">The file names.</param>
-        /// <returns>
-        /// <c>true</c> if [contains unknown extension] [the specified file names]; otherwise, <c>false</c>.
-        /// </returns>
-        protected bool ContainsUnknownExtension(IEnumerable<string> fileNames)
-        {
-            Contract.Requires(fileNames != null);
-            return fileNames.Any(IsUnknownExtension);
-        }
-
-        /// <summary>
-        /// Determines whether [is unknown extension] [the specified file name].
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <returns>
-        /// <c>true</c> if [is unknown extension] [the specified file name]; otherwise, <c>false</c>.
-        /// </returns>
-        protected bool IsUnknownExtension(string fileName)
-        {
-            Contract.Requires(fileName != null);
-            var extension = Path.GetExtension(fileName).ToUpperInvariant();
-            return extensions.FindIndex(x => x == extension) == -1;
         }
 
         private static void StringToPtr(string text, IntPtr destination, int charCount)

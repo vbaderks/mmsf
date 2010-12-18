@@ -3,8 +3,11 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
@@ -24,7 +27,7 @@ namespace MiniShellFramework
             Debug.WriteLine("{0}.Constructor (ShellPropertySheetBase)", this);
         }
 
-        int IShellPropSheetExt.AddPages(IntPtr addPageFunction, IntPtr lParam)
+        int IShellPropSheetExt.AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam)
         {
             Debug.WriteLine("{0}.IShellPropSheetExt.AddPages (ShellPropertySheetBase), lParam={1}", this, lParam);
 
@@ -36,5 +39,53 @@ namespace MiniShellFramework
             Debug.WriteLine("{0}.IShellPropSheetExt.ReplacePage (ShellPropertySheetBase) - Not Implemented (functionality not used)", this);
             throw new NotSupportedException();
         }
+
+        /// <summary>
+        /// Adds additional info to the registry to allow the shell to discover the oject as shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="progId">The prog id.</param>
+        protected static void ComRegister(Type type, string description, string progId)
+        {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
+            Contract.Requires(!string.IsNullOrEmpty(progId));
+
+            RegistryExtensions.AddAsApprovedShellExtension(type, description);
+
+            // Register the object as a property sheet handler.
+            using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\PropertySheetHandlers\" + description))
+            {
+                key.SetValue(string.Empty, type.GUID.ToString("B"));
+            }
+        }
+
+        /// <summary>
+        /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="progId">The name.</param>
+        protected static void ComUnregister(Type type, string description, string progId)
+        {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
+            Contract.Requires(!string.IsNullOrEmpty(progId));
+
+            RegistryExtensions.RemoveAsApprovedShellExtension(type);
+
+            using (var key =
+                Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\PropertySheetHandlers\", true))
+            {
+                key.DeleteSubKey(description);
+            }
+        }
+
+        /// <summary>
+        /// Called when [add pages].
+        /// </summary>
+        /// <param name="fileNames">The file names.</param>
+        protected abstract void OnAddPages(IList<string> fileNames);
     }
 }

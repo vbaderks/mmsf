@@ -104,14 +104,9 @@ namespace MiniShellFramework
         /// <param name="type">The type.</param>
         /// <param name="description">The description.</param>
         /// <param name="progId">The prog id.</param>
-        protected static void ComRegisterFunction(Type type, string description, string progId)
+        protected static void ComRegister(Type type, string description, string progId)
         {
-            // Register the InfoTip COM object as an approved shell extension. Explorer will only execute approved extensions.
-            using (var key =
-                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                key.SetValue(type.GUID.ToString("B"), description);
-            }
+            RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
             // Register the InfoTip COM object as the InfoTip handler. Only 1 handler can be installed for a file type.
             using (var key = Registry.ClassesRoot.CreateSubKey(progId + @"\ShellEx\{00021500-0000-0000-C000-000000000046}"))
@@ -125,16 +120,9 @@ namespace MiniShellFramework
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="progId">The prog id.</param>
-        protected static void ComUnregisterFunction(Type type, string progId)
+        protected static void ComUnregister(Type type, string progId)
         {
-            // Unregister the InfoTip COM object as an approved shell extension.
-            using (var key =
-                Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                key.DeleteValue(type.GUID.ToString("B"));
-            }
-
-            // Note: prog id should be removed by 1 global unregister function.
+            RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 
         /// <summary>

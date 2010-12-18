@@ -8,6 +8,11 @@ using System.Runtime.InteropServices;
 namespace MiniShellFramework.ComTypes
 {
     /// <summary>
+    /// Callback, passed to 'AddPages'.
+    /// </summary>
+    public delegate bool AddPropertySheetPage(IntPtr propertySheetPageHandle, IntPtr lParam);
+
+    /// <summary>
     /// Exposes methods that allow a property sheet handler to add or replace pages in the property sheet displayed for a file object.
     /// </summary>
     [ComImport]
@@ -27,7 +32,7 @@ namespace MiniShellFramework.ComTypes
         /// <returns>If successful, returns a one-based index to specify the page that should be initially displayed.</returns>
         [PreserveSig]
         [return:MarshalAs(UnmanagedType.Error)]
-        int AddPages(IntPtr /*LPFNSVADDPROPSHEETPAGE*/ addPageFunction, IntPtr lParam);
+        int AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam);
 
         // TODO: process
         ////[PreserveSig()]
@@ -46,6 +51,6 @@ namespace MiniShellFramework.ComTypes
         /// The function takes a property sheet handle returned by the CreatePropertySheetPage function and
         /// the lParam parameter passed to the ReplacePage method.</param>
         /// <param name="lParam">The parameter to pass to the function specified by the pfnReplacePage parameter.</param>
-        void ReplacePage(uint pageId, IntPtr /*LPFNSVADDPROPSHEETPAGE*/ replaceWithFunction, IntPtr lParam);
+        void ReplacePage(uint pageId, IntPtr replaceWithFunction, IntPtr lParam);
     }
 }
