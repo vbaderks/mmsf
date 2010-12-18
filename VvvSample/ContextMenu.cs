@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
 using MiniShellFramework;
@@ -17,8 +18,11 @@ namespace VvvSample
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public class ContextMenu : ContextMenuBase
     {
+        private Bitmap bitmapMenuIcon;
+
         public ContextMenu()
         {
+            bitmapMenuIcon = new Bitmap(typeof (ContextMenu), "menuicon.bmp");
             RegisterExtension(".mvvv");
         }
 
