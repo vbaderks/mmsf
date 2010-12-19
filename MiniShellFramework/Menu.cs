@@ -124,25 +124,19 @@ namespace MiniShellFramework
 
         internal static IntPtr CreateSubMenu()
         {
-            IntPtr hmenu = CreatePopupMenu();
+            IntPtr hmenu = SafeNativeMethods.CreatePopupMenu();
             if (hmenu == null)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
 
             return hmenu;
         }
 
-        [DllImport("user32.dll")]
-        private static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr CreatePopupMenu();
-
         private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
             Contract.Requires(helpText != null);
 
             CheckIdSpace();
-            bool result = InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
+            bool result = SafeNativeMethods.InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
             if (!result)
                 throw new Win32Exception();
 

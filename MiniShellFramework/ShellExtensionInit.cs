@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using MiniShellFramework.ComTypes;
 
@@ -16,6 +17,7 @@ namespace MiniShellFramework
     /// <summary>
     /// Provide a base class for propery sheet shell extensions.
     /// </summary>
+    [ComVisible(true)] // Make this .NET class COM visible to ensure derived class can be COM visible.
     public abstract class ShellExtensionInit : IShellExtInit
     {
         private readonly List<string> fileNames = new List<string>();

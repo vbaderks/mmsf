@@ -107,10 +107,12 @@
     <Compile Include="Facility.cs" />
     <Compile Include="FormatEtcExtensions.cs" />
     <Compile Include="GetCommandStringOptions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IMenuHost.cs" />
     <Compile Include="MenuHostContract.cs" />
     <Compile Include="RegistryExtensions.cs" />
     <Compile Include="RootKey.cs" />
+    <Compile Include="SafeNativeMethods.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ComTypes\StorageModes.cs" />
     <Compile Include="HResults.cs" />

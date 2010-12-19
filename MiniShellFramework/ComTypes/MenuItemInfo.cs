@@ -56,7 +56,7 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// 
         /// </summary>
-        public IntPtr dwItemData;    // used if MIIM_DATA
+        private IntPtr dwItemData;    // used if MIIM_DATA
 
         /// <summary>
         /// 

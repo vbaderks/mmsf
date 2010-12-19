@@ -15,7 +15,7 @@ namespace MiniShellFramework
     /// The CF_HDROP format is used by the shell to transfer a group of existing files.
     /// The handle refers to a set of DROPFILES structures.
     /// </remarks>
-    public class ClipboardFormatDrop : IDisposable
+    public sealed class ClipboardFormatDrop : IDisposable
     {
         private STGMEDIUM medium;
 
@@ -36,7 +36,7 @@ namespace MiniShellFramework
         /// </summary>
         public void Dispose()
         {
-            FormatEtcExtensions.ReleaseStgMedium(ref medium);
+            SafeNativeMethods.ReleaseStgMedium(ref medium);
 
             // TODO: add finalizer to ensure unmanaged memory is always released.
         }
@@ -51,7 +51,7 @@ namespace MiniShellFramework
             var builder = new StringBuilder();
 
             var buffer = new char[255 + 1]; // MAX_PATH
-            int queryFileLength = FormatEtcExtensions.DragQueryFile(medium.unionmember, index, buffer, 255);
+            int queryFileLength = SafeNativeMethods.DragQueryFile(medium.unionmember, index, buffer, 255);
             Contract.Assume(queryFileLength <= 255);
             if (queryFileLength <= 0)
                 throw new Win32Exception();
@@ -65,7 +65,7 @@ namespace MiniShellFramework
         /// <returns>Count of files.</returns>
         public int GetFileCount()
         {
-            return FormatEtcExtensions.DragQueryFile(medium.unionmember, -1, null, 0);
+            return SafeNativeMethods.DragQueryFile(medium.unionmember, -1, null, 0);
         }
     }
 }
