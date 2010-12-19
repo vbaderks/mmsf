@@ -4,37 +4,9 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace MiniShellFramework.ComTypes
 {
-    /// <summary>
-    /// Flags specifying the information to return.
-    /// </summary>
-    public enum GetCommandStringOptions
-    {
-        /// <summary>
-        /// Sets pszName to an ANSI string containing the help text for the command (GCS_VERBA).
-        /// </summary>
-        CanonicalVerbAnsi = 0x0,
-
-        /// <summary>
-        /// Sets pszName to a Unicode string containing the language-independent command name for the menu item (GCS_VERBW).
-        /// </summary>
-        CanonicalVerb = 0x4,
-
-        /// <summary>
-        /// Sets pszName to a Unicode string containing the help text for the command (GCS_HELPTEXTW).
-        /// </summary>
-        HelpText = 0x5,
-
-        /// <summary>
-        /// Returns S_OK if the menu item exists, or S_FALSE otherwise.
-        /// </summary>
-        Validate = 0x6
-    }
-
-
     /// <summary>
     /// Exposes methods that either create or merge a shortcut menu associated with a Shell object.
     /// Allows client objects to handle messages associated with owner-drawn menu items and extends
@@ -55,7 +27,7 @@ namespace MiniShellFramework.ComTypes
         /// <param name="flags">Optional flags that specify how the shortcut menu can be changed (uFlags).</param>
         /// <returns>
         /// If successful, returns an HRESULT value that has its severity value set to SEVERITY_SUCCESS and 
-        /// its code value set to the offset of the largest command identifier that was assigned, plus one.
+        /// its code value set to the offset of the largest command identifier that was assigned.
         /// </returns>
         [PreserveSig]
         [return:MarshalAs(UnmanagedType.Error)]
@@ -72,10 +44,11 @@ namespace MiniShellFramework.ComTypes
         /// language-independent, or canonical, name for the command (from IContextMenu).
         /// </summary>
         /// <param name="idCommand">Menu command identifier offset.</param>
-        /// <param name="flags">The uflags.</param>
-        /// <param name="reserved">The reserved.</param>
-        /// <param name="name">The command string.</param>
-        /// <param name="cch">The CCH.</param>
+        /// <param name="flags">Flags specifying the information to return.</param>
+        /// <param name="reserved">Reserved. Applications must specify NULL when calling this method and handlers must ignore this parameter when called.</param>
+        /// <param name="name">The reference of the buffer to receive the null-terminated string being retrieved.</param>
+        /// <param name="cch">Size of the buffer, in characters, to receive the null-terminated string.</param>
+        /// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Error)]
         int GetCommandString(IntPtr idCommand, GetCommandStringOptions flags, int reserved, IntPtr name, int cch);

@@ -164,7 +164,7 @@ namespace MiniShellFramework
                     if (result == IntPtr.Zero)
                         throw new InvalidOperationException();
 
-                    //    *plResult = static_cast<T*>(this)->OnMenuChar(reinterpret_cast<HMENU>(lParam), LOWORD(wParam));
+                    ////    *plResult = static_cast<T*>(this)->OnMenuChar(reinterpret_cast<HMENU>(lParam), LOWORD(wParam));
                     break;
 
                 default:

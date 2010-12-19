@@ -12,35 +12,6 @@ using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
-    [ContractClass(typeof(MenuHostContract))]
-    internal interface IMenuHost
-    {
-        uint GetCommandId();
-
-        void IncrementCommandId();
-
-        void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler);
-    }
-
-    [ContractClassFor(typeof(IMenuHost))]
-    internal abstract class MenuHostContract : IMenuHost
-    {
-        public uint GetCommandId()
-        {
-            return default(uint);
-        }
-
-        public void IncrementCommandId()
-        {
-        }
-
-        public void OnAddMenuItem(string helpText, Menu.ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
-        {
-            Contract.Requires(helpText != null);
-        }
-    }
-
-
     /// <summary>
     /// Wrapper class for a Win32 menu
     /// </summary>
@@ -71,14 +42,10 @@ namespace MiniShellFramework
             this.menuHost = menuHost;
         }
 
-        static IntPtr CreateSubMenu()
-        {
-            IntPtr hmenu = CreatePopupMenu();
-            if (hmenu == null)
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-
-            return hmenu;
-        }
+        /// <summary>
+        /// defines the command.
+        /// </summary>
+        public delegate void ContextCommand(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames);
 
         /// <summary>
         /// Adds the sub menu.
@@ -126,11 +93,6 @@ namespace MiniShellFramework
         }
 
         /// <summary>
-        /// defines the command.
-        /// </summary>
-        public delegate void ContextCommand(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames);
-
-        /// <summary>
         /// Adds the item.
         /// </summary>
         /// <param name="menuText">The text.</param>
@@ -159,6 +121,21 @@ namespace MiniShellFramework
         {
             //// TODO;
         }
+
+        internal static IntPtr CreateSubMenu()
+        {
+            IntPtr hmenu = CreatePopupMenu();
+            if (hmenu == null)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            return hmenu;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr CreatePopupMenu();
 
         private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
@@ -192,12 +169,6 @@ namespace MiniShellFramework
             indexMenu++;
             menuHost.IncrementCommandId();
         }
-
-        [DllImport("user32.dll")]
-        private static extern bool InsertMenuItem(IntPtr menu, uint uItem, bool byPosition, [In] ref MenuItemInfo menuItemInfo);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr CreatePopupMenu();
 
         [ContractInvariantMethod]
         private void ObjectInvariant()

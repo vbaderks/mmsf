@@ -95,11 +95,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipFormat.cs" />
+    <Compile Include="ComTypes\CopyHookContract.cs" />
     <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\IContextMenu2.cs" />
     <Compile Include="ComTypes\IShellPropSheetExt.cs" />
+    <Compile Include="ComTypes\MenuItemInfoMask.cs" />
+    <Compile Include="ComTypes\MenuItemInfoType.cs" />
     <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
+    <Compile Include="ComTypes\ShellExtInitContract.cs" />
     <Compile Include="Facility.cs" />
+    <Compile Include="FormatEtcExtensions.cs" />
+    <Compile Include="GetCommandStringOptions.cs" />
+    <Compile Include="IMenuHost.cs" />
+    <Compile Include="MenuHostContract.cs" />
+    <Compile Include="RegistryExtensions.cs" />
     <Compile Include="RootKey.cs" />
     <Compile Include="Severity.cs" />
     <Compile Include="ComTypes\StorageModes.cs" />

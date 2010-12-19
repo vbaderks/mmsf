@@ -20,15 +20,18 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Queries the context menu (from IContextMenu).
         /// </summary>
-        /// <param name="handleMenu">A handle to the shortcut menu. The handler should specify this handle when adding menu items.</param>
-        /// <param name="indexMenu">The zero-based position at which to insert the first new menu item.</param>
-        /// <param name="idCommandFirst">The minimum value that the handler can specify for a menu item identifier.</param>
-        /// <param name="idCommandLast">The maximum value that the handler can specify for a menu item identifier.</param>
-        /// <param name="flags">Optional flags that specify how the shortcut menu can be changed.</param>
-        /// <returns></returns>
+        /// <param name="menuHandle">A handle to the shortcut menu. The handler should specify this handle when adding menu items (hmenu).</param>
+        /// <param name="position">The zero-based position at which to insert the first new menu item (indexMenu).</param>
+        /// <param name="firstCommandId">The minimum value that the handler can specify for a menu item identifier (idCmdFirst).</param>
+        /// <param name="lastCommandId">The maximum value that the handler can specify for a menu item identifier (idCmdLast).</param>
+        /// <param name="flags">Optional flags that specify how the shortcut menu can be changed (uFlags).</param>
+        /// <returns>
+        /// If successful, returns an HRESULT value that has its severity value set to SEVERITY_SUCCESS and 
+        /// its code value set to the offset of the largest command identifier that was assigned.
+        /// </returns>
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Error)]
-        new int QueryContextMenu(IntPtr handleMenu, uint indexMenu, uint idCommandFirst, uint idCommandLast, QueryContextMenuOptions flags);
+        new int QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags);
 
         /// <summary>
         /// Carries out the command associated with a shortcut menu item (from IContextMenu).
@@ -53,19 +56,18 @@ namespace MiniShellFramework.ComTypes
         /// Enables client objects of the IContextMenu interface to handle messages
         /// associated with owner-drawn menu items (from IContextMenu2).
         /// </summary>
-        /// <param name="uMsg">The u MSG.</param>
-        /// <param name="wParam">The w param.</param>
-        /// <param name="lParam">The l param.</param>
-        /// <returns></returns>
-        new void HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam);
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="wParam">Additional message information. The value of the wParam parameter depends on the value of the message parameter.</param>
+        /// <param name="lParam">Additional message information. The value of the lParam parameter depends on the value of the message parameter.</param>
+        new void HandleMenuMsg(uint message, IntPtr wParam, IntPtr lParam);
 
         /// <summary>
         /// Allows client objects of the IContextMenu3 interface to handle messages associated with owner-drawn menu items.
         /// </summary>
-        /// <param name="uMsg">The u MSG.</param>
-        /// <param name="wParam">The w param.</param>
-        /// <param name="lParam">The l param.</param>
-        /// <param name="plResult">The pl result.</param>
-        void HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr plResult);
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="wParam">Additional message information. The value of the wParam parameter depends on the value of the message parameter.</param>
+        /// <param name="lParam">Additional message information. The value of the lParam parameter depends on the value of the message parameter.</param>
+        /// <param name="result">A pointer to the result.</param>
+        void HandleMenuMsg2(uint message, IntPtr wParam, IntPtr lParam, IntPtr result);
     }
 }

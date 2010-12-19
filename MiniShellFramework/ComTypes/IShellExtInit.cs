@@ -27,13 +27,4 @@ namespace MiniShellFramework.ComTypes
         /// <param name="hkeyProgId">The hkey prog id.</param>
         void Initialize(IntPtr pidlFolder, [In] IDataObject dataObject, uint hkeyProgId);
     }
-
-    [ContractClassFor(typeof(IShellExtInit))]
-    abstract class ShellExtInitContract : IShellExtInit
-    {
-        public void Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
-        {
-            Contract.Requires(dataObject != null);
-        }
-    }
 }

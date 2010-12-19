@@ -14,54 +14,6 @@ using MiniShellFramework.ComTypes;
 namespace MiniShellFramework
 {
     /// <summary>
-    /// Common extensions to add keys to the registry for shell extensions.
-    /// </summary>
-    public static class RegistryExtensions
-    {
-        /// <summary>
-        /// Adds as approved shell extension.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="description">The description.</param>
-        public static void AddAsApprovedShellExtension(Type type, string description)
-        {
-            Contract.Requires(type != null);
-            Contract.Requires(!string.IsNullOrEmpty(description));
-
-            // Register the Folder CopyHook COM object as an approved shell extension. Explorer will only execute approved extensions.
-            using (var key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                if (key == null)
-                    throw new ApplicationException(
-                            @"Failed to open registry key Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved");
-
-                key.SetValue(type.GUID.ToString("B"), description);
-            }
-        }
-
-        /// <summary>
-        /// Removes as approved shell extension.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        public static void RemoveAsApprovedShellExtension(Type type)
-        {
-            Contract.Requires(type != null);
-
-            // Unregister the Folder CopyHook COM object as an approved shell extension.
-            // It is possible to unregister twice, need to be prepared to handle that case.
-            using (var key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
-            {
-                if (key != null)
-                {
-                    key.DeleteValue(type.GUID.ToString("B"));
-                }
-            }
-        }
-    }
-
-
-
-    /// <summary>
     /// Provide a base class for copy hook shell extensions.
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
@@ -69,10 +21,8 @@ namespace MiniShellFramework
     [ContractClass(typeof(FolderCopyHookBaseContract))]
     public abstract class FolderCopyHookBase : ICopyHook
     {
-#if DEBUG
-        private readonly int id = Interlocked.Increment(ref nextId);
         private static int nextId;
-#endif
+        private readonly int id = Interlocked.Increment(ref nextId);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderCopyHookBase"/> class.

@@ -38,22 +38,13 @@ namespace MiniShellFramework.ComTypes
         /// IDCANCEL: Prevents the current operation and cancels any pending operations.
         /// </returns>
         [PreserveSig]
-        uint CopyCallback(IntPtr parentWindow,
+        uint CopyCallback(
+                          IntPtr parentWindow,
                           FileOperation fileOperation,
                           uint flags,
                           [In, MarshalAs(UnmanagedType.LPWStr)] string source,
                           uint sourceAttributes,
                           [In, MarshalAs(UnmanagedType.LPWStr)] string destination,
                           uint destinationAttributes);
-    }
-
-    [ContractClassFor(typeof(ICopyHook))]
-    abstract class CopyHookContract : ICopyHook
-    {
-        public uint CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
-        {
-            Contract.Requires(source != null);
-            return default(uint);
-        }
     }
 }

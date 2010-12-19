@@ -54,6 +54,7 @@
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
           <Value>l</Value>
+          <Value>w</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>

@@ -21,12 +21,6 @@ namespace MiniShellFramework
         private readonly List<string> fileNames = new List<string>();
         private readonly List<string> extensions = new List<string>();
 
-        void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
-        {
-            Debug.WriteLine("{0}.IShellExtInit.Initialize (ContextMenuBase)", this);
-            CacheFiles(dataObject);
-        }
-
         /// <summary>
         /// Gets the files names.
         /// </summary>
@@ -34,6 +28,12 @@ namespace MiniShellFramework
         protected IList<string> FilesNames
         {
             get { return fileNames; }
+        }
+
+        void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
+        {
+            Debug.WriteLine("{0}.IShellExtInit.Initialize (ContextMenuBase)", this);
+            CacheFiles(dataObject);
         }
 
         /// <summary>
