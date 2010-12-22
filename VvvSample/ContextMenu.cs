@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using MiniShellFramework;
@@ -17,13 +18,13 @@ namespace VvvSample
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
     [Guid("1B40F482-7ECC-48C2-BA0A-D7D940DAA7AA")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
-    public class ContextMenu : ContextMenuBase
+    public sealed class ContextMenu : ContextMenuBase, IDisposable
     {
-        private Bitmap bitmapMenuIcon;
+        private readonly Bitmap bitmapMenuIcon;
 
         public ContextMenu()
         {
-            bitmapMenuIcon = new Bitmap(typeof (ContextMenu), "menuicon.bmp");
+            bitmapMenuIcon = new Bitmap(typeof(ContextMenu), "menuicon.bmp");
             RegisterExtension(".mvvv");
         }
 
@@ -50,16 +51,9 @@ namespace VvvSample
             if (filenames.Count != 1 || ContainsUnknownExtension(filenames))
                 return; // In this sample only extend the menu when only 1 .mvvv file is selected.
 
-            ////CCustomMenuHandlerPtr qsmallbitmaphandler(new CSmallBitmapHandler(IDS_CONTEXTMENU_VVV_SUBMENU, IDB_MENUICON));
-            //// TODO: var smallBitmapHandler = new SmallBitmapCustomMenuHandler("MVVV", 0);
-
-            //// TODO: var menuVvv = menu.AddSubMenu("Special commands for VVV files", smallBitmapHandler);
-            var menuMvvv = menu.AddSubMenu("MVVV", "Special commands for MVVV files");
+            var menuMvvv = menu.AddSubMenu("Special commands for VVV files", new SmallBitmapCustomMenuHandler("MVVV", bitmapMenuIcon));
             menuMvvv.AddItem("&Open with notepad", "Open the VVV file with notepad", OnEditWithNotepadCommand);
-
-            ////CCustomMenuHandlerPtr qsmallbitmaphandler2(new CSmallBitmapHandler(IDS_CONTEXTMENU_ABOUT_MSF, IDB_MENUICON));
-            //// TODO: var smallBitmapHandler2 = new SmallBitmapCustomMenuHandler("&About MMSF", 0);
-            menuMvvv.AddItem("&About MMSF", "Show the version number of the MMSF", OnAboutMmsf);
+            menuMvvv.AddItem(new SmallBitmapCustomMenuHandler("&About MMSF", bitmapMenuIcon), "Show the version number of the MMSF", OnAboutMmsf);
 
             // ... optional add more submenu's or more menu items.
         }
@@ -76,8 +70,15 @@ namespace VvvSample
 
         private static void OnAboutMmsf(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames)
         {
-            var text = string.Format("Build with MSF version {0}.{1}", 1, 0); // TODO: retrieve version info from mmsf assembly.
+            var fvi = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+            var text = string.Format("Build with MSF version {0}", fvi.ProductVersion);
             MessageBox.Show(text);
+        }
+
+        public void Dispose()
+        {
+            Debug.WriteLine("{0}.Dispose", this);
+            bitmapMenuIcon.Dispose();
         }
     }
 }

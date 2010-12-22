@@ -6,7 +6,6 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
@@ -19,22 +18,19 @@ namespace MiniShellFramework
     [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     [ContractClass(typeof(FolderCopyHookBaseContract))]
-    public abstract class FolderCopyHookBase : ICopyHook
+    public abstract class FolderCopyHookBase : ShellExtension, ICopyHook
     {
-        private static int nextId;
-        private readonly int id = Interlocked.Increment(ref nextId);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderCopyHookBase"/> class.
         /// </summary>
         protected FolderCopyHookBase()
         {
-            Debug.WriteLine("FolderCopyHookBase::Constructor (instance={0})", this);
+            Debug.WriteLine("[{0}] FolderCopyHookBase::Constructor", Id);
         }
 
         uint ICopyHook.CopyCallback(IntPtr parentWindow, FileOperation fileOperation, uint flags, string source, uint sourceAttributes, string destination, uint destinationAttributes)
         {
-            Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, fileOperation={1}, source={2}, destination={3})", id, fileOperation, source, destination);
+            Debug.WriteLine("[{0}] FolderCopyHookBase::CopyCallback (fileOperation={1}, source={2}, destination={3})", Id, fileOperation, source, destination);
 
             // Note: FOF_SILENT indicates that the operation should be silent, but the win32 .H file states that confirmation dialogs are still to be shown.
             var owner = new NativeWindow();
@@ -43,7 +39,7 @@ namespace MiniShellFramework
             {
                 var result = CopyCallbackCore(owner, fileOperation, flags, source, sourceAttributes, destination, destinationAttributes);
                 Debug.Assert(result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Yes);
-                Debug.WriteLine("FolderCopyHookBase::CopyCallback (id={0}, result={1})", id, result);
+                Debug.WriteLine("[{0}] FolderCopyHookBase::CopyCallback (result={1})", Id, result);
                 return (uint)result;
             }
             finally

@@ -15,7 +15,7 @@ namespace VvvSample
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
     [Guid("5070BD33-0BD4-4B4C-B5C6-9E09FCFD6DD2")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
-    public class FolderCopyHook : FolderCopyHookBase
+    public sealed class FolderCopyHook : FolderCopyHookBase
     {
         private const string RegistryName = "VVV FolderCopyHook (MMSF Sample)";
 

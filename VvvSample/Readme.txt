@@ -1,4 +1,4 @@
-﻿VVV Sample
+﻿ VVV Sample
 ==========
 
 The VVV Sample Shell extension demonstrates the following types of shell extensions:

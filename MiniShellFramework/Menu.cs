@@ -119,7 +119,17 @@ namespace MiniShellFramework
         /// <param name="contextCommand">The context command.</param>
         public void AddItem(CustomMenuHandler customMenuHandler, string helpText, ContextCommand contextCommand)
         {
-            //// TODO;
+            Contract.Requires(customMenuHandler != null);
+            Contract.Requires(helpText != null);
+            Contract.Requires(contextCommand != null);
+
+            var menuItemInfo = new MenuItemInfo();
+            menuItemInfo.InitializeSize();
+            menuItemInfo.Id = menuHost.GetCommandId();
+
+            customMenuHandler.InitializeItemInfo(ref menuItemInfo);
+
+            InsertMenuItem(ref menuItemInfo, helpText, contextCommand, customMenuHandler);
         }
 
         internal static IntPtr CreateSubMenu()

@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="ClipFormat.cs" />
     <Compile Include="ComTypes\CopyHookContract.cs" />
+    <Compile Include="ComTypes\DrawItem.cs" />
     <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\IContextMenu2.cs" />
     <Compile Include="ComTypes\IShellPropSheetExt.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="FormatEtcExtensions.cs" />
     <Compile Include="GetCommandStringOptions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Guids.cs" />
     <Compile Include="IMenuHost.cs" />
     <Compile Include="MenuHostContract.cs" />
     <Compile Include="RegistryExtensions.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="ComTypes\MenuItemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShellExtension.cs" />
     <Compile Include="ShellExtensionInit.cs" />
     <Compile Include="ShellPropertySheetBase.cs" />
     <Compile Include="SmallBitmapCustomMenuHandler.cs" />

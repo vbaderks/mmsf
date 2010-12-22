@@ -134,5 +134,17 @@ namespace MiniShellFramework.ComTypes
         {
             Size = (uint)Marshal.SizeOf(typeof(MenuItemInfo));
         }
+
+        /// <summary>
+        /// Sets the check marks.
+        /// </summary>
+        /// <param name="handleChecked">The handle checked.</param>
+        /// <param name="handleUnchecked">The handle unchecked.</param>
+        public void SetCheckMarks(IntPtr handleChecked, IntPtr handleUnchecked)
+        {
+            Mask |= MenuItemInfoMask.CheckMarks;
+            hbmpChecked = handleChecked;
+            hbmpUnchecked = handleUnchecked;
+        }
     }
 }

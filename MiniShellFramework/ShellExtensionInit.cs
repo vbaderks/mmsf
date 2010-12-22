@@ -18,7 +18,7 @@ namespace MiniShellFramework
     /// Provide a base class for propery sheet shell extensions.
     /// </summary>
     [ComVisible(true)] // Make this .NET class COM visible to ensure derived class can be COM visible.
-    public abstract class ShellExtensionInit : IShellExtInit
+    public abstract class ShellExtensionInit : ShellExtension, IShellExtInit
     {
         private readonly List<string> fileNames = new List<string>();
         private readonly List<string> extensions = new List<string>();
@@ -34,7 +34,8 @@ namespace MiniShellFramework
 
         void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
-            Debug.WriteLine("{0}.IShellExtInit.Initialize (ContextMenuBase)", this);
+            Debug.WriteLine("[{0}] ShellExtensionInit.IShellExtInit.Initialize (pidlFolder={1}, dataObject={2}, hkeyProgId={3}",
+                Id, pidlFolder, dataObject, hkeyProgId);
             CacheFiles(dataObject);
         }
 

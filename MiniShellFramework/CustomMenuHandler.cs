@@ -13,6 +13,26 @@ namespace MiniShellFramework
     public abstract class CustomMenuHandler
     {
         /// <summary>
+        /// TODO
+        /// </summary>
+        public const ushort MenuCharResultIgnore = 0;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public const ushort MenuCharResultClose = 1;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public const ushort MenuCharResultExecute = 2;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public const ushort MenuCharResultSelect = 3;
+
+        /// <summary>
         /// Initializes the item info.
         /// </summary>
         /// <param name="menuiteminfo">The menuiteminfo.</param>
@@ -32,7 +52,7 @@ namespace MiniShellFramework
         /// <summary>
         /// Called by the OS when the item must be draw.
         /// </summary>
-        public virtual void Draw(/* DRAWITEMSTRUCT&  */ /*drawitem*/)
+        public virtual void Draw(ref DrawItem drawItem)
         {
         }
 
@@ -41,9 +61,11 @@ namespace MiniShellFramework
         /// </summary>
         /// <param name="hmenu">The hmenu.</param>
         /// <param name="nChar">The n char.</param>
+        /// <param name="result">The result.</param>
         /// <returns></returns>
-        public virtual bool OnMenuChar(IntPtr hmenu, ushort nChar /*, LRESULT& */ /*lresult*/)
+        public virtual bool OnMenuChar(IntPtr hmenu, ushort nChar, out ushort result)
         {
+            result = default(ushort);
             return false; // not handled.
         }
     }

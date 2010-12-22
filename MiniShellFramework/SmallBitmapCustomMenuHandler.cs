@@ -2,6 +2,7 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using MiniShellFramework.ComTypes;
@@ -14,7 +15,7 @@ namespace MiniShellFramework
     public class SmallBitmapCustomMenuHandler : CustomMenuHandler
     {
         private readonly string text;
-        private Bitmap bitmap;
+        private readonly Bitmap bitmap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SmallBitmapCustomMenuHandler"/> class.
@@ -37,7 +38,7 @@ namespace MiniShellFramework
         public override void InitializeItemInfo(ref MenuItemInfo menuiteminfo)
         {
             menuiteminfo.Text = text;
-            ////menuiteminfo.SetCheckMarkBmps(NULL, m_bitmap.GetHandle());
+            menuiteminfo.SetCheckMarks(IntPtr.Zero, bitmap.GetHbitmap());
         }
     }
 }

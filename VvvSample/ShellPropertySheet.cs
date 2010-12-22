@@ -13,7 +13,7 @@ namespace VvvSample
     [ComVisible(true)]                              // Make this .NET class a COM object (ComVisible is false on assembly level).
     [Guid("8CB563CC-24D1-464D-847F-4A215F2487A9")]  // Explicitly assign a GUID: easier to reference and to debug.
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
-    public class ShellPropertySheet : ShellPropertySheetBase
+    public sealed class ShellPropertySheet : ShellPropertySheetBase
     {
         private const string registryDescription = "VVV ShellPropertySheet (MMSF Sample)";
 

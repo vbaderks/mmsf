@@ -18,7 +18,7 @@ namespace MiniShellFramework
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
-    public abstract class InfoTipBase : IInitializeWithStream, IQueryInfo, IPersistFile
+    public abstract class InfoTipBase : ShellExtension, IInitializeWithStream, IQueryInfo, IPersistFile
     {
         private bool initialized;
 
@@ -27,12 +27,13 @@ namespace MiniShellFramework
         /// </summary>
         protected InfoTipBase()
         {
-            Debug.WriteLine("{0}.Constructor (InfoTipBase)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.Constructor", Id);
         }
 
         void IInitializeWithStream.Initialize(IStream stream, StorageModes storageMode)
         {
-            Debug.WriteLine("{0}.IInitializeWithStream.Initialize (InfoTipBase), mode={1})", this, storageMode);
+            Debug.WriteLine("[{0}] InfoTipBase.IInitializeWithStream.Initialize, mode={1})", Id, storageMode);
+
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
 
@@ -45,37 +46,37 @@ namespace MiniShellFramework
 
         void IQueryInfo.GetInfoTip(InfoTipOptions options, out string text)
         {
-            Debug.WriteLine("{0}.IQueryInfo.GetInfoTip (InfoTipBase), dwFlags={1}", this, options);
+            Debug.WriteLine("[{0}] InfoTipBase.IQueryInfo.GetInfoTip, dwFlags={1}", Id, options);
             text = GetInfoTipCore();
         }
 
         void IQueryInfo.GetInfoFlags(out InfoTipOptions options)
         {
-            Debug.WriteLine("{0}.IQueryInfo.GetInfoFlags (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IQueryInfo.GetInfoFlags - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 
         void IPersistFile.GetClassID(out Guid pClassID)
         {
-            Debug.WriteLine("{0}.IQueryInfo.InfoTipBase.GetClassID (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IQueryInfo.InfoTipBase.GetClassID - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 
         void IPersistFile.GetCurFile(out string ppszFileName)
         {
-            Debug.WriteLine("{0}.IQueryInfo.GetCurFile (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IQueryInfo.GetCurFile - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 
         int IPersistFile.IsDirty()
         {
-            Debug.WriteLine("{0}.IPersistFile.IsDirty (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IPersistFile.IsDirty - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 
         void IPersistFile.Load(string pszFileName, int dwMode)
         {
-            Debug.WriteLine("{0}.IPersistFile.Load (InfoTipBase), dwMode={1}", this, dwMode);
+            Debug.WriteLine("[{0}] InfoTipBase.IPersistFile.Load, dwMode={1}", Id, dwMode);
 
             if (initialized)
                 throw new COMException("Already initialized", HResults.ErrorAlreadyInitialized);
@@ -89,13 +90,13 @@ namespace MiniShellFramework
 
         void IPersistFile.Save(string pszFileName, bool fRemember)
         {
-            Debug.WriteLine("{0}.IPersistFile.Save (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IPersistFile.Save - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 
         void IPersistFile.SaveCompleted(string pszFileName)
         {
-            Debug.WriteLine("{0}.IPersistFile.SaveCompleted (InfoTipBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] InfoTipBase.IPersistFile.SaveCompleted - Not Implemented (functionality not used)", Id);
             throw new NotSupportedException();
         }
 

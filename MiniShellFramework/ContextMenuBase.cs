@@ -33,13 +33,13 @@ namespace MiniShellFramework
         /// </summary>
         protected ContextMenuBase()
         {
-            Debug.WriteLine("{0}.Constructor (ContextMenuBase)", this);
+            Debug.WriteLine("[{0}] ContextMenuBase.Constructor ()", Id);
         }
 
         int IContextMenu.QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags)
         {
-            Debug.WriteLine("{0}.IContextMenu.QueryContextMenu (ContextMenuBase), menuHandle={1}, position={2}, firstCommandId={3}, lastCommandId={4}, flag={5}",
-                this, menuHandle, position, firstCommandId, lastCommandId, flags);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.QueryContextMenu, menuHandle={1}, position={2}, firstCommandId={3}, lastCommandId={4}, flag={5}",
+                Id, menuHandle, position, firstCommandId, lastCommandId, flags);
 
             if (flags.HasFlag(QueryContextMenuOptions.DefaultOnly))
                 return HResults.Create(Severity.Success, 0); // don't add anything, only default menu items allowed.
@@ -53,7 +53,7 @@ namespace MiniShellFramework
 
         void IContextMenu.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
         {
-            Debug.WriteLine("{0}.IContextMenu.InvokeCommand (ContextMenuBase), Size={1}", this, invokeCommandInfo.Size);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.InvokeCommand, Size={1}", Id, invokeCommandInfo.Size);
 
             if (invokeCommandInfo.lpVerb.ToInt32() >> 16 != 0)
                 throw new ArgumentException("Verbs not supported");
@@ -68,8 +68,8 @@ namespace MiniShellFramework
 
         int IContextMenu.GetCommandString(IntPtr commandIdOffset, GetCommandStringOptions flags, int reserved, IntPtr result, int charCount)
         {
-            Debug.WriteLine("{0}.IContextMenu.GetCommandString (ContextMenuBase), commandIdOffset={1}, flags={2}, result={3}, charCount={4}",
-                this, commandIdOffset, flags, result, charCount);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.GetCommandString, commandIdOffset={1}, flags={2}, result={3}, charCount={4}",
+                Id, commandIdOffset, flags, result, charCount);
 
             switch (flags)
             {
@@ -107,7 +107,7 @@ namespace MiniShellFramework
 
         void IContextMenu2.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            Debug.WriteLine("{0}.IContextMenu2.HandleMenuMsg (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}", this, uMsg, wParam, lParam);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu2.HandleMenuMsg, uMsg={1}, wParam={2}, lParam={3}", Id, uMsg, wParam, lParam);
             ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
@@ -128,43 +128,42 @@ namespace MiniShellFramework
 
         void IContextMenu3.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}",
-                this, uMsg, wParam, lParam.ToInt32());
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg, uMsg={1}, wParam={2}, lParam={3}",
+                Id, uMsg, wParam, lParam.ToInt32());
             ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
-        void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr result)
+        unsafe void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr result)
         {
-            Debug.WriteLine("{0}.IContextMenu3.HandleMenuMsg2 (ContextMenuBase), uMsg={1}, wParam={2}, lParam={3}, result",
-                this, uMsg, wParam, lParam, result);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg2, uMsg={1}, wParam={2}, lParam={3}, result={4}",
+                Id, uMsg, wParam, lParam, result);
 
             // Note: The SDK docs tell that this function is only called for WM_MENUCHAR but this is not true (seen on XP sp3).
             //       HandleMenuMsg2 is called also directly for WM_INITMENUPOPUP, etc when the shell detects that IContextMenu3 is supported.
             switch (uMsg)
             {
                 case InitializeMenuPopup:
-                    Debug.WriteLine("{0}.IContextMenu3.OnInitMenuPopup (ContextMenuBase)", this);
+                    Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.OnInitMenuPopup", Id);
                     OnInitMenuPopup(wParam, (ushort)lParam);
                     break;
 
                 case DrawItem:
-                    Debug.WriteLine("{0}.IContextMenu3.OnDrawItem (ContextMenuBase)", this);
-                    ////    return static_cast<T*>(this)->OnDrawItem(reinterpret_cast<DRAWITEMSTRUCT*>(lParam));
-                    OnDrawItem();
+                    Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.OnDrawItem", Id);
+                    OnDrawItem(ref *(DrawItem*)lParam.ToPointer());
                     break;
 
                 case MeasureItem:
-                    Debug.WriteLine("{0}.IContextMenu3.OnMeasureItem (ContextMenuBase)", this);
-                    ////    return static_cast<T*>(this)->OnMeasureItem(reinterpret_cast<MEASUREITEMSTRUCT*>(lParam));
-                    OnMeasureItem();
+                    Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.OnMeasureItem", Id);
+                    OnMeasureItem(ref *(MEASUREITEMSTRUCT*) lParam.ToPointer());
                     break;
 
                 case MenuChar:
-                    Debug.WriteLine("{0}.IContextMenu3.OnMenuChar (ContextMenuBase)", this);
+                    Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.OnMenuChar", Id);
                     if (result == IntPtr.Zero)
                         throw new InvalidOperationException();
 
-                    ////    *plResult = static_cast<T*>(this)->OnMenuChar(reinterpret_cast<HMENU>(lParam), LOWORD(wParam));
+                    var pointerResult = (int*) result.ToPointer();
+                    *pointerResult = OnMenuChar(lParam, (ushort) wParam.ToInt32());
                     break;
 
                 default:
@@ -238,24 +237,45 @@ namespace MiniShellFramework
             Marshal.WriteInt16(destination, 2 * length, 0);
         }
 
-        private void OnDrawItem(/*DRAWITEMSTRUCT* pdrawitem*/)
+        private void OnDrawItem(ref DrawItem drawItem)
         {
-            ////if (pdrawitem->CtlType != ODT_MENU)
-            ////    return E_INVALIDARG;
+            if (drawItem.CtlType != OwnerDrawControlType.Menu)
+                throw new COMException("CtlType is not menu");
 
-            ////GetMenuItem(pdrawitem->itemID - m_idCmdFirst).GetCustomMenuHandler().Draw(*pdrawitem);
+            GetMenuItem((int) (drawItem.itemID - startCommandId)).CustomMenuHandler.Draw(ref drawItem);
         }
 
-        private void OnMeasureItem(/*MEASUREITEMSTRUCT* pmeasureitem*/)
+        private void OnMeasureItem(ref MEASUREITEMSTRUCT measureItem)
         {
-            //GetMenuItem(pmeasureitem->itemID - m_idCmdFirst).GetCustomMenuHandler().Measure(*pmeasureitem
+            GetMenuItem((int) (measureItem.itemID - startCommandId)).CustomMenuHandler.Measure(ref measureItem);
+        }
+
+        private int OnMenuChar(IntPtr handleMenu, ushort character)
+        {
+            ushort result = CustomMenuHandler.MenuCharResultIgnore;
+
+            foreach (var item in menuItems)
+            {
+                if (item.CustomMenuHandler != null)
+                {
+                    if (item.CustomMenuHandler.OnMenuChar(handleMenu, character, out result))
+                        break;
+                }
+            }
+
+            return (0 << 16) | result;
+        }
+
+        private MenuItem GetMenuItem(int index)
+        {
+            return menuItems[index];
         }
 
         private class MenuItem
         {
             private readonly string helpText;
             private readonly Menu.ContextCommand contextcommand;
-            private CustomMenuHandler custommenuhandler;
+            private readonly CustomMenuHandler custommenuhandler;
 
             public MenuItem(string helpText, Menu.ContextCommand contextcommand, CustomMenuHandler custommenuhandler)
             {
@@ -280,6 +300,14 @@ namespace MiniShellFramework
                 get
                 {
                     return contextcommand;
+                }
+            }
+
+            public CustomMenuHandler CustomMenuHandler
+            {
+                get
+                {
+                    return custommenuhandler;
                 }
             }
 
