@@ -32,7 +32,8 @@ namespace MiniShellFramework.ComTypes
         /// <returns>If successful, returns a one-based index to specify the page that should be initially displayed.</returns>
         [PreserveSig]
         [return:MarshalAs(UnmanagedType.Error)]
-        int AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam);
+        ////int AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam);
+        int AddPages(IntPtr addPageFunction, IntPtr lParam);
 
         // TODO: process
         ////[PreserveSig()]

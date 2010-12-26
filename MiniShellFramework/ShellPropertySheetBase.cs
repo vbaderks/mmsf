@@ -24,19 +24,24 @@ namespace MiniShellFramework
         /// </summary>
         protected ShellPropertySheetBase()
         {
-            Debug.WriteLine("{0}.Constructor (ShellPropertySheetBase)", this);
+            Debug.WriteLine("[{0}] ShellPropertySheetBase.Constructor ()", Id);
         }
 
-        int IShellPropSheetExt.AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam)
+        int IShellPropSheetExt.AddPages(IntPtr addPageFunction, IntPtr lParam)
         {
-            Debug.WriteLine("{0}.IShellPropSheetExt.AddPages (ShellPropertySheetBase), lParam={1}", this, lParam);
+            Debug.WriteLine("[{0}] ShellPropertySheetBase.IShellPropSheetExt.AddPages (lParam={1})", Id, lParam);
 
-            throw new NotImplementedException();
+            var d = Marshal.GetDelegateForFunctionPointer(addPageFunction, typeof(AddPropertySheetPage));
+
+            return 0; // TODO: return index for page to display.
         }
 
         void IShellPropSheetExt.ReplacePage(uint pageId, IntPtr replaceWithFunction, IntPtr lParam)
         {
-            Debug.WriteLine("{0}.IShellPropSheetExt.ReplacePage (ShellPropertySheetBase) - Not Implemented (functionality not used)", this);
+            Debug.WriteLine("[{0}] ShellPropertySheetBase.IShellPropSheetExt.ReplacePage - Not Implemented (functionality not used)", Id);
+
+            // The Shell doesn't call this function for file class Property Sheets.
+            // Only for control panel objects.
             throw new NotSupportedException();
         }
 
