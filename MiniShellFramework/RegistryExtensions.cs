@@ -14,17 +14,26 @@ namespace MiniShellFramework
     public static class RegistryExtensions
     {
         /// <summary>
-        /// Adds as approved shell extension.
+        /// Register the passed type as an approved shell extension. Explorer will only execute approved extensions.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="description">The description.</param>
+        /// <remarks>
+        /// To support registry harvest tools such as wix heat.exe the 'Shell Extensions' key will be created when
+        /// it is not present. On x64 systems 'Shell Extensions' is not present by default in the wow64node tree.
+        /// The side effect is that registration will succeeded, but the shell extension will not work when 
+        /// registering it on a x64 system with a 32 bit version of regasm.
+        /// On a x64 system the x64 version of regasm should be used to register the shell extension in the
+        /// correct registry hive to ensure explorer.exe (which is 64 bit on a x64 platform will pick it up).
+        /// Administrator rights are needed to update this part of the registry.
+        /// </remarks>
+        /// <param name="type">The type that identifies the COM shell extension.</param>
+        /// <param name="description">The description text that will be stored in the registry.
+        /// Some 3rd party tools will display this string when listing which shell extensions are registered.</param>
         public static void AddAsApprovedShellExtension(Type type, string description)
         {
             Contract.Requires(type != null);
-            Contract.Requires(!string.IsNullOrEmpty(description));
+            Contract.Requires(description != null);
 
-            // Register the Folder CopyHook COM object as an approved shell extension. Explorer will only execute approved extensions.
-            using (var key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
+            using (var key = Registry.LocalMachine.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved"))
             {
                 if (key == null)
                     throw new ApplicationException(
@@ -35,9 +44,12 @@ namespace MiniShellFramework
         }
 
         /// <summary>
-        /// Removes as approved shell extension.
+        /// Removes the type as an approved shell extension.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <remarks>
+        /// Administrator rights are needed to update this part of the registry.
+        /// </remarks>
+        /// <param name="type">The type that identifies the COM shell extension.</param>
         public static void RemoveAsApprovedShellExtension(Type type)
         {
             Contract.Requires(type != null);
