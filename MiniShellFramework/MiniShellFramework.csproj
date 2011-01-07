@@ -96,8 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipFormat.cs" />
+    <Compile Include="ColumnProviderBase.cs" />
     <Compile Include="ComTypes\CopyHookContract.cs" />
     <Compile Include="ComTypes\DrawItem.cs" />
+    <Compile Include="ComTypes\IColumnProvider.cs" />
     <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\IContextMenu2.cs" />
     <Compile Include="ComTypes\IShellPropSheetExt.cs" />
