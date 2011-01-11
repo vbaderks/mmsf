@@ -15,7 +15,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AASgAAAIGAAAIAEAgNEQAQAABAQAiAAABUAQggQkAAA=</HashCode>
+      <HashCode>AASgEAAIGAAAIAEAgNEQAQAABAQAiAAAB0AQggQkAAA=</HashCode>
       <FileName>ContextMenuBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -50,6 +50,14 @@
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>ShellExtension.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MiniShellFramework.ColumnProviderBase" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAgAAAAAAAAAA=</HashCode>
+      <FileName>ColumnProviderBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
