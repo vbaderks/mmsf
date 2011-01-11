@@ -30,20 +30,56 @@ namespace MiniShellFramework.ComTypes
         USEHEADERSUBTITLE = 0x00002000
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PropSheetPage
     {
-        public int dwSize;
+        /// <summary>
+        /// Size, in bytes, of this structure. The property sheet manager uses this member to determine which version of the structure you are using. (dwSize).
+        /// </summary>
+        public int Size;
+
         public PSP dwFlags;
         public IntPtr hInstance;
         public IntPtr pResource;
         public IntPtr hIcon;
-        public string pszTitle;
+        private string title;
         public DialogProc pfnDlgProc;
         public IntPtr lParam;
         public PropSheetCallback pfnCallback;
         public int pcRefParent;
-        public string pszHeaderTitle;
-        public string pszHeaderSubTitle;
+
+        /// <summary>
+        /// Title of the header area. (pszHeaderTitle).
+        /// </summary>
+        public string HeaderTitle;
+
+        /// <summary>
+        /// TSubtitle of the header area. (pszHeaderSubTitle).
+        /// </summary>
+        public string HeaderSubTitle;
+
+        /// <summary>
+        /// Initializes the specified info.
+        /// </summary>
+        public void InitializeSize()
+        {
+            Size = Marshal.SizeOf(typeof(PropSheetPage));
+        }
+
+        /// <summary>
+        /// Sets the title.
+        /// </summary>
+        /// <value>The title.</value>
+        public string Title
+        {
+            set
+            {
+                dwFlags |= PSP.USETITLE;
+                title = value;
+            }
+        }
     }
 }

@@ -71,7 +71,14 @@ namespace MiniShellFramework
         /// 
         /// </summary>
         public static readonly Guid IInternetSecurityManager = new Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b");
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly Guid ShellPropSheetExtIId = new Guid("000214E9-0000-0000-C000-000000000046");
+
+        // QueryInterface seen for ContextMenu on Windows 7 x64.
+        internal static readonly Guid Undocumented1 = new Guid("924502A7-CC8E-4F60-AE1F-F70C0A2B7A7C");
 
         private static readonly IDictionary<Guid, string> names = CreateNameDictionary();
 
@@ -90,13 +97,15 @@ namespace MiniShellFramework
         {
             var results = new Dictionary<Guid, string>();
 
-            results.Add(IMarshal, "IMarshalGuid");
+            results.Add(IMarshal, "IMarshal");
             results.Add(IShellExtInit, "IShellExtInit");
             results.Add(IPersistFile, "IPersistFile");
             results.Add(IQueryInfo, "IQueryInfo");
             results.Add(IObjectWithSite, "IObjectWithSite");
             results.Add(IPreviewHandlerGuid, "IPreviewHandlerGuid");
             results.Add(IInternetSecurityManager, "IInternetSecurityManager");
+            results.Add(Undocumented1, "IUndocumented1");
+            results.Add(ShellPropSheetExtIId, "IShellPropSheetExt");
 
             return results;
         }

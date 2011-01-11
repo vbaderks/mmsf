@@ -115,6 +115,7 @@
     <Compile Include="Guids.cs" />
     <Compile Include="IMenuHost.cs" />
     <Compile Include="MenuHostContract.cs" />
+    <Compile Include="PropertySheetPage.cs" />
     <Compile Include="RegistryExtensions.cs" />
     <Compile Include="RootKey.cs" />
     <Compile Include="SafeNativeMethods.cs" />

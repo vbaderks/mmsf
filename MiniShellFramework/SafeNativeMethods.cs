@@ -34,5 +34,8 @@ namespace MiniShellFramework
 
         [DllImport("user32.dll")]
         internal static extern IntPtr CreatePopupMenu();
+
+        [DllImport("Comctl32.dll")]
+        internal static extern IntPtr CreatePropertySheetPage(ref PropSheetPage propertySheetPage);
     }
 }
