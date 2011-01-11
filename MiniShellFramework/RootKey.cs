@@ -39,7 +39,7 @@ namespace MiniShellFramework
         public static void Unregister(string fileExtension)
         {
             Contract.Requires(fileExtension != null);
-            Registry.ClassesRoot.DeleteSubKey(fileExtension);
+            Registry.ClassesRoot.DeleteSubKey(fileExtension, false);
         }
     }
 }

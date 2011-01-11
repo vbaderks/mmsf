@@ -86,11 +86,11 @@ namespace MiniShellFramework
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
 
             var keyName = @"Directory\ShellEx\CopyHookHandlers\" + name;
-            using (var key = Registry.ClassesRoot.OpenSubKey(keyName))
+            using (var key = Registry.ClassesRoot.OpenSubKey(keyName, true))
             {
                 if (key != null)
                 {
-                    key.DeleteValue(type.GUID.ToString("B"));
+                    key.DeleteValue(type.GUID.ToString("B"), false);
                 }
             }
         }

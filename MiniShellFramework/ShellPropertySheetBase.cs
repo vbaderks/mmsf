@@ -88,7 +88,7 @@ namespace MiniShellFramework
             {
                 if (key != null)
                 {
-                    key.DeleteSubKey(description);
+                    key.DeleteSubKey(description, false);
                 }
             }
         }

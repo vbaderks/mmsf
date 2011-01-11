@@ -54,13 +54,13 @@ namespace MiniShellFramework
         {
             Contract.Requires(type != null);
 
-            // Unregister the Folder CopyHook COM object as an approved shell extension.
+            // Unregister the COM object as an approved shell extension.
             // It is possible to unregister twice, need to be prepared to handle that case.
             using (var key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved", true))
             {
                 if (key != null)
                 {
-                    key.DeleteValue(type.GUID.ToString("B"));
+                    key.DeleteValue(type.GUID.ToString("B"), false);
                 }
             }
         }
