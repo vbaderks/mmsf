@@ -2,8 +2,7 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using MiniShellFramework.ComTypes;
 
@@ -14,18 +13,17 @@ namespace MiniShellFramework
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
-    public class ColumnProviderBase : IColumnProvider
+    public abstract class ColumnProviderBase : ShellExtension, IColumnProvider
     {
+        private bool initialized;
 
-        // IColumnProvider
-        void Initialize(/* const SHCOLUMNINIT* psci */)
+        void IColumnProvider.Initialize(ref SHCOLUMNINIT shellColumnInitializeInfo)
         {
-            //ATLTRACE2(atlTraceCOM, 0,
-            //    _T("IColumnProviderImpl::Initialize, i=%p, tid=%d, dwFlags=%d, wszFolder=%s\n"),
-            //    this, GetCurrentThreadId(), psci->dwFlags, psci->wszFolder);
+            Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.Initialize, shellColumnInitializeInfo.Folder={1}",
+                Id, shellColumnInitializeInfo.Folder);
 
-            //// Note: the SDK docs are unclear if 
-            //// TODO: check if explorer calls this function twice.
+            if (initialized)
+                throw new COMException("Already Initialized");
 
             //// Clear internal caching variables.
             //m_pCachedInfo = NULL;
@@ -37,27 +35,24 @@ namespace MiniShellFramework
             //m_columninfos.clear();
             //m_columnidtoindex.clear();
 
-            //// Note: OnInitialize needs to be implemented by the derived class.
-            //static_cast<T*>(this)->OnInitialize(psci->wszFolder);
+            // Note: OnInitialize needs to be implemented by the derived class.
+            InitializeCore(shellColumnInitializeInfo.Folder);
 
-            //m_bInitialized = true;
-            //return S_OK;
+            initialized = true;
         }
 
-        // Purpose: GetColumnInfo is called by the shell to retrieve the column names.
-        // By calling this repeatedly the shell can detect how many columns there are.
-        void GetColumnInfo(/* DWORD dwIndex, SHCOLUMNINFO* psci */)
+        /// <summary>
+        /// Requests information about a column.
+        /// By calling this repeatedly the shell can detect how many columns there are.
+        /// </summary>
+        /// <param name="index">The column's zero-based index. It is an arbitrary value that is used to enumerate columns (DWORD dwIndex).</param>
+        /// <param name="columnInfo">Information about the columnn (psci).</param>
+        void IColumnProvider.GetColumnInfo(int index, ref SHCOLUMNINFO columnInfo)
         {
-            //ATLTRACE2(atlTraceCOM, 0,
-            //    _T("IColumnProviderImpl::GetColumnInfo, i=%p, tid=%d, dwIndex=%d\n"),
-            //    this, GetCurrentThreadId(), dwIndex);
+            Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetColumnInfo, index={1}", Id, index);
 
-            //if (!m_bInitialized)
-            //{
-            //    ATLTRACE2(atlTraceCOM, 0,
-            //        _T("IColumnProviderImpl::GetColumnInfo, i=%p, Initialize was not called\n"), this);
-            //    return E_FAIL;
-            //}
+            if (!initialized)
+                throw new COMException("Initialize was not called");
 
             //if (m_desktopbugworkaround() || dwIndex >= m_columninfos.size())
             //    return S_FALSE; // tell the shell there are no more columns.
@@ -66,17 +61,13 @@ namespace MiniShellFramework
             //return S_OK;
         }
 
-        void GetItemData(/*const SHCOLUMNID* pscid, const SHCOLUMNDATA* pscd, VARIANT* pvarData */)
+        void IColumnProvider.GetItemData(ref SHCOLUMNID columnId, ref SHCOLUMNDATA columnData /*,  VARIANT* pvarData */)
         {
-            //ATLTRACE2(atlTraceCOM, 0, _T("IColumnProviderImpl::GetItemData, i=%p, tid=%d, f=%d, c=%d, file=%s\n"),
-            //    this, GetCurrentThreadId(), pscd->dwFlags, pscid->pid, CW2T(pscd->wszFile));
+            Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetItemData, columnId.FormatId={1}, columnId.PropertyId={2}",
+                Id, columnId.FormatId, columnId.PropertyId);
 
-            //if (!m_bInitialized)
-            //{
-            //    ATLTRACE2(atlTraceCOM, 0,
-            //        _T("IColumnProviderImpl::GetItemData, i=%p, Initialize was not called\n"), this);
-            //    return E_FAIL;
-            //}
+            if (!initialized)
+                throw new COMException("Initialize was not called");
 
             //if (!IsSupportedItem(*pscd))
             //{
@@ -110,5 +101,7 @@ namespace MiniShellFramework
 
             //return S_OK;
         }
+
+        protected abstract void InitializeCore(string folderName);
     }
 }

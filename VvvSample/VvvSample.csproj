@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColumnProvider.cs" />
     <Compile Include="FolderCopyHook.cs" />
     <Compile Include="ContextMenu.cs" />
     <Compile Include="InfoTip.cs" />
