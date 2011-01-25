@@ -103,10 +103,16 @@
     <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\IContextMenu2.cs" />
     <Compile Include="ComTypes\IShellPropSheetExt.cs" />
+    <Compile Include="ComTypes\ListViewAlignment.cs" />
     <Compile Include="ComTypes\MenuItemInfoMask.cs" />
     <Compile Include="ComTypes\MenuItemInfoType.cs" />
     <Compile Include="ComTypes\PropSheetPage.cs" />
     <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
+    <Compile Include="ComTypes\ShellColumnData.cs" />
+    <Compile Include="ComTypes\ShellColumnId.cs" />
+    <Compile Include="ComTypes\ShellColumnInfo.cs" />
+    <Compile Include="ComTypes\ShellColumnInitializeInfo.cs" />
+    <Compile Include="ComTypes\ShellColumnState.cs" />
     <Compile Include="ComTypes\ShellExtInitContract.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="FormatEtcExtensions.cs" />

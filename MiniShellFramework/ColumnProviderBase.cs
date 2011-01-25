@@ -17,7 +17,7 @@ namespace MiniShellFramework
     {
         private bool initialized;
 
-        void IColumnProvider.Initialize(ref SHCOLUMNINIT shellColumnInitializeInfo)
+        void IColumnProvider.Initialize(ref ShellColumnInitializeInfo shellColumnInitializeInfo)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.Initialize, shellColumnInitializeInfo.Folder={1}",
                 Id, shellColumnInitializeInfo.Folder);
@@ -47,7 +47,7 @@ namespace MiniShellFramework
         /// </summary>
         /// <param name="index">The column's zero-based index. It is an arbitrary value that is used to enumerate columns (DWORD dwIndex).</param>
         /// <param name="columnInfo">Information about the columnn (psci).</param>
-        void IColumnProvider.GetColumnInfo(int index, ref SHCOLUMNINFO columnInfo)
+        void IColumnProvider.GetColumnInfo(int index, ref ShellColumnInfo columnInfo)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetColumnInfo, index={1}", Id, index);
 
@@ -61,7 +61,7 @@ namespace MiniShellFramework
             //return S_OK;
         }
 
-        void IColumnProvider.GetItemData(ref SHCOLUMNID columnId, ref SHCOLUMNDATA columnData /*,  VARIANT* pvarData */)
+        void IColumnProvider.GetItemData(ref ShellColumnId columnId, ref ShellColumnData columnData, object data)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetItemData, columnId.FormatId={1}, columnId.PropertyId={2}",
                 Id, columnId.FormatId, columnId.PropertyId);
