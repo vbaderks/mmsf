@@ -2,8 +2,11 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
+using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
@@ -15,7 +18,17 @@ namespace MiniShellFramework
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
     public abstract class ColumnProviderBase : ShellExtension, IColumnProvider
     {
+        const string ColumnHandlersKeyName = @"Folder\ShellEx\ColumnHandlers";
         private bool initialized;
+        private bool hideDesktopColumns;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnProviderBase"/> class.
+        /// </summary>
+        protected ColumnProviderBase()
+        {
+            Debug.WriteLine("[{0}] ColumnProviderBase.Constructor ()", Id);
+        }
 
         void IColumnProvider.Initialize(ref ShellColumnInitializeInfo shellColumnInitializeInfo)
         {
@@ -25,17 +38,13 @@ namespace MiniShellFramework
             if (initialized)
                 throw new COMException("Already Initialized");
 
-            //// Clear internal caching variables.
-            //m_pCachedInfo = NULL;
-            //m_strCachedFilename.Empty();
-            //m_mapCacheInfo.clear();
+            // Note: Due to a bug in explorer it will not release the interface if the
+            //       folder is the 'desktop'. The workaround is to return 0 columns in that case.
+            //       This will prevent the resource leak. The drawback is that there are no
+            //       columns available if the 'desktop' folder is viewed in 'detailed' mode (which is a rare case).
+            hideDesktopColumns = IsDesktopPath(shellColumnInitializeInfo.Folder);
 
-            //m_desktopbugworkaround.Initialize(psci->wszFolder);
-
-            //m_columninfos.clear();
-            //m_columnidtoindex.clear();
-
-            // Note: OnInitialize needs to be implemented by the derived class.
+            // Note: InitializeCore needs to be implemented by the derived class.
             InitializeCore(shellColumnInitializeInfo.Folder);
 
             initialized = true;
@@ -102,6 +111,102 @@ namespace MiniShellFramework
             //return S_OK;
         }
 
+        /// <summary>
+        /// Adds additional info to the registry to allow the shell to discover the oject as shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="description">The description.</param>
+        protected static void ComRegister(Type type, string description)
+        {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
+
+            // Only register when supported by Shell.
+            // Vista and up don't support column providers anymore (replaces by property system).
+            if (IsShell60OrHigher())
+                return;
+
+            RegistryExtensions.AddAsApprovedShellExtension(type, description);
+
+            // Register the COM object as a ColumnProvider handler.
+            var subKeyName = ColumnHandlersKeyName + @"\" + type.GUID.ToString("B");
+            using (var key = Registry.ClassesRoot.CreateSubKey(subKeyName))
+            {
+                if (key == null)
+                    throw new ApplicationException("Failed to create sub key: " + subKeyName);
+
+                key.SetValue(string.Empty, description);
+            }
+        }
+
+        /// <summary>
+        /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        protected static void ComUnregister(Type type)
+        {
+            Contract.Requires(type != null);
+
+            // Only try to remove when it was registered.
+            if (IsShell60OrHigher())
+                return;
+
+            using (var key = Registry.ClassesRoot.OpenSubKey(ColumnHandlersKeyName, true))
+            {
+                if (key != null)
+                {
+                    key.DeleteSubKey(type.GUID.ToString("B"), false);
+                }
+            }
+
+            RegistryExtensions.RemoveAsApprovedShellExtension(type);
+        }
+
+        protected void RegisterColumn(Guid formatId, int propertyId)
+        {
+            var columnId = new ShellColumnId();
+            columnId.FormatId = formatId;
+            columnId.PropertyId = propertyId;
+
+            var columnInfo = new ShellColumnInfo();
+            columnInfo.ColumnId = columnId;
+        }
+
+    //void RegisterColumn(const GUID& fmtid, DWORD pid, PCWSTR wszTitle, UINT cChars, DWORD fmt = LVCFMT_LEFT, DWORD csFlags = SHCOLSTATE_TYPE_STR)
+    //{
+    //    SHCOLUMNINFO columninfo;
+
+    //    columninfo.scid = columnid;
+
+    //    ATLASSERT(wcslen(wszTitle) < MAX_COLUMN_NAME_LEN && "wszTitle is too long");
+    //    wcscpy(columninfo.wszTitle, wszTitle);
+    //    columninfo.cChars = cChars;
+    //    columninfo.fmt = fmt;
+    //    columninfo.csFlags = csFlags | SHCOLSTATE_EXTENDED | SHCOLSTATE_SECONDARYUI;
+    //    // Note: VT_LPSTR/VT_BSTR works ok. Other types seems to have issues with sorting.
+    //    columninfo.vt = VT_BSTR;
+    //    columninfo.wszDescription[0] = 0; // not used by the shell.
+
+    //    m_columninfos.push_back(columninfo);
+    //    m_columnidtoindex[columnid] = static_cast<unsigned int>(m_columninfos.size() - 1);
+    //}
+
         protected abstract void InitializeCore(string folderName);
+
+        private static bool IsShell60OrHigher()
+        {
+            return Environment.OSVersion.Version.Major > 6;
+        }
+
+        /// <summary>
+        /// Checks if the folder is the 'all users' or user desktop folder.
+        /// </summary>
+        /// <param name="folder"></param>
+        static bool IsDesktopPath(string folder)
+        {
+            return false;
+            //return GetFolderPath(CSIDL_COMMON_DESKTOPDIRECTORY) == wszFolder ||
+            //    GetFolderPath(CSIDL_DESKTOPDIRECTORY) == wszFolder;
+        }
     }
 }

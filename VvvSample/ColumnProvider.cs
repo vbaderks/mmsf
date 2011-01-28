@@ -19,18 +19,15 @@ namespace VvvSample
         {
             Contract.Requires(type != null);
 
-            //// TODO: replace IsShell6OrHigher with correct os version check.
-            //if (IsShell6OrHigher())
-            //    return S_OK; // Vista and up don't support column providers anymore (replaces by property system)
-            
-            //ComRegister(type, RegistryName, "MMSF Sample ShellExtension (FolderCopyHook)");
+            ComRegister(type, "MMSF Sample ShellExtension (ColumnProvider)");
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
             Contract.Requires(type != null);
-            //ComUnregister(type, RegistryName);
+
+            ComUnregister(type);
         }
 
         protected override void InitializeCore(string folderName)

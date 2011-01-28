@@ -20,9 +20,9 @@ namespace MiniShellFramework
     public abstract class ContextMenuBase : ShellExtensionInit, IContextMenu3, IMenuHost
     {
         private const uint InitializeMenuPopup = 0x117; // WM_INITMENUPOPUP
-        private const uint DrawItem = 0x2B; // WM_DRAWITEM
-        private const uint MeasureItem = 0x2C; // WM_MEASUREITEM
-        private const uint MenuChar = 0x120; // WM_MENUCHAR
+        private const uint DrawItem = 0x2B;             // WM_DRAWITEM
+        private const uint MeasureItem = 0x2C;          // WM_MEASUREITEM
+        private const uint MenuChar = 0x120;            // WM_MENUCHAR
 
         private uint startCommandId;
         private uint currentCommandId;
