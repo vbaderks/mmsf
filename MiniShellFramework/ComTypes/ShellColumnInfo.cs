@@ -12,6 +12,9 @@ namespace MiniShellFramework.ComTypes
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct ShellColumnInfo
     {
+        public const int MaxTitleLength = 80;
+        public const int MaxDescriptionLength = 128;
+
         /// <summary>
         /// A column identifier that uniquely identifies the column (scid).
         /// </summary>
@@ -30,7 +33,7 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// The default width of the column, in characters (cChars).
         /// </summary>
-        public uint WidthInCharacters;
+        public uint DefaultWidthInCharacters;
 
         /// <summary>
         /// Flags indicating the default column state (csFlags).

@@ -162,34 +162,30 @@ namespace MiniShellFramework
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 
-        protected void RegisterColumn(Guid formatId, int propertyId)
+        protected void RegisterColumn(Guid formatId, int propertyId, string title, uint defaultWidthInCharacters,
+            ListViewAlignment format = ListViewAlignment.Left, ShellColumnState state = ShellColumnState.TypeString)
         {
+            Contract.Requires(title != null);
+            Contract.Requires(title.Length < ShellColumnInfo.MaxTitleLength);
+
             var columnId = new ShellColumnId();
             columnId.FormatId = formatId;
             columnId.PropertyId = propertyId;
 
+            // Note: description field is not used by the shell.
             var columnInfo = new ShellColumnInfo();
             columnInfo.ColumnId = columnId;
+            columnInfo.Title = title;
+            columnInfo.DefaultWidthInCharacters = defaultWidthInCharacters;
+            columnInfo.Format = format;
+            columnInfo.State = state | ShellColumnState.Extended | ShellColumnState.SecondaryUI;
+
+            // Note: VT_LPSTR/VT_BSTR works ok. Other types seems to have issues with sorting.
+            columnInfo.variantType = 0; // TODO = VT_BSTR
+
+            //    m_columninfos.push_back(columninfo);
+            //    m_columnidtoindex[columnid] = static_cast<unsigned int>(m_columninfos.size() - 1);
         }
-
-    //void RegisterColumn(const GUID& fmtid, DWORD pid, PCWSTR wszTitle, UINT cChars, DWORD fmt = LVCFMT_LEFT, DWORD csFlags = SHCOLSTATE_TYPE_STR)
-    //{
-    //    SHCOLUMNINFO columninfo;
-
-    //    columninfo.scid = columnid;
-
-    //    ATLASSERT(wcslen(wszTitle) < MAX_COLUMN_NAME_LEN && "wszTitle is too long");
-    //    wcscpy(columninfo.wszTitle, wszTitle);
-    //    columninfo.cChars = cChars;
-    //    columninfo.fmt = fmt;
-    //    columninfo.csFlags = csFlags | SHCOLSTATE_EXTENDED | SHCOLSTATE_SECONDARYUI;
-    //    // Note: VT_LPSTR/VT_BSTR works ok. Other types seems to have issues with sorting.
-    //    columninfo.vt = VT_BSTR;
-    //    columninfo.wszDescription[0] = 0; // not used by the shell.
-
-    //    m_columninfos.push_back(columninfo);
-    //    m_columnidtoindex[columnid] = static_cast<unsigned int>(m_columninfos.size() - 1);
-    //}
 
         protected abstract void InitializeCore(string folderName);
 

@@ -2,11 +2,14 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
+using System;
+
 namespace MiniShellFramework.ComTypes
 {
     /// <summary>
     /// Flags indicating the default column state (SHCOLSTATE).
     /// </summary>
+    [Flags]
     public enum ShellColumnState
     {
         /// <summary>
@@ -17,24 +20,32 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Data type is a string (SHCOLSTATE_TYPE_STR).
         /// </summary>
-        TypeString = 1,
+        TypeString = 0x1,
 
         /// <summary>
         /// Data type is a integer (SHCOLSTATE_TYPE_INT).
         /// </summary>
-        TypeInteger = 2,
+        TypeInteger = 0x2,
 
         /// <summary>
         /// Data type is a integer (SHCOLSTATE_TYPE_DATE).
         /// </summary>
-        TypeDate = 3
+        TypeDate = 0x3,
+        
+        /// <summary>
+        /// Provided by a handler, not the folder (SHCOLSTATE_EXTENDED)
+        /// </summary>
+        Extended = 0x40,
+        
+        /// <summary>
+        /// Not displayed in context menu, but listed in the "More..." dialog (SHCOLSTATE_SECONDARYUI)
+        /// </summary>
+        SecondaryUI = 0x80
     }
 
     //SHCOLSTATE_TYPEMASK	= 0xf,
     //SHCOLSTATE_ONBYDEFAULT	= 0x10,
     //SHCOLSTATE_SLOW	= 0x20,
-    //SHCOLSTATE_EXTENDED	= 0x40,
-    //SHCOLSTATE_SECONDARYUI	= 0x80,
     //SHCOLSTATE_HIDDEN	= 0x100,
     //SHCOLSTATE_PREFER_VARCMP	= 0x200,
     //SHCOLSTATE_PREFER_FMTCMP	= 0x400,
