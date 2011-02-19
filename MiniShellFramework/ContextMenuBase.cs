@@ -33,12 +33,12 @@ namespace MiniShellFramework
         /// </summary>
         protected ContextMenuBase()
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.Constructor ()", Id);
+            Debug.WriteLine("[{0}] ContextMenuBase.Constructor", Id);
         }
 
         int IContextMenu.QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.QueryContextMenu, menuHandle={1}, position={2}, firstCommandId={3}, lastCommandId={4}, flag={5}",
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.QueryContextMenu (menuHandle={1}, position={2}, firstCommandId={3}, lastCommandId={4}, flag={5})",
                 Id, menuHandle, position, firstCommandId, lastCommandId, flags);
 
             if (flags.HasFlag(QueryContextMenuOptions.DefaultOnly))
@@ -53,7 +53,7 @@ namespace MiniShellFramework
 
         void IContextMenu.InvokeCommand(ref InvokeCommandInfo invokeCommandInfo)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.InvokeCommand, Size={1}", Id, invokeCommandInfo.Size);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.InvokeCommand (Size={1})", Id, invokeCommandInfo.Size);
 
             if (invokeCommandInfo.lpVerb.ToInt32() >> 16 != 0)
                 throw new ArgumentException("Verbs not supported");
@@ -68,7 +68,7 @@ namespace MiniShellFramework
 
         int IContextMenu.GetCommandString(IntPtr commandIdOffset, GetCommandStringOptions flags, int reserved, IntPtr result, int charCount)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.GetCommandString, commandIdOffset={1}, flags={2}, result={3}, charCount={4}",
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu.GetCommandString (commandIdOffset={1}, flags={2}, result={3}, charCount={4})",
                 Id, commandIdOffset, flags, result, charCount);
 
             switch (flags)
@@ -107,7 +107,7 @@ namespace MiniShellFramework
 
         void IContextMenu2.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu2.HandleMenuMsg, uMsg={1}, wParam={2}, lParam={3}", Id, uMsg, wParam, lParam);
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu2.HandleMenuMsg (uMsg={1}, wParam={2}, lParam={3})", Id, uMsg, wParam, lParam);
             ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
@@ -128,18 +128,18 @@ namespace MiniShellFramework
 
         void IContextMenu3.HandleMenuMsg(uint uMsg, IntPtr wParam, IntPtr lParam)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg, uMsg={1}, wParam={2}, lParam={3}",
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg (uMsg={1}, wParam={2}, lParam={3})",
                 Id, uMsg, wParam, lParam.ToInt32());
             ((IContextMenu3)this).HandleMenuMsg2(uMsg, wParam, lParam, IntPtr.Zero);
         }
 
         unsafe void IContextMenu3.HandleMenuMsg2(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr result)
         {
-            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg2, uMsg={1}, wParam={2}, lParam={3}, result={4}",
+            Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.HandleMenuMsg2 (uMsg={1}, wParam={2}, lParam={3}, result={4})",
                 Id, uMsg, wParam, lParam, result);
 
-            // Note: The SDK docs tell that this function is only called for WM_MENUCHAR but this is not true (seen on XP sp3).
-            //       HandleMenuMsg2 is called also directly for WM_INITMENUPOPUP, etc when the shell detects that IContextMenu3 is supported.
+            // The SDK docs tell that this function is only called for WM_MENUCHAR but this is not true (seen on XP sp3).
+            // HandleMenuMsg2 is called also directly for WM_INITMENUPOPUP, etc when the shell detects that IContextMenu3 is supported.
             switch (uMsg)
             {
                 case InitializeMenuPopup:
@@ -181,6 +181,7 @@ namespace MiniShellFramework
         {
             Contract.Requires(type != null);
             Contract.Requires(!string.IsNullOrEmpty(description));
+            Contract.Requires(!string.IsNullOrEmpty(progId));
 
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
@@ -198,17 +199,31 @@ namespace MiniShellFramework
         /// <summary>
         /// Removed the additional info from the registry that allowed the shell to discover the shell extension.
         /// </summary>
+        /// <remarks>
+        /// This function will only remove the COM registration from the specific ContextMenu. To prevent breaking
+        /// other COM registrations other shell extensions are left untouched.
+        /// It may be required to also remove the ProgID, this should be done in a separate method.
+        /// </remarks>
         /// <param name="type">The type.</param>
         /// <param name="description">The description.</param>
         /// <param name="progId">The prog id.</param>
         protected static void ComUnregister(Type type, string description, string progId)
         {
             Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(description));
             Contract.Requires(!string.IsNullOrEmpty(progId));
 
-            RegistryExtensions.RemoveAsApprovedShellExtension(type);
+            // Remove the ContextMenu COM registration.
+            // Leave the 'ContextMenuHandlers' subkey intact, other handlers may also be installed.
+            using (var contextMenuHandlersKey = Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\ContextMenuHandlers", true))
+            {
+                if (contextMenuHandlersKey != null)
+                {
+                    contextMenuHandlersKey.DeleteSubKey(description, false);
+                }
+            }
 
-            // Note: prog id should be removed by 1 global unregister function.
+            RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 
         /// <summary>

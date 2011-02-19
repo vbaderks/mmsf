@@ -34,7 +34,7 @@ namespace MiniShellFramework
 
         void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
-            Debug.WriteLine("[{0}] ShellExtensionInit.IShellExtInit.Initialize (pidlFolder={1}, dataObject={2}, hkeyProgId={3}",
+            Debug.WriteLine("[{0}] ShellExtensionInit.IShellExtInit.Initialize (pidlFolder={1}, dataObject={2}, hkeyProgId={3})",
                 Id, pidlFolder, dataObject, hkeyProgId);
             CacheFiles(dataObject);
         }

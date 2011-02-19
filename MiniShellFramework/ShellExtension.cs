@@ -23,14 +23,14 @@ namespace MiniShellFramework
             string interfaceName;
             if (!Guids.TryGetName(iid, out interfaceName))
             {
-                interfaceName = "Unknown";
+                interfaceName = "Unknown COM Interface GUID";
             }
-            Debug.WriteLine("[{0}] ShellExtension.ICustomQueryInterface.GetInterface (iid = {1} ({2})", Id, iid, interfaceName);
+            Debug.WriteLine("[{0}] ShellExtension.ICustomQueryInterface.GetInterface (iid = {1} ({2}))", Id, iid, interfaceName);
 
             ppv = IntPtr.Zero;
 
             // Force COM to use its own standard Marshaller and not the .NET runtime managed (free threaded) marshaler.
-            if (iid == Guids.IMarshal)
+            if (iid == Guids.MarshalInterfaceId)
                 return CustomQueryInterfaceResult.Failed;
 
             return CustomQueryInterfaceResult.NotHandled;
