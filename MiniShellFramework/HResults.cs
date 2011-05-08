@@ -16,9 +16,14 @@ namespace MiniShellFramework
         public const int ErrorAlreadyInitialized = 300; // TODO: HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)
 
         /// <summary>
-        /// Operation completed oK (S_OK).
+        /// Operation completed ok (S_OK).
         /// </summary>
-        public const int OK = 0;
+        public const int Ok = 0;
+
+        /// <summary>
+        /// Operation completed without error, result is false (S_FALSE).
+        /// </summary>
+        public const int False = 1;
 
         /// <summary>
         /// E_FAIL

@@ -30,7 +30,7 @@ namespace MiniShellFramework
             var propSheetPage = new PropSheetPage();
             propSheetPage.InitializeSize();
 
-            propSheetPage.dwFlags |= PSP.DLGINDIRECT;
+            propSheetPage.dwFlags |= PropSheetPageOptions.DLGINDIRECT;
 
             return IntPtr.Zero;
         }

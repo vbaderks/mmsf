@@ -3,27 +3,49 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
+    public static class SummaryInformationPropertyStreamIds
+    {
+        public static Guid Guid
+        {
+            get
+            {
+                return new Guid(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
+            }
+        }
+
+        // #define PID_AUTHOR        4  // string
+        public const int Author = 4;
+    }
+
+
     /// <summary>
     /// Provide a base class for property sheet shell extensions.
     /// </summary>
     [ComVisible(true)]                        // Make this .NET class visible to ensure derived class can be COM visible.
     [ClassInterface(ClassInterfaceType.None)] // Only the functions from the COM interfaces should be accessible.
-    public abstract class ColumnProviderBase : ShellExtension, IColumnProvider
+    public abstract class ColumnProviderBase<T> : ShellExtension, IColumnProvider
     {
-        const string ColumnHandlersKeyName = @"Folder\ShellEx\ColumnHandlers";
+        private const string ColumnHandlersKeyName = @"Folder\ShellEx\ColumnHandlers";
         private bool initialized;
         private bool hideDesktopColumns;
+        private readonly List<ShellColumnInfo> columnInfos = new List<ShellColumnInfo>();
+        private readonly List<string> extensions = new List<string>();
+        private IList<string> cachedInfo;
+        private string cachedFileName;
+        private Dictionary<string, List<string>> cachedInfos = new Dictionary<string, List<string>>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnProviderBase"/> class.
+        /// Initializes a new instance of the <see cref="ColumnProviderBase&lt;T&gt;"/> class.
         /// </summary>
         protected ColumnProviderBase()
         {
@@ -56,21 +78,21 @@ namespace MiniShellFramework
         /// </summary>
         /// <param name="index">The column's zero-based index. It is an arbitrary value that is used to enumerate columns (DWORD dwIndex).</param>
         /// <param name="columnInfo">Information about the columnn (psci).</param>
-        void IColumnProvider.GetColumnInfo(int index, ref ShellColumnInfo columnInfo)
+        int IColumnProvider.GetColumnInfo(int index, ref ShellColumnInfo columnInfo)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetColumnInfo, index={1}", Id, index);
 
             if (!initialized)
                 throw new COMException("Initialize was not called");
 
-            //if (m_desktopbugworkaround() || dwIndex >= m_columninfos.size())
-            //    return S_FALSE; // tell the shell there are no more columns.
+            if (hideDesktopColumns || index >= columnInfos.Count)
+                return HResults.False; // tell the shell there are no more columns.
 
-            //*psci = m_columninfos[dwIndex];
-            //return S_OK;
+            columnInfo = columnInfos[index];
+            return HResults.Ok;
         }
 
-        void IColumnProvider.GetItemData(ref ShellColumnId columnId, ref ShellColumnData columnData, object data)
+        int IColumnProvider.GetItemData(ref ShellColumnId columnId, ref ShellColumnData columnData, object data)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetItemData, columnId.FormatId={1}, columnId.PropertyId={2}",
                 Id, columnId.FormatId, columnId.PropertyId);
@@ -78,37 +100,31 @@ namespace MiniShellFramework
             if (!initialized)
                 throw new COMException("Initialize was not called");
 
-            //if (!IsSupportedItem(*pscd))
-            //{
-            //    VariantInit(pvarData); // must initialise out args as we return a success code.
-            //    return S_FALSE;
-            //}
+            if (!IsSupportedItem(ref columnData))
+            {
+                ////VariantInit(pvarData); // must initialise out args as we return a success code.
+                return HResults.False;
+            }
 
-            //PCWSTR wszFilename = PathFindFileNameW(pscd->wszFile);
+            bool flushCache = columnData.Flags.HasFlag(ShellColumnDataOptions.UpdateItem);
+            var fileName = Path.GetFileName(columnData.File);
+            object info = null;
+            if (!flushCache)
+            {
+                // User of this interface (explorer.exe) are expected to ask 
+                // all active item data per file.
+                info = FindInLastUsedCache(fileName);
+            }
 
-            //bool bFlushCache = IsBitSet(pscd->dwFlags, SHCDF_UPDATEITEM);
-            //const std::vector<CString>* pCachedInfo;
+            if (info == null)
+            {
+                info = GetAndCacheFileInfo(fileName, columnData.File, flushCache);
+            }
+  
+            ////pvarData->bstrVal = (*pCachedInfo)[GetIndex(*pscid)].AllocSysString();
+            ////pvarData->vt = VT_BSTR;
 
-            //if (bFlushCache)
-            //{
-            //    pCachedInfo = NULL;
-            //}
-            //else
-            //{
-            //    // User of this interface (explorer.exe) are expected to ask 
-            //    // all active item data per file.
-            //    pCachedInfo = FindInLastUsedCache(wszFilename);
-            //}
-
-            //if (pCachedInfo == NULL)
-            //{
-            //    pCachedInfo = GetAndCacheFileInfo(wszFilename, pscd->wszFile, bFlushCache);
-            //}
-
-            //pvarData->bstrVal = (*pCachedInfo)[GetIndex(*pscid)].AllocSysString();
-            //pvarData->vt = VT_BSTR;
-
-            //return S_OK;
+            return HResults.Ok;
         }
 
         /// <summary>
@@ -162,15 +178,30 @@ namespace MiniShellFramework
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 
+        protected abstract void InitializeCore(string folderName);
+
+        // Purpose: provides a default GUID for the columns.
+        protected Guid GetStandardFormatIdentifier()
+        {
+            return Marshal.GenerateGuidForType(typeof(T));
+        }
+
+        protected void RegisterColumn(string title, uint defaultWidthInCharacters,
+            ListViewAlignment format = ListViewAlignment.Left, ShellColumnState state = ShellColumnState.TypeString)
+        {
+            Contract.Requires(title != null);
+            Contract.Requires(title.Length < ShellColumnInfo.MaxTitleLength);
+
+            RegisterColumn(GetStandardFormatIdentifier(), columnInfos.Count, title, defaultWidthInCharacters, format, state);
+        }
+
         protected void RegisterColumn(Guid formatId, int propertyId, string title, uint defaultWidthInCharacters,
             ListViewAlignment format = ListViewAlignment.Left, ShellColumnState state = ShellColumnState.TypeString)
         {
             Contract.Requires(title != null);
             Contract.Requires(title.Length < ShellColumnInfo.MaxTitleLength);
 
-            var columnId = new ShellColumnId();
-            columnId.FormatId = formatId;
-            columnId.PropertyId = propertyId;
+            var columnId = new ShellColumnId { FormatId = formatId, PropertyId = propertyId };
 
             // Note: description field is not used by the shell.
             var columnInfo = new ShellColumnInfo();
@@ -183,11 +214,18 @@ namespace MiniShellFramework
             // Note: VT_LPSTR/VT_BSTR works ok. Other types seems to have issues with sorting.
             columnInfo.variantType = 0; // TODO = VT_BSTR
 
-            //    m_columninfos.push_back(columninfo);
-            //    m_columnidtoindex[columnid] = static_cast<unsigned int>(m_columninfos.size() - 1);
+            columnInfos.Add(columnInfo);
         }
 
-        protected abstract void InitializeCore(string folderName);
+        protected void RegisterExtension(string extension)
+        {
+            extensions.Add(extension.ToLowerInvariant());
+        }
+
+        protected virtual FileAttributes GetFileAttributeMask()
+        {
+            return FileAttributes.Directory | FileAttributes.Offline;
+        }
 
         private static bool IsShell60OrHigher()
         {
@@ -198,11 +236,76 @@ namespace MiniShellFramework
         /// Checks if the folder is the 'all users' or user desktop folder.
         /// </summary>
         /// <param name="folder"></param>
-        static bool IsDesktopPath(string folder)
+        private static bool IsDesktopPath(string folder)
         {
-            return false;
-            //return GetFolderPath(CSIDL_COMMON_DESKTOPDIRECTORY) == wszFolder ||
-            //    GetFolderPath(CSIDL_DESKTOPDIRECTORY) == wszFolder;
+            Contract.Requires(folder != null);
+
+            return Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory) == folder ||
+                   Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) == folder;
         }
+
+        private bool IsSupportedItem(ref ShellColumnData columnData)
+        {
+            // Check file mask and file extension.
+            return !columnData.FileAttributes.HasFlag(GetFileAttributeMask()) && 
+                extensions.Contains(columnData.FileNameExtension.ToLowerInvariant());
+        }
+
+        private IList<string> FindInLastUsedCache(string fileName)
+        {
+            if (cachedInfo == null)
+                return null; // last used cache is empty.
+
+            if (cachedFileName != fileName)
+                return null; // last used cache was for a different file.
+
+            return cachedInfo;
+        }
+
+        private IList<string> GetAndCacheFileInfo(string fileName, string file, bool flushCache)
+        {
+            IList<string> info;
+
+            if (flushCache)
+            {
+                info = null;
+            }
+            else
+            {
+                info = FindInCache(fileName);
+            }
+
+            if (info == null)
+            {
+                // New file info must be stored in the cache.
+                var columnInfos1 = new List<string>();
+
+                // Note: GetAllColumnInfo must be implemented by the derived class.
+                ////static_cast<T*>(this)->GetAllColumnInfo(CString(CW2CT(wszFile)), strColumnInfos);
+                GetAllColumnInfoCore(fileName, columnInfos1);
+
+                Debug.Assert(columnInfos1.Count == columnInfos.Count,
+                    "Mismatch detected between registered columns and returned values.");
+
+                ////pCachedInfo = InsertInCache(strFilename, strColumnInfos);
+                ////cachedInfos[fileName] = info;
+            }
+
+            return null; //// InsertInLastUsedCache(fileName, cachedInfo);
+        }
+
+    ////const std::vector<CString>* InsertInCache(const CStringW& strFilename, const std::vector<CString>& strColumnInfos)
+    ////{
+    ////    return &(m_mapCacheInfo[strFilename] = strColumnInfos);
+    ////}
+
+        private IList<string> FindInCache(string fileName)
+        {
+            List<string> infos;
+            return cachedInfos.TryGetValue(fileName, out infos) ? infos : null;
+        }
+
+        protected abstract void GetAllColumnInfoCore(string fileName, IList<string> columnInfos);
     }
+
 }

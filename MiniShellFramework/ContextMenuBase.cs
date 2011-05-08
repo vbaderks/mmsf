@@ -79,7 +79,7 @@ namespace MiniShellFramework
                     var item = menuItems[index];
                     Contract.Assume(item != null);
                     StringToPtr(item.HelpText, result, charCount);
-                    return HResults.OK;
+                    return HResults.Ok;
 
                 case GetCommandStringOptions.CanonicalVerb:
                 case GetCommandStringOptions.CanonicalVerbAnsi:

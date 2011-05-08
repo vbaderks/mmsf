@@ -34,7 +34,9 @@ namespace MiniShellFramework.ComTypes
         /// <param name="columnInfo">
         /// Information about the columnn (psci).
         /// </param>
-        void GetColumnInfo(int index, ref ShellColumnInfo columnInfo);
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Error)]
+        int GetColumnInfo(int index, ref ShellColumnInfo columnInfo);
 
         /// <summary>
         /// Requests column data for a specified file.
@@ -42,6 +44,8 @@ namespace MiniShellFramework.ComTypes
         /// <param name="columnId">Identifies the column.</param>
         /// <param name="columnData">The column data.</param>
         /// <param name="data">The data.</param>
-        void GetItemData(ref ShellColumnId columnId, ref ShellColumnData columnData, object data);
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Error)]
+        int GetItemData(ref ShellColumnId columnId, ref ShellColumnData columnData, object data);
     }
 }

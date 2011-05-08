@@ -31,21 +31,25 @@ namespace MiniShellFramework.ComTypes
         /// Data type is a integer (SHCOLSTATE_TYPE_DATE).
         /// </summary>
         TypeDate = 0x3,
-        
+
+        /// <summary>
+        /// TODO (SHCOLSTATE_SLOW).
+        /// </summary>
+        Slow = 0x20,
+
         /// <summary>
         /// Provided by a handler, not the folder (SHCOLSTATE_EXTENDED)
         /// </summary>
         Extended = 0x40,
-        
+
         /// <summary>
-        /// Not displayed in context menu, but listed in the "More..." dialog (SHCOLSTATE_SECONDARYUI)
+        /// Not displayed in context menu, but listed in the "More..." dialog (SHCOLSTATE_SECONDARYUI).
         /// </summary>
         SecondaryUI = 0x80
     }
 
     //SHCOLSTATE_TYPEMASK	= 0xf,
     //SHCOLSTATE_ONBYDEFAULT	= 0x10,
-    //SHCOLSTATE_SLOW	= 0x20,
     //SHCOLSTATE_HIDDEN	= 0x100,
     //SHCOLSTATE_PREFER_VARCMP	= 0x200,
     //SHCOLSTATE_PREFER_FMTCMP	= 0x400,
