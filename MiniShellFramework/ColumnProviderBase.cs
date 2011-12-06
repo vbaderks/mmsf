@@ -307,5 +307,4 @@ namespace MiniShellFramework
 
         protected abstract void GetAllColumnInfoCore(string fileName, IList<string> columnInfos);
     }
-
 }

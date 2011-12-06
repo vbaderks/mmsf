@@ -109,7 +109,7 @@ namespace MiniShellFramework
                               {
                                   { MarshalInterfaceId, "IMarshal" },
                                   { ShellExtInitInterfaceId, "IShellExtInit" },
-                                  { PersistFileInterfaceId, "IPersistFile "},
+                                  { PersistFileInterfaceId, "IPersistFile " },
                                   { QueryInfoInterfaceId, "IQueryInfo" },
                                   { ObjectWithSiteInterfaceId, "IObjectWithSite" },
                                   { PreviewHandlerGuidInterfaceId, "IPreviewHandlerGuid" },

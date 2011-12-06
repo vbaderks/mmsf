@@ -46,7 +46,7 @@ namespace MiniShellFramework
             // try to synth the template from the user control properties 
             // so the propertysheet owned by MMC can size itself properly
 
-            //Font fnt = MainControl.Font;
+            ////Font fnt = MainControl.Font;
             return IntPtr.Zero;
         }
     }
@@ -66,6 +66,6 @@ namespace MiniShellFramework
         internal short wTitleArray;
         internal short wFontPointSize;
         [MarshalAs(UnmanagedType.LPWStr)]
-        internal String szFontTypeface;
+        internal string szFontTypeface;
     }
 }

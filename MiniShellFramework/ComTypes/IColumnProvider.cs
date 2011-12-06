@@ -13,7 +13,7 @@ namespace MiniShellFramework.ComTypes
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("000214FC-0000-0000-c000-000000000046")] // TODO
-    //[ContractClass(typeof(CopyHookContract))]
+    ////[ContractClass(typeof(CopyHookContract))]
     public interface IColumnProvider
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace MiniShellFramework.ComTypes
         /// </summary>
         /// <param name="shellColumnInitializeInfo">
         /// The shell column initialize info with initialization information, including the folder whose contents are to be displayed.
-        ///</param>
+        /// </param>
         void Initialize(ref ShellColumnInitializeInfo shellColumnInitializeInfo);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace MiniShellFramework.ComTypes
         /// </summary>
         /// <param name="index">
         /// The column's zero-based index. It is an arbitrary value that is used to enumerate columns (DWORD dwIndex).
-        ///</param>
+        /// </param>
         /// <param name="columnInfo">
         /// Information about the columnn (psci).
         /// </param>

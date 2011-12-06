@@ -31,7 +31,7 @@ namespace MiniShellFramework.ComTypes
         /// <param name="lParam">Handler-specific data to pass to the function pointed to by pfnAddPage.</param>
         /// <returns>If successful, returns a one-based index to specify the page that should be initially displayed.</returns>
         [PreserveSig]
-        [return:MarshalAs(UnmanagedType.Error)]
+        [return: MarshalAs(UnmanagedType.Error)]
         ////int AddPages(AddPropertySheetPage addPageFunction, IntPtr lParam);
         int AddPages(IntPtr addPageFunction, IntPtr lParam);
 

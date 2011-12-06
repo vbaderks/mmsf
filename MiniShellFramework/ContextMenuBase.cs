@@ -154,7 +154,7 @@ namespace MiniShellFramework
 
                 case MeasureItem:
                     Debug.WriteLine("[{0}] ContextMenuBase.IContextMenu3.OnMeasureItem", Id);
-                    OnMeasureItem(ref *(MEASUREITEMSTRUCT*) lParam.ToPointer());
+                    OnMeasureItem(ref *(MEASUREITEMSTRUCT*)lParam.ToPointer());
                     break;
 
                 case MenuChar:
@@ -162,8 +162,8 @@ namespace MiniShellFramework
                     if (result == IntPtr.Zero)
                         throw new InvalidOperationException();
 
-                    var pointerResult = (int*) result.ToPointer();
-                    *pointerResult = OnMenuChar(lParam, (ushort) wParam.ToInt32());
+                    var pointerResult = (int*)result.ToPointer();
+                    *pointerResult = OnMenuChar(lParam, (ushort)wParam.ToInt32());
                     break;
 
                 default:
@@ -257,12 +257,12 @@ namespace MiniShellFramework
             if (drawItem.CtlType != OwnerDrawControlType.Menu)
                 throw new COMException("CtlType is not menu");
 
-            GetMenuItem((int) (drawItem.itemID - startCommandId)).CustomMenuHandler.Draw(ref drawItem);
+            GetMenuItem((int)(drawItem.itemID - startCommandId)).CustomMenuHandler.Draw(ref drawItem);
         }
 
         private void OnMeasureItem(ref MEASUREITEMSTRUCT measureItem)
         {
-            GetMenuItem((int) (measureItem.itemID - startCommandId)).CustomMenuHandler.Measure(ref measureItem);
+            GetMenuItem((int)(measureItem.itemID - startCommandId)).CustomMenuHandler.Measure(ref measureItem);
         }
 
         private int OnMenuChar(IntPtr handleMenu, ushort character)

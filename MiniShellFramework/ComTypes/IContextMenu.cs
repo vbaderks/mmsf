@@ -30,7 +30,7 @@ namespace MiniShellFramework.ComTypes
         /// its code value set to the offset of the largest command identifier that was assigned.
         /// </returns>
         [PreserveSig]
-        [return:MarshalAs(UnmanagedType.Error)]
+        [return: MarshalAs(UnmanagedType.Error)]
         int QueryContextMenu(IntPtr menuHandle, uint position, uint firstCommandId, uint lastCommandId, QueryContextMenuOptions flags);
 
         /// <summary>
