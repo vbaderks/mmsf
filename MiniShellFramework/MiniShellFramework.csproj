@@ -102,7 +102,9 @@
     <Compile Include="ComTypes\IColumnProvider.cs" />
     <Compile Include="ComTypes\IContextMenu.cs" />
     <Compile Include="ComTypes\IContextMenu2.cs" />
+    <Compile Include="ComTypes\IInitializeWithItem.cs" />
     <Compile Include="ComTypes\IShellPropSheetExt.cs" />
+    <Compile Include="ComTypes\IThumbnailProvider.cs" />
     <Compile Include="ComTypes\ListViewAlignment.cs" />
     <Compile Include="ComTypes\MenuItemInfoMask.cs" />
     <Compile Include="ComTypes\MenuItemInfoType.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="ComTypes\ShellColumnInitializeInfo.cs" />
     <Compile Include="ComTypes\ShellColumnState.cs" />
     <Compile Include="ComTypes\ShellExtInitContract.cs" />
+    <Compile Include="ComTypes\ThumbnailAlphaType.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="FormatEtcExtensions.cs" />
     <Compile Include="GetCommandStringOptions.cs" />
@@ -153,6 +156,7 @@
     <Compile Include="ShellExtensionInit.cs" />
     <Compile Include="ShellPropertySheetBase.cs" />
     <Compile Include="SmallBitmapCustomMenuHandler.cs" />
+    <Compile Include="ThumbnailProviderBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Class Diagrams\Base Classes.cd" />

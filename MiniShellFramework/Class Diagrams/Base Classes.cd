@@ -53,11 +53,11 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="MiniShellFramework.ColumnProviderBase" Collapsed="true">
-    <Position X="6.5" Y="1.75" Width="1.5" />
+  <Class Name="MiniShellFramework.ThumbnailProviderBase" Collapsed="true">
+    <Position X="8" Y="1.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAgAAAAAAAAAA=</HashCode>
-      <FileName>ColumnProviderBase.cs</FileName>
+      <HashCode>AACCQAAAABAAAAAAAAAAAAAIAAAAAAAAAABAEAQEAAA=</HashCode>
+      <FileName>ThumbnailProviderBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

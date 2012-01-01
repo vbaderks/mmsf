@@ -44,5 +44,10 @@ namespace MiniShellFramework
         {
             get { return id; }
         }
+
+        protected virtual CustomQueryInterfaceResult GetInterfaceCore(ref Guid iid, ref IntPtr ppv)
+        {
+            return CustomQueryInterfaceResult.NotHandled;
+        }
     }
 }

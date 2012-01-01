@@ -70,7 +70,7 @@ namespace MiniShellFramework
         /// <summary>
         /// 
         /// </summary>
-        public static readonly Guid InitializeWithStreamInteraceId = new Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f");
+        public static readonly Guid InitializeWithStreamInterfaceId = new Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f");
 
         /// <summary>
         /// 
