@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{06EBF505-2594-4CCF-889E-CEE8C4715629}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MiniShellFramework</RootNamespace>
+    <AssemblyName>MiniShellFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>KeyPair.snk</AssemblyOriginatorKeyFile>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\MiniShellFramework.XML</DocumentationFile>
+    <NoWarn />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\MiniShellFramework.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Checked|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Checked\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\MiniShellFramework.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <DocumentationFile>bin\Checked\MiniShellFramework.XML</DocumentationFile>
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClipFormat.cs" />
+    <Compile Include="ColumnProviderBase.cs" />
+    <Compile Include="ComTypes\CopyHookContract.cs" />
+    <Compile Include="ComTypes\DrawItem.cs" />
+    <Compile Include="ComTypes\IColumnProvider.cs" />
+    <Compile Include="ComTypes\IContextMenu.cs" />
+    <Compile Include="ComTypes\IContextMenu2.cs" />
+    <Compile Include="ComTypes\IInitializeWithItem.cs" />
+    <Compile Include="ComTypes\IShellPropSheetExt.cs" />
+    <Compile Include="ComTypes\IThumbnailProvider.cs" />
+    <Compile Include="ComTypes\ListViewAlignment.cs" />
+    <Compile Include="ComTypes\MenuItemInfoMask.cs" />
+    <Compile Include="ComTypes\MenuItemInfoType.cs" />
+    <Compile Include="ComTypes\PropSheetPage.cs" />
+    <Compile Include="ComTypes\QueryContextMenuOptions.cs" />
+    <Compile Include="ComTypes\ShellColumnData.cs" />
+    <Compile Include="ComTypes\ShellColumnId.cs" />
+    <Compile Include="ComTypes\ShellColumnInfo.cs" />
+    <Compile Include="ComTypes\ShellColumnInitializeInfo.cs" />
+    <Compile Include="ComTypes\ShellColumnState.cs" />
+    <Compile Include="ComTypes\ShellExtInitContract.cs" />
+    <Compile Include="ComTypes\ThumbnailAlphaType.cs" />
+    <Compile Include="Facility.cs" />
+    <Compile Include="FormatEtcExtensions.cs" />
+    <Compile Include="GetCommandStringOptions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Guids.cs" />
+    <Compile Include="IMenuHost.cs" />
+    <Compile Include="MenuHostContract.cs" />
+    <Compile Include="PropertySheetPage.cs" />
+    <Compile Include="RegistryExtensions.cs" />
+    <Compile Include="RootKey.cs" />
+    <Compile Include="SafeNativeMethods.cs" />
+    <Compile Include="Severity.cs" />
+    <Compile Include="ComTypes\StorageModes.cs" />
+    <Compile Include="HResults.cs" />
+    <Compile Include="ClipboardFormatDrop.cs" />
+    <Compile Include="FileOperation.cs" />
+    <Compile Include="ComStream.cs" />
+    <Compile Include="ContextMenuBase.cs" />
+    <Compile Include="FolderCopyHookBase.cs" />
+    <Compile Include="CustomMenuHandler.cs" />
+    <Compile Include="ComTypes\IInitializeWithStream.cs" />
+    <Compile Include="InfoTipBase.cs" />
+    <Compile Include="ComTypes\InvokeCommandInfo.cs" />
+    <Compile Include="ComTypes\IInitializeWithFile.cs" />
+    <Compile Include="ComTypes\InfoTipOptions.cs" />
+    <Compile Include="ComTypes\IContextMenu3.cs" />
+    <Compile Include="ComTypes\ICopyHook.cs" />
+    <Compile Include="ComTypes\IShellExtInit.cs" />
+    <Compile Include="ComTypes\IShellFolder.cs" />
+    <Compile Include="ComTypes\IPersist.cs" />
+    <Compile Include="ComTypes\IQueryInfo.cs" />
+    <Compile Include="MeasureItemStruct.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="ComTypes\MenuItemInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShellExtension.cs" />
+    <Compile Include="ShellExtensionInit.cs" />
+    <Compile Include="ShellPropertySheetBase.cs" />
+    <Compile Include="SmallBitmapCustomMenuHandler.cs" />
+    <Compile Include="ThumbnailProviderBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Class Diagrams\Base Classes.cd" />
+    <None Include="Class Diagrams\Interfaces.cd" />
+    <None Include="KeyPair.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
