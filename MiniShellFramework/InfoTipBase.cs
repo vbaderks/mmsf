@@ -47,6 +47,8 @@ namespace MiniShellFramework
         void IQueryInfo.GetInfoTip(InfoTipOptions options, out string text)
         {
             Debug.WriteLine("[{0}] InfoTipBase.IQueryInfo.GetInfoTip, dwFlags={1}", Id, options);
+            if (!initialized)
+                throw new COMException("Not initialized", HResults.ErrorFail);
             text = GetInfoTipCore();
         }
 
@@ -144,7 +146,7 @@ namespace MiniShellFramework
         protected abstract void InitializeCore(Stream stream);
 
         /// <summary>
-        /// When overridden in a derived class initializes the extension.
+        /// When overridden in a derived class provides the text for the tooltip.
         /// </summary>
         /// <returns>a string that can be used as text for a infotip.</returns>
         protected abstract string GetInfoTipCore();

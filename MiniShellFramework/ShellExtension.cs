@@ -10,7 +10,7 @@ using System.Threading;
 namespace MiniShellFramework
 {
     /// <summary>
-    /// Provide a base class for propery sheet shell extensions.
+    /// Provide a base class for shell extensions.
     /// </summary>
     [ComVisible(true)] // Make this .NET class COM visible to ensure derived classes can be COM visible.
     public abstract class ShellExtension : ICustomQueryInterface
