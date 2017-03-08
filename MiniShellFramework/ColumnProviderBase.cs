@@ -169,10 +169,7 @@ namespace MiniShellFramework
 
             using (var key = Registry.ClassesRoot.OpenSubKey(ColumnHandlersKeyName, true))
             {
-                if (key != null)
-                {
-                    key.DeleteSubKey(type.GUID.ToString("B"), false);
-                }
+                key?.DeleteSubKey(type.GUID.ToString("B"), false);
             }
 
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
@@ -204,15 +201,18 @@ namespace MiniShellFramework
             var columnId = new ShellColumnId { FormatId = formatId, PropertyId = propertyId };
 
             // Note: description field is not used by the shell.
-            var columnInfo = new ShellColumnInfo();
-            columnInfo.ColumnId = columnId;
-            columnInfo.Title = title;
-            columnInfo.DefaultWidthInCharacters = defaultWidthInCharacters;
-            columnInfo.Format = format;
-            columnInfo.State = state | ShellColumnState.Extended | ShellColumnState.SecondaryUI;
+            var columnInfo = new ShellColumnInfo
+            {
+                ColumnId = columnId,
+                Title = title,
+                DefaultWidthInCharacters = defaultWidthInCharacters,
+                Format = format,
+                State = state | ShellColumnState.Extended | ShellColumnState.SecondaryUI,
+                variantType = 0
+            };
 
             // Note: VT_LPSTR/VT_BSTR works ok. Other types seems to have issues with sorting.
-            columnInfo.variantType = 0; // TODO = VT_BSTR
+            // TODO = VT_BSTR
 
             columnInfos.Add(columnInfo);
         }
@@ -256,24 +256,12 @@ namespace MiniShellFramework
             if (cachedInfo == null)
                 return null; // last used cache is empty.
 
-            if (cachedFileName != fileName)
-                return null; // last used cache was for a different file.
-
-            return cachedInfo;
+            return cachedFileName != fileName ? null : cachedInfo;
         }
 
         private IList<string> GetAndCacheFileInfo(string fileName, string file, bool flushCache)
         {
-            IList<string> info;
-
-            if (flushCache)
-            {
-                info = null;
-            }
-            else
-            {
-                info = FindInCache(fileName);
-            }
+            var info = flushCache ? null : FindInCache(fileName);
 
             if (info == null)
             {

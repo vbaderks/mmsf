@@ -217,10 +217,7 @@ namespace MiniShellFramework
             // Leave the 'ContextMenuHandlers' subkey intact, other handlers may also be installed.
             using (var contextMenuHandlersKey = Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\ContextMenuHandlers", true))
             {
-                if (contextMenuHandlersKey != null)
-                {
-                    contextMenuHandlersKey.DeleteSubKey(description, false);
-                }
+                contextMenuHandlersKey?.DeleteSubKey(description, false);
             }
 
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
@@ -289,16 +286,14 @@ namespace MiniShellFramework
         private class MenuItem
         {
             private readonly string helpText;
-            private readonly Menu.ContextCommand contextcommand;
-            private readonly CustomMenuHandler custommenuhandler;
 
             public MenuItem(string helpText, Menu.ContextCommand contextcommand, CustomMenuHandler custommenuhandler)
             {
                 Contract.Requires(helpText != null);
 
                 this.helpText = helpText;
-                this.contextcommand = contextcommand;
-                this.custommenuhandler = custommenuhandler;
+                Command = contextcommand;
+                CustomMenuHandler = custommenuhandler;
             }
 
             public string HelpText
@@ -310,21 +305,9 @@ namespace MiniShellFramework
                 }
             }
 
-            public Menu.ContextCommand Command
-            {
-                get
-                {
-                    return contextcommand;
-                }
-            }
+            public Menu.ContextCommand Command { get; }
 
-            public CustomMenuHandler CustomMenuHandler
-            {
-                get
-                {
-                    return custommenuhandler;
-                }
-            }
+            public CustomMenuHandler CustomMenuHandler { get; }
 
             [ContractInvariantMethod]
             private void ObjectInvariant()

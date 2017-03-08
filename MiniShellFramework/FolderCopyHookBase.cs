@@ -88,10 +88,7 @@ namespace MiniShellFramework
             var keyName = @"Directory\ShellEx\CopyHookHandlers\" + name;
             using (var key = Registry.ClassesRoot.OpenSubKey(keyName, true))
             {
-                if (key != null)
-                {
-                    key.DeleteValue(type.GUID.ToString("B"), false);
-                }
+                key?.DeleteValue(type.GUID.ToString("B"), false);
             }
         }
 
@@ -116,7 +113,7 @@ namespace MiniShellFramework
     }
 
     [ContractClassFor(typeof(FolderCopyHookBase))]
-    abstract class FolderCopyHookBaseContract : FolderCopyHookBase
+    internal abstract class FolderCopyHookBaseContract : FolderCopyHookBase
     {
         protected override DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder, uint sourceAttributes, string destinationFolder, uint destinationAttributes)
         {

@@ -14,8 +14,8 @@ namespace VvvSample
             FileCount = 5;
         }
 
-        internal string Label { get; set; }
+        internal string Label { get; }
 
-        internal int FileCount { get; set; }
+        internal int FileCount { get; }
     }
 }

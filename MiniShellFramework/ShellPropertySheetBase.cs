@@ -86,10 +86,7 @@ namespace MiniShellFramework
 
             using (var key = Registry.ClassesRoot.OpenSubKey(progId + @"\ShellEx\PropertySheetHandlers\", true))
             {
-                if (key != null)
-                {
-                    key.DeleteSubKey(description, false);
-                }
+                key?.DeleteSubKey(description, false);
             }
         }
 

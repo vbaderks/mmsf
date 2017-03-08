@@ -71,7 +71,7 @@ namespace VvvSample
         private static void OnAboutMmsf(ref InvokeCommandInfo invokeCommandInfo, IList<string> fileNames)
         {
             var fvi = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-            var text = string.Format("Build with MSF version {0}", fvi.ProductVersion);
+            var text = $"Build with MSF version {fvi.ProductVersion}";
             MessageBox.Show(text);
         }
 

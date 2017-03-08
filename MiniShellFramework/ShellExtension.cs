@@ -16,7 +16,6 @@ namespace MiniShellFramework
     public abstract class ShellExtension : ICustomQueryInterface
     {
         private static int nextId;
-        private readonly int id = Interlocked.Increment(ref nextId);
 
         CustomQueryInterfaceResult ICustomQueryInterface.GetInterface(ref Guid iid, out IntPtr ppv)
         {
@@ -30,20 +29,14 @@ namespace MiniShellFramework
             ppv = IntPtr.Zero;
 
             // Force COM to use its own standard Marshaller and not the .NET runtime managed (free threaded) marshaler.
-            if (iid == Guids.MarshalInterfaceId)
-                return CustomQueryInterfaceResult.Failed;
-
-            return CustomQueryInterfaceResult.NotHandled;
+            return iid == Guids.MarshalInterfaceId ? CustomQueryInterfaceResult.Failed : CustomQueryInterfaceResult.NotHandled;
         }
 
         /// <summary>
         /// Gets the id.
         /// </summary>
         /// <value>The id.</value>
-        protected int Id
-        {
-            get { return id; }
-        }
+        protected int Id { get; } = Interlocked.Increment(ref nextId);
 
         protected virtual CustomQueryInterfaceResult GetInterfaceCore(ref Guid iid, ref IntPtr ppv)
         {

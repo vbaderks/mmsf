@@ -43,7 +43,7 @@ namespace VvvSample
         protected override string GetInfoTipCore()
         {
             Contract.Assume(vvvFile != null);
-            return string.Format("Label: {0}\nFile count: {1}", vvvFile.Label, vvvFile.FileCount);
+            return $"Label: {vvvFile.Label}\nFile count: {vvvFile.FileCount}";
         }
     }
 }

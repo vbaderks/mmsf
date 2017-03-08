@@ -37,30 +37,21 @@ namespace MiniShellFramework
         /// </summary>
         /// <value></value>
         /// <returns>true if the stream supports reading; otherwise, false.</returns>
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+        public override bool CanRead => true;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports seeking.
         /// </summary>
         /// <value></value>
         /// <returns>true if the stream supports seeking; otherwise, false.</returns>
-        public override bool CanSeek
-        {
-            get { return true; }
-        }
+        public override bool CanSeek => true;
 
         /// <summary>
         /// Gets a value indicating whether the current stream supports writing.
         /// </summary>
         /// <value></value>
         /// <returns>true if the stream supports writing; otherwise, false.</returns>
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
+        public override bool CanWrite => false;
 
         /// <summary>
         /// Gets the length in bytes of the stream.
@@ -76,8 +67,7 @@ namespace MiniShellFramework
                 if (stream == null)
                     throw new ObjectDisposedException("stream");
 
-                STATSTG statstg;
-                stream.Stat(out statstg, 1 /* STATFLAG_NONAME */);
+                stream.Stat(out STATSTG statstg, 1 /* STATFLAG_NONAME */);
                 Contract.Assume(statstg.cbSize >= 0);
                 return statstg.cbSize;
             }
@@ -93,15 +83,9 @@ namespace MiniShellFramework
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
         public override long Position
         {
-            get
-            {
-                throw new NotSupportedException();
-            }
+            get => throw new NotSupportedException();
 
-            set
-            {
-                throw new NotSupportedException();
-            }
+            set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -129,7 +113,7 @@ namespace MiniShellFramework
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.NotSupportedException">The stream does not support reading. </exception>
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-        public unsafe override int Read(byte[] buffer, int offset, int count)
+        public override unsafe int Read(byte[] buffer, int offset, int count)
         {
             if (stream == null)
                 throw new ObjectDisposedException("stream");

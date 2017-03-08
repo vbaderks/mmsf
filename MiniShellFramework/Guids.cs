@@ -10,7 +10,7 @@ namespace MiniShellFramework
     /// <summary>
     /// TODO
     /// </summary>
-    public class Guids
+    public static class Guids
     {
         /// <summary>
         /// 
