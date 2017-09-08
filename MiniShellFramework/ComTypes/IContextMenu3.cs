@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace MiniShellFramework.ComTypes
 {
+    /// <inheritdoc />
     /// <summary>
     /// Exposes methods that either create or merge a shortcut menu associated with a Shell object.
     /// Allows client objects to handle messages associated with owner-drawn menu items and extends
@@ -26,7 +27,7 @@ namespace MiniShellFramework.ComTypes
         /// <param name="lastCommandId">The maximum value that the handler can specify for a menu item identifier (idCmdLast).</param>
         /// <param name="flags">Optional flags that specify how the shortcut menu can be changed (uFlags).</param>
         /// <returns>
-        /// If successful, returns an HRESULT value that has its severity value set to SEVERITY_SUCCESS and 
+        /// If successful, returns an HRESULT value that has its severity value set to SEVERITY_SUCCESS and
         /// its code value set to the offset of the largest command identifier that was assigned.
         /// </returns>
         [PreserveSig]

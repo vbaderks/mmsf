@@ -9,7 +9,7 @@ using MiniShellFramework.ComTypes;
 namespace MiniShellFramework
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class PropertySheetPage
     {
@@ -40,9 +40,9 @@ namespace MiniShellFramework
             if (dlgTemplate != IntPtr.Zero)
                 return dlgTemplate;
 
-            var dlg = new DLGTEMPLATE();
+            ////var dlg = new DLGTEMPLATE();
 
-            // try to synth the template from the user control properties 
+            // try to synth the template from the user control properties
             // so the propertysheet owned by MMC can size itself properly
 
             ////Font fnt = MainControl.Font;

@@ -15,13 +15,7 @@ namespace MiniShellFramework
 {
     public static class SummaryInformationPropertyStreamIds
     {
-        public static Guid Guid
-        {
-            get
-            {
-                return new Guid(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
-            }
-        }
+        public static Guid Guid => new Guid(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
 
         // #define PID_AUTHOR        4  // string
         public const int Author = 4;
@@ -40,8 +34,8 @@ namespace MiniShellFramework
         private bool hideDesktopColumns;
         private readonly List<ShellColumnInfo> columnInfos = new List<ShellColumnInfo>();
         private readonly List<string> extensions = new List<string>();
-        private IList<string> cachedInfo;
-        private string cachedFileName;
+        ////private IList<string> cachedInfo;
+        ////private string cachedFileName;
         private Dictionary<string, List<string>> cachedInfos = new Dictionary<string, List<string>>();
 
         /// <summary>
@@ -72,12 +66,13 @@ namespace MiniShellFramework
             initialized = true;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Requests information about a column.
         /// By calling this repeatedly the shell can detect how many columns there are.
         /// </summary>
         /// <param name="index">The column's zero-based index. It is an arbitrary value that is used to enumerate columns (DWORD dwIndex).</param>
-        /// <param name="columnInfo">Information about the columnn (psci).</param>
+        /// <param name="columnInfo">Information about the column (psci).</param>
         int IColumnProvider.GetColumnInfo(int index, ref ShellColumnInfo columnInfo)
         {
             Debug.WriteLine("[{0}] ColumnProviderBase.IColumnProvider.GetColumnInfo, index={1}", Id, index);
@@ -111,7 +106,7 @@ namespace MiniShellFramework
             object info = null;
             if (!flushCache)
             {
-                // User of this interface (explorer.exe) are expected to ask 
+                // User of this interface (explorer.exe) are expected to ask
                 // all active item data per file.
                 info = FindInLastUsedCache(fileName);
             }
@@ -120,7 +115,7 @@ namespace MiniShellFramework
             {
                 info = GetAndCacheFileInfo(fileName, columnData.File, flushCache);
             }
-  
+
             ////pvarData->bstrVal = (*pCachedInfo)[GetIndex(*pscid)].AllocSysString();
             ////pvarData->vt = VT_BSTR;
 
@@ -247,16 +242,17 @@ namespace MiniShellFramework
         private bool IsSupportedItem(ref ShellColumnData columnData)
         {
             // Check file mask and file extension.
-            return !columnData.FileAttributes.HasFlag(GetFileAttributeMask()) && 
+            return !columnData.FileAttributes.HasFlag(GetFileAttributeMask()) &&
                 extensions.Contains(columnData.FileNameExtension.ToLowerInvariant());
         }
 
         private IList<string> FindInLastUsedCache(string fileName)
         {
-            if (cachedInfo == null)
-                return null; // last used cache is empty.
+            return null;
+            ////if (cachedInfo == null)
+                ////return null; // last used cache is empty.
 
-            return cachedFileName != fileName ? null : cachedInfo;
+            ////return cachedFileName != fileName ? null : cachedInfo;
         }
 
         private IList<string> GetAndCacheFileInfo(string fileName, string file, bool flushCache)
