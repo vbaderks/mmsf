@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
@@ -129,8 +128,10 @@ namespace MiniShellFramework
         /// <param name="description">The description.</param>
         protected static void ComRegister(Type type, string description)
         {
-            Contract.Requires(type != null);
-            Contract.Requires(!string.IsNullOrEmpty(description));
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (description == null)
+                throw new ArgumentNullException(nameof(description));
 
             // Only register when supported by Shell.
             // Vista and up don't support column providers anymore (replaces by property system).
@@ -156,7 +157,8 @@ namespace MiniShellFramework
         /// <param name="type">The type.</param>
         protected static void ComUnregister(Type type)
         {
-            Contract.Requires(type != null);
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
 
             // Only try to remove when it was registered.
             if (IsShell60OrHigher())
@@ -181,8 +183,10 @@ namespace MiniShellFramework
         protected void RegisterColumn(string title, uint defaultWidthInCharacters,
             ListViewAlignment format = ListViewAlignment.Left, ShellColumnState state = ShellColumnState.TypeString)
         {
-            Contract.Requires(title != null);
-            Contract.Requires(title.Length < ShellColumnInfo.MaxTitleLength);
+            if (title == null)
+                throw new ArgumentNullException(nameof(title));
+            if (title.Length > ShellColumnInfo.MaxTitleLength)
+                throw new ArgumentException("title.Length > ShellColumnInfo.MaxTitleLength", nameof(title));
 
             RegisterColumn(GetStandardFormatIdentifier(), columnInfos.Count, title, defaultWidthInCharacters, format, state);
         }
@@ -190,9 +194,6 @@ namespace MiniShellFramework
         protected void RegisterColumn(Guid formatId, int propertyId, string title, uint defaultWidthInCharacters,
             ListViewAlignment format = ListViewAlignment.Left, ShellColumnState state = ShellColumnState.TypeString)
         {
-            Contract.Requires(title != null);
-            Contract.Requires(title.Length < ShellColumnInfo.MaxTitleLength);
-
             var columnId = new ShellColumnId { FormatId = formatId, PropertyId = propertyId };
 
             // Note: description field is not used by the shell.
@@ -233,8 +234,6 @@ namespace MiniShellFramework
         /// <param name="folder"></param>
         private static bool IsDesktopPath(string folder)
         {
-            Contract.Requires(folder != null);
-
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory) == folder ||
                    Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) == folder;
         }
@@ -285,8 +284,7 @@ namespace MiniShellFramework
 
         private IList<string> FindInCache(string fileName)
         {
-            List<string> infos;
-            return cachedInfos.TryGetValue(fileName, out infos) ? infos : null;
+            return cachedInfos.TryGetValue(fileName, out var infos) ? infos : null;
         }
 
         protected abstract void GetAllColumnInfoCore(string fileName, IList<string> columnInfos);

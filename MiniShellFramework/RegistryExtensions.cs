@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using Microsoft.Win32;
 
 namespace MiniShellFramework
@@ -19,7 +18,7 @@ namespace MiniShellFramework
         /// <remarks>
         /// To support registry harvest tools such as wix heat.exe the 'Shell Extensions' key will be created when
         /// it is not present. On x64 systems 'Shell Extensions' is not present by default in the wow64node tree.
-        /// The side effect is that registration will succeeded, but the shell extension will not work when 
+        /// The side effect is that registration will succeeded, but the shell extension will not work when
         /// registering it on a x64 system with a 32 bit version of regasm.
         /// On a x64 system the x64 version of regasm should be used to register the shell extension in the
         /// correct registry hive to ensure explorer.exe (which is 64 bit on a x64 platform will pick it up).
@@ -30,8 +29,10 @@ namespace MiniShellFramework
         /// Some 3rd party tools will display this string when listing which shell extensions are registered.</param>
         public static void AddAsApprovedShellExtension(Type type, string description)
         {
-            Contract.Requires(type != null);
-            Contract.Requires(description != null);
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (description == null)
+                throw new ArgumentNullException(nameof(description));
 
             using (var key = Registry.LocalMachine.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved"))
             {
@@ -52,7 +53,8 @@ namespace MiniShellFramework
         /// <param name="type">The type that identifies the COM shell extension.</param>
         public static void RemoveAsApprovedShellExtension(Type type)
         {
-            Contract.Requires(type != null);
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
 
             // Unregister the COM object as an approved shell extension.
             // It is possible to unregister twice, need to be prepared to handle that case.

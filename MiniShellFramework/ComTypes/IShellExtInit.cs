@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -15,7 +14,6 @@ namespace MiniShellFramework.ComTypes
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("000214E8-0000-0000-c000-000000000046")]
-    [ContractClass(typeof(ShellExtInitContract))]
     public interface IShellExtInit
     {
         /// <summary>

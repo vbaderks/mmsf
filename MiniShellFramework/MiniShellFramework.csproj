@@ -107,7 +107,6 @@
   <ItemGroup>
     <Compile Include="ClipFormat.cs" />
     <Compile Include="ColumnProviderBase.cs" />
-    <Compile Include="ComTypes\CopyHookContract.cs" />
     <Compile Include="ComTypes\DrawItem.cs" />
     <Compile Include="ComTypes\IColumnProvider.cs" />
     <Compile Include="ComTypes\IContextMenu.cs" />
@@ -125,7 +124,6 @@
     <Compile Include="ComTypes\ShellColumnInfo.cs" />
     <Compile Include="ComTypes\ShellColumnInitializeInfo.cs" />
     <Compile Include="ComTypes\ShellColumnState.cs" />
-    <Compile Include="ComTypes\ShellExtInitContract.cs" />
     <Compile Include="ComTypes\ThumbnailAlphaType.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="FormatEtcExtensions.cs" />
@@ -133,7 +131,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IMenuHost.cs" />
-    <Compile Include="MenuHostContract.cs" />
     <Compile Include="PropertySheetPage.cs" />
     <Compile Include="RegistryExtensions.cs" />
     <Compile Include="RootKey.cs" />

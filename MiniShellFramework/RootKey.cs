@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using Microsoft.Win32;
 
 namespace MiniShellFramework
@@ -20,9 +19,6 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         public static void Register(string fileExtension, string progId)
         {
-            Contract.Requires(fileExtension != null);
-            Contract.Requires(progId != null);
-
             using (var key = Registry.ClassesRoot.CreateSubKey(fileExtension))
             {
                 if (key == null)
@@ -36,7 +32,7 @@ namespace MiniShellFramework
         /// Unregisters the specified file extension.
         /// </summary>
         /// <remarks>
-        /// Removeing the file extension and ProgID registry entries should only be done if the 'entries' are owned.
+        /// Removing the file extension and ProgID registry entries should only be done if the 'entries' are owned.
         /// Often these entries are owned by application from other vendors and then these registry keys should not be
         /// removed to prevent breaking the registration from that other application(s).
         /// </remarks>
@@ -44,21 +40,17 @@ namespace MiniShellFramework
         /// <param name="progId">Optional the ProgID. If not null ProgID will also be removed from registry.</param>
         public static void Unregister(string fileExtension, string progId = null)
         {
-            Contract.Requires(fileExtension != null);
-
             Registry.ClassesRoot.DeleteSubKey(fileExtension, false);
         }
 
         /// <summary>
-        /// Tries the get ProgID for file exension.
+        /// Tries the get ProgID for file extension.
         /// </summary>
         /// <param name="fileExtension">The file extension.</param>
         /// <param name="progId">The prog id.</param>
         /// <returns>true if the ProgID for that file extension could be found.</returns>
         public static bool TryGetProgIdForFileExension(string fileExtension, out string progId)
         {
-            Contract.Requires(fileExtension != null);
-
             progId = null;
             using (var key = Registry.ClassesRoot.OpenSubKey(fileExtension))
             {

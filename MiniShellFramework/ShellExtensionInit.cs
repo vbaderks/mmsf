@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -14,8 +13,9 @@ using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
+    /// <inheritdoc cref="ShellExtension" />
     /// <summary>
-    /// Provide a base class for propery sheet shell extensions.
+    /// Provide a base class for property sheet shell extensions.
     /// </summary>
     [ComVisible(true)] // Make this .NET class COM visible to ensure derived class can be COM visible.
     public abstract class ShellExtensionInit : ShellExtension, IShellExtInit
@@ -27,10 +27,7 @@ namespace MiniShellFramework
         /// Gets the files names.
         /// </summary>
         /// <value>The files names.</value>
-        protected IList<string> FilesNames
-        {
-            get { return fileNames; }
-        }
+        protected IList<string> FilesNames => fileNames;
 
         void IShellExtInit.Initialize(IntPtr pidlFolder, IDataObject dataObject, uint hkeyProgId)
         {
@@ -45,8 +42,6 @@ namespace MiniShellFramework
         /// <param name="extension">The file extension.</param>
         protected void RegisterExtension(string extension)
         {
-            Contract.Requires(extension != null);
-
             extensions.Add(extension.ToUpperInvariant());
         }
 
@@ -59,7 +54,6 @@ namespace MiniShellFramework
         /// </returns>
         protected bool ContainsUnknownExtension(IEnumerable<string> names)
         {
-            Contract.Requires(names != null);
             return fileNames.Any(IsUnknownExtension);
         }
 
@@ -72,15 +66,15 @@ namespace MiniShellFramework
         /// </returns>
         protected bool IsUnknownExtension(string fileName)
         {
-            Contract.Requires(fileName != null);
+            if (fileName == null)
+                throw new ArgumentNullException(nameof(fileName));
+
             var extension = Path.GetExtension(fileName).ToUpperInvariant();
             return extensions.FindIndex(x => x == extension) == -1;
         }
 
         private void CacheFiles(IDataObject dataObject)
         {
-            Contract.Requires(dataObject != null);
-
             fileNames.Clear();
 
             using (var clipboardFormatDrop = new ClipboardFormatDrop(dataObject))
@@ -91,13 +85,6 @@ namespace MiniShellFramework
                     fileNames.Add(clipboardFormatDrop.GetFile(i));
                 }
             }
-        }
-
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(fileNames != null);
-            Contract.Invariant(extensions != null);
         }
     }
 }

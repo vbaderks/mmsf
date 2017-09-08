@@ -59,10 +59,7 @@ namespace MiniShellFramework
                 throw new ArgumentException("Verbs not supported");
 
             var index = (ushort)invokeCommandInfo.lpVerb.ToInt32();
-            Contract.Assume(index < menuItems.Count);
             var item = menuItems[index];
-            Contract.Assume(item != null);
-            Contract.Assume(item.Command != null);
             item.Command(ref invokeCommandInfo, FilesNames);
         }
 
@@ -75,9 +72,7 @@ namespace MiniShellFramework
             {
                 case GetCommandStringOptions.HelpText:
                     var index = commandIdOffset.ToInt32();
-                    Contract.Assume(index >= 0 && index < menuItems.Count);
                     var item = menuItems[index];
-                    Contract.Assume(item != null);
                     StringToPtr(item.HelpText, result, charCount);
                     return HResults.Ok;
 
@@ -179,9 +174,8 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComRegister(Type type, string description, string progId)
         {
-            Contract.Requires(type != null);
-            Contract.Requires(!string.IsNullOrEmpty(description));
-            Contract.Requires(!string.IsNullOrEmpty(progId));
+            if (progId == null)
+                throw new ArgumentNullException(nameof(progId));
 
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 

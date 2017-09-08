@@ -3,15 +3,12 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using MiniShellFramework.ComTypes;
 
 namespace MiniShellFramework
 {
-    /// <summary>
-    /// TODO
-    /// </summary>
+    /// <inheritdoc />
     public class SmallBitmapCustomMenuHandler : CustomMenuHandler
     {
         private readonly string text;
@@ -24,17 +21,11 @@ namespace MiniShellFramework
         /// <param name="bitmap">The res id bitmap.</param>
         public SmallBitmapCustomMenuHandler(string text, Bitmap bitmap)
         {
-            Contract.Requires(text != null);
-            Contract.Requires(bitmap != null);
-
-            this.text = text;
-            this.bitmap = bitmap;
+            this.text = text ?? throw new ArgumentNullException(nameof(text));
+            this.bitmap = bitmap ?? throw new ArgumentNullException(nameof(bitmap));
         }
 
-        /// <summary>
-        /// Initializes the item info.
-        /// </summary>
-        /// <param name="menuiteminfo">The menuiteminfo.</param>
+        /// <inheritdoc />
         public override void InitializeItemInfo(ref MenuItemInfo menuiteminfo)
         {
             menuiteminfo.Text = text;

@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -110,9 +109,12 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComRegister(Type type, string description, string progId)
         {
-            Contract.Requires(type != null);
-            Contract.Requires(!string.IsNullOrEmpty(description));
-            Contract.Requires(!string.IsNullOrEmpty(progId));
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (description == null)
+                throw new ArgumentNullException(nameof(description));
+            if (description == progId)
+                throw new ArgumentNullException(nameof(progId));
 
             RegistryExtensions.AddAsApprovedShellExtension(type, description);
 
@@ -134,8 +136,6 @@ namespace MiniShellFramework
         /// <param name="progId">The prog id.</param>
         protected static void ComUnregister(Type type, string progId)
         {
-            Contract.Requires(type != null);
-
             RegistryExtensions.RemoveAsApprovedShellExtension(type);
         }
 

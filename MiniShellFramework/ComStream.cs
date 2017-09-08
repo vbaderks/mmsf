@@ -3,33 +3,33 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace MiniShellFramework
 {
+    /// <inheritdoc />
     /// <summary>
     /// Provides a managed wrapper around a COM object that supports the COM IStream interface.
     /// </summary>
     /// <remarks>
     /// The Shell prefers to pass IStream interfaces to shell extensions rather then filenames.
-    /// This to abstract away that some shell items are not actually items on the filesystem.
-    /// Most .NET base class libary code expect a Stream derived object when dealing with file system items.
+    /// This to abstract away that some shell items are not actually items on the file system.
+    /// Most .NET base class library code expect a Stream derived object when dealing with file system items.
     /// This class wraps the COM IStream interface and allows it to be used as a .NET stream object.
     /// </remarks>
     public class ComStream : Stream
     {
         private IStream stream;
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComStream"/> class.
+        /// Initializes a new instance of the <see cref="T:MiniShellFramework.ComStream" /> class.
         /// </summary>
         /// <param name="stream">The COM stream interface.</param>
         public ComStream(IStream stream)
         {
-            Contract.Requires(stream != null);
-            this.stream = stream;
+            this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
         }
 
         /// <summary>
@@ -39,6 +39,7 @@ namespace MiniShellFramework
         /// <returns>true if the stream supports reading; otherwise, false.</returns>
         public override bool CanRead => true;
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets a value indicating whether the current stream supports seeking.
         /// </summary>
@@ -46,6 +47,7 @@ namespace MiniShellFramework
         /// <returns>true if the stream supports seeking; otherwise, false.</returns>
         public override bool CanSeek => true;
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets a value indicating whether the current stream supports writing.
         /// </summary>
@@ -53,6 +55,7 @@ namespace MiniShellFramework
         /// <returns>true if the stream supports writing; otherwise, false.</returns>
         public override bool CanWrite => false;
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the length in bytes of the stream.
         /// </summary>
@@ -68,11 +71,11 @@ namespace MiniShellFramework
                     throw new ObjectDisposedException("stream");
 
                 stream.Stat(out STATSTG statstg, 1 /* STATFLAG_NONAME */);
-                Contract.Assume(statstg.cbSize >= 0);
                 return statstg.cbSize;
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets or sets the position within the current stream.
         /// </summary>
@@ -88,6 +91,7 @@ namespace MiniShellFramework
             set => throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
         /// </summary>
@@ -96,20 +100,21 @@ namespace MiniShellFramework
         {
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
         /// </summary>
-        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between <paramref name="offset"/> and (<paramref name="offset"/> + <paramref name="count"/> - 1) replaced by the bytes read from the current source.</param>
-        /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin storing the data read from the current stream.</param>
+        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between <paramref name="offset" /> and (<paramref name="offset" /> + <paramref name="count" /> - 1) replaced by the bytes read from the current source.</param>
+        /// <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin storing the data read from the current stream.</param>
         /// <param name="count">The maximum number of bytes to be read from the current stream.</param>
         /// <returns>
         /// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
         /// </returns>
-        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length. </exception>
+        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset" /> and <paramref name="count" /> is larger than the buffer length. </exception>
         /// <exception cref="T:System.ArgumentNullException">
-        /// <paramref name="buffer"/> is null. </exception>
+        /// <paramref name="buffer" /> is null. </exception>
         /// <exception cref="T:System.ArgumentOutOfRangeException">
-        /// <paramref name="offset"/> or <paramref name="count"/> is negative. </exception>
+        /// <paramref name="offset" /> or <paramref name="count" /> is negative. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.NotSupportedException">The stream does not support reading. </exception>
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
@@ -134,11 +139,12 @@ namespace MiniShellFramework
             return (int)bytesRead;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Sets the position within the current stream.
         /// </summary>
-        /// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
-        /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
+        /// <param name="offset">A byte offset relative to the <paramref name="origin" /> parameter.</param>
+        /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position.</param>
         /// <returns>
         /// The new position within the current stream.
         /// </returns>
@@ -150,6 +156,7 @@ namespace MiniShellFramework
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Sets the length of the current stream.
         /// </summary>
@@ -162,17 +169,18 @@ namespace MiniShellFramework
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
         /// </summary>
-        /// <param name="buffer">An array of bytes. This method copies <paramref name="count"/> bytes from <paramref name="buffer"/> to the current stream.</param>
-        /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.</param>
+        /// <param name="buffer">An array of bytes. This method copies <paramref name="count" /> bytes from <paramref name="buffer" /> to the current stream.</param>
+        /// <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin copying bytes to the current stream.</param>
         /// <param name="count">The number of bytes to be written to the current stream.</param>
-        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset"/> and <paramref name="count"/> is greater than the buffer length. </exception>
+        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset" /> and <paramref name="count" /> is greater than the buffer length. </exception>
         /// <exception cref="T:System.ArgumentNullException">
-        /// <paramref name="buffer"/> is null. </exception>
+        /// <paramref name="buffer" /> is null. </exception>
         /// <exception cref="T:System.ArgumentOutOfRangeException">
-        /// <paramref name="offset"/> or <paramref name="count"/> is negative. </exception>
+        /// <paramref name="offset" /> or <paramref name="count" /> is negative. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <exception cref="T:System.NotSupportedException">The stream does not support writing. </exception>
         /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
@@ -181,6 +189,7 @@ namespace MiniShellFramework
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
         /// </summary>

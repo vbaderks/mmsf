@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using MiniShellFramework.ComTypes;
@@ -33,8 +32,10 @@ namespace MiniShellFramework
 
         internal Menu(IntPtr hmenu, uint indexMenu, uint idCmdLast, IMenuHost menuHost)
         {
-            Contract.Requires(hmenu != null);
-            Contract.Requires(menuHost != null);
+            if (hmenu == null)
+                throw new ArgumentNullException(nameof(hmenu));
+            ////Contract.Requires(hmenu != null);
+            ////Contract.Requires(menuHost != null);
 
             this.hmenu = hmenu;
             this.indexMenu = indexMenu;
@@ -53,8 +54,8 @@ namespace MiniShellFramework
         /// <returns></returns>
         public Menu AddSubMenu(string menuText, string helpText)
         {
-            Contract.Requires(helpText != null);
-            Contract.Ensures(Contract.Result<Menu>() != null);
+            ////Contract.Requires(helpText != null);
+            ////Contract.Ensures(Contract.Result<Menu>() != null);
 
             IntPtr subMenu = CreateSubMenu();
 
@@ -75,8 +76,8 @@ namespace MiniShellFramework
         /// <returns></returns>
         public Menu AddSubMenu(string helpText, CustomMenuHandler customMenuHandler)
         {
-            Contract.Requires(helpText != null);
-            Contract.Requires(customMenuHandler != null);
+            ////Contract.Requires(helpText != null);
+            ////Contract.Requires(customMenuHandler != null);
 
             IntPtr subMenu = CreateSubMenu();
 
@@ -100,8 +101,8 @@ namespace MiniShellFramework
         /// <param name="contextCommand">The context command.</param>
         public void AddItem(string menuText, string helpText, ContextCommand contextCommand)
         {
-            Contract.Requires(helpText != null);
-            Contract.Requires(contextCommand != null);
+            ////Contract.Requires(helpText != null);
+            ////Contract.Requires(contextCommand != null);
 
             var menuItemInfo = new MenuItemInfo();
             menuItemInfo.InitializeSize();
@@ -119,9 +120,11 @@ namespace MiniShellFramework
         /// <param name="contextCommand">The context command.</param>
         public void AddItem(CustomMenuHandler customMenuHandler, string helpText, ContextCommand contextCommand)
         {
-            Contract.Requires(customMenuHandler != null);
-            Contract.Requires(helpText != null);
-            Contract.Requires(contextCommand != null);
+            if (customMenuHandler == null)
+                throw new ArgumentNullException(nameof(customMenuHandler));
+
+            ////Contract.Requires(helpText != null);
+            ////Contract.Requires(contextCommand != null);
 
             var menuItemInfo = new MenuItemInfo();
             menuItemInfo.InitializeSize();
@@ -143,8 +146,6 @@ namespace MiniShellFramework
 
         private void InsertMenuItem(ref MenuItemInfo menuItemInfo, string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
-            Contract.Requires(helpText != null);
-
             CheckIdSpace();
             bool result = SafeNativeMethods.InsertMenuItem(hmenu, indexMenu, true, ref menuItemInfo);
             if (!result)
@@ -166,18 +167,10 @@ namespace MiniShellFramework
 
         private void PostAddItem(string helpText, ContextCommand contextCommand, CustomMenuHandler customMenuHandler)
         {
-            Contract.Requires(helpText != null);
-
             menuHost.OnAddMenuItem(helpText, contextCommand, customMenuHandler);
 
             indexMenu++;
             menuHost.IncrementCommandId();
-        }
-
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(menuHost != null);
         }
     }
 }

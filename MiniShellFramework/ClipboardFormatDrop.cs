@@ -4,12 +4,12 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace MiniShellFramework
 {
+    /// <inheritdoc />
     /// <summary>Support class to handle the CF_HDROP format.</summary>
     /// <remarks>
     /// The CF_HDROP format is used by the shell to transfer a group of existing files.
@@ -25,12 +25,14 @@ namespace MiniShellFramework
         /// <param name="dataObject">The data object.</param>
         public ClipboardFormatDrop(IDataObject dataObject)
         {
-            Contract.Requires(dataObject != null);
+            if (dataObject == null)
+                throw new ArgumentNullException(nameof(dataObject));
 
-            FORMATETC format = FormatEtcExtensions.CreateFORMATETC(ClipFormat.CF_HDROP);
+            var format = FormatEtcExtensions.CreateFORMATETC(ClipFormat.CF_HDROP);
             dataObject.GetData(ref format, out medium);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -52,7 +54,6 @@ namespace MiniShellFramework
 
             var buffer = new char[255 + 1]; // MAX_PATH
             int queryFileLength = SafeNativeMethods.DragQueryFile(medium.unionmember, index, buffer, 255);
-            Contract.Assume(queryFileLength <= 255);
             if (queryFileLength <= 0)
                 throw new Win32Exception();
 

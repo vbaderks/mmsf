@@ -22,14 +22,12 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
-            Contract.Requires(type != null);
             ComRegister(type, RegistryName, "MMSF Sample ShellExtension (FolderCopyHook)");
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            Contract.Requires(type != null);
             ComUnregister(type, RegistryName);
         }
 
@@ -41,7 +39,6 @@ namespace VvvSample
                                        string.Format(CultureInfo.CurrentCulture, "Are you sure to delete the folder: {0} ?", sourceFolder),
                                        "VVV Question",
                                        MessageBoxButtons.YesNoCancel);
-                Contract.Assume(result == DialogResult.Yes || result == DialogResult.No || result == DialogResult.Cancel);
                 return result;
             }
 

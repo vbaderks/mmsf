@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -24,8 +23,6 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
-            Contract.Requires(type != null);
-
             VvvRootKey.Register();
             ComRegister(type, "VVV Sample ShellExtension (InfoTip)", VvvRootKey.ProgId);
         }
@@ -33,8 +30,6 @@ namespace VvvSample
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            Contract.Requires(type != null);
-
             VvvRootKey.Unregister();
             ComUnregister(type, VvvRootKey.ProgId);
         }

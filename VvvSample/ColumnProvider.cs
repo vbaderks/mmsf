@@ -19,16 +19,12 @@ namespace VvvSample
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
-            Contract.Requires(type != null);
-
             ComRegister(type, "MMSF Sample ShellExtension (ColumnProvider)");
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            Contract.Requires(type != null);
-
             ComUnregister(type);
         }
 
@@ -46,7 +42,6 @@ namespace VvvSample
 
         protected override void GetAllColumnInfoCore(string fileName, IList<string> columnInfos)
         {
-            
         }
     }
 }

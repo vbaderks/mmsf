@@ -19,8 +19,7 @@ namespace MiniShellFramework
 
         CustomQueryInterfaceResult ICustomQueryInterface.GetInterface(ref Guid iid, out IntPtr ppv)
         {
-            string interfaceName;
-            if (!Guids.TryGetName(iid, out interfaceName))
+            if (!Guids.TryGetName(iid, out var interfaceName))
             {
                 interfaceName = "Unknown COM Interface GUID";
             }

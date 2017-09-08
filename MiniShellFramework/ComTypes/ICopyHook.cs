@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
 namespace MiniShellFramework.ComTypes
@@ -19,7 +18,6 @@ namespace MiniShellFramework.ComTypes
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("000214FC-0000-0000-c000-000000000046")]
-    [ContractClass(typeof(CopyHookContract))]
     public interface ICopyHook
     {
         /// <summary>
