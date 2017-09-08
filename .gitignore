@@ -10,7 +10,9 @@
 *.suo
 *.user
 *.VC.db
-StyleCop.Cache
+
+# Visual Studio cache/options directory
+.vs/
 
 # NuGet Packages
 *.nupkg
