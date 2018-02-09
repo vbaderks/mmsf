@@ -56,6 +56,13 @@ namespace MiniShellFramework.ComTypes
         /// A drag-and-drop handler should ignore this flag.
         /// A namespace extension should not set any of the menu items as the default. (CMF_NODEFAULT)
         /// </summary>
-        NoDefault = 0x00000020
+        NoDefault = 0x00000020,
+
+        ///<summary>
+        ///The calling application wants extended verbs.
+        ///Normal verbs are displayed when the user right-clicks an object.
+        ///To display extended verbs, the user must right-click while pressing the Shift key. (CMF_EXTENDEDVERBS)
+        /// </summary>
+        ExtendedVerbs = 0x00000100
     }
 }
