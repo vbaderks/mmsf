@@ -41,7 +41,7 @@ namespace VvvSample
             ComUnregister(type, "VVV ContextMenu (MMSF Sample)", VvvRootKey.ProgId);
         }
 
-        protected override void QueryContextMenuCore(Menu menu, IList<string> filenames)
+        protected override void QueryContextMenuCore(Menu menu, IList<string> filenames, QueryContextMenuOptions flags)
         {
             if (filenames.Count != 1 || ContainsUnknownExtension(filenames))
                 return; // In this sample only extend the menu when only 1 .mvvv file is selected.
