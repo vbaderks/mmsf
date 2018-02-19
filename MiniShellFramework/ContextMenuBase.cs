@@ -47,7 +47,7 @@ namespace MiniShellFramework
             menuItems.Clear();
             currentCommandId = firstCommandId;
             startCommandId = firstCommandId;
-            QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), FilesNames);
+            QueryContextMenuCore(new Menu(menuHandle, position, lastCommandId, this), FilesNames, flags);
             return HResults.Create(Severity.Success, (ushort)(currentCommandId - firstCommandId));
         }
 
@@ -222,7 +222,8 @@ namespace MiniShellFramework
         /// </summary>
         /// <param name="menu">The menu.</param>
         /// <param name="filenames">The filenames.</param>
-        protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames);
+        /// <param name="flags">The flags</param>
+        protected abstract void QueryContextMenuCore(Menu menu, IList<string> filenames, QueryContextMenuOptions flags);
 
         /// <summary>
         /// Called when [init menu popup].
