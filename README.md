@@ -27,7 +27,7 @@ The projects includes the following 'layers':
 * Extract Image Extension (IExtractImage, IExtractImage2)**{planned}**
 * Shell Folder (IShellView, IShellFolder)**{planned}**
 
-## Supported Shell Extensions by the Windows API Code Pack 1.1.
+## Supported Shell Extensions by the Windows API Code Pack 1.1
 
 The following 2 shell extensions are supported by the Windows API Code Pack and currently not included in the MMSF project:
 
@@ -37,11 +37,9 @@ The following 2 shell extensions are supported by the Windows API Code Pack and 
 ## Supported Operating Systems
 
 * Windows 10
-* Windows 7 (on demand)
 
 ## Supported Compilers
 
-* Visual Studio 2017
+* Visual Studio 2019
 
 Note: Source Code snapshots are only validated on Windows 10.
-Note2: (on demand) means that OS is supported, but not tested. Reported issues will be resolved on demand.
