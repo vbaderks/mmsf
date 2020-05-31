@@ -20,7 +20,6 @@ namespace MiniShellFramework
         public const int Author = 4;
     }
 
-
     /// <summary>
     /// Provide a base class for property sheet shell extensions.
     /// </summary>
@@ -29,10 +28,10 @@ namespace MiniShellFramework
     public abstract class ColumnProviderBase<T> : ShellExtension, IColumnProvider
     {
         private const string ColumnHandlersKeyName = @"Folder\ShellEx\ColumnHandlers";
-        private bool initialized;
-        private bool hideDesktopColumns;
         private readonly List<ShellColumnInfo> columnInfos = new List<ShellColumnInfo>();
         private readonly List<string> extensions = new List<string>();
+        private bool initialized;
+        private bool hideDesktopColumns;
         ////private IList<string> cachedInfo;
         ////private string cachedFileName;
         private Dictionary<string, List<string>> cachedInfos = new Dictionary<string, List<string>>();
@@ -215,7 +214,7 @@ namespace MiniShellFramework
 
         protected void RegisterExtension(string extension)
         {
-            extensions.Add(extension.ToLowerInvariant());
+            extensions.Add(extension.ToUpperInvariant());
         }
 
         protected virtual FileAttributes GetFileAttributeMask()
@@ -231,7 +230,6 @@ namespace MiniShellFramework
         /// <summary>
         /// Checks if the folder is the 'all users' or user desktop folder.
         /// </summary>
-        /// <param name="folder"></param>
         private static bool IsDesktopPath(string folder)
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory) == folder ||
@@ -242,7 +240,7 @@ namespace MiniShellFramework
         {
             // Check file mask and file extension.
             return !columnData.FileAttributes.HasFlag(GetFileAttributeMask()) &&
-                extensions.Contains(columnData.FileNameExtension.ToLowerInvariant());
+                extensions.Contains(columnData.FileNameExtension.ToUpperInvariant());
         }
 
         private IList<string> FindInLastUsedCache(string fileName)

@@ -24,9 +24,9 @@ namespace MiniShellFramework
         private const uint MeasureItem = 0x2C;          // WM_MEASUREITEM
         private const uint MenuChar = 0x120;            // WM_MENUCHAR
 
+        private readonly List<MenuItem> menuItems = new List<MenuItem>();
         private uint startCommandId;
         private uint currentCommandId;
-        private readonly List<MenuItem> menuItems = new List<MenuItem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextMenuBase"/> class.

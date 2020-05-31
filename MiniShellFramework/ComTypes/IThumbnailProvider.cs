@@ -27,7 +27,7 @@ namespace MiniShellFramework.ComTypes
         /// returned bitmap should also have a 6:4 aspect ratio..</param>
         /// <param name="bitmapHandle">
         /// When this method returns, contains a pointer to the thumbnail image handle. The image must be a DIB section
-        /// and 32 bits per pixel. The Shell scales down the bitmap if its width or height is larger than the size 
+        /// and 32 bits per pixel. The Shell scales down the bitmap if its width or height is larger than the size
         /// specified by cx. The Shell always respects the aspect ratio and never scales a bitmap larger than its original size.</param>
         /// <param name="alphaType">When this method returns, contains a one of the following values from the ThumbnailAlphaType enumeration:</param>
         void GetThumbnail(uint squareLength, [Out] out IntPtr bitmapHandle, [Out] out ThumbnailAlphaType alphaType);

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace MiniShellFramework.ComTypes
 {
     /// <summary>
-    /// Contains information needed by IContextMenu::InvokeCommand to 
+    /// Contains information needed by IContextMenu::InvokeCommand to
     /// invoke a shortcut menu command (CMINVOKECOMMANDINFO).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]

@@ -90,7 +90,7 @@ namespace MiniShellFramework
         // QueryInterface seen for ContextMenu on Windows 7 x64.
         internal static readonly Guid Undocumented1 = new Guid("924502A7-CC8E-4F60-AE1F-F70C0A2B7A7C");
 
-        private static readonly IDictionary<Guid, string> names = CreateNameDictionary();
+        private static readonly IDictionary<Guid, string> Names = CreateNameDictionary();
 
         /// <summary>
         /// Gets the name.
@@ -100,7 +100,7 @@ namespace MiniShellFramework
         /// <returns></returns>
         public static bool TryGetName(Guid key, out string name)
         {
-            return names.TryGetValue(key, out name);
+            return Names.TryGetValue(key, out name);
         }
 
         private static IDictionary<Guid, string> CreateNameDictionary()

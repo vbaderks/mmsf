@@ -37,6 +37,7 @@ namespace VvvSample
                            "Author", 14, ListViewAlignment.Right, ShellColumnState.TypeString | ShellColumnState.Slow);
 
             RegisterExtension(".mvvv");
+
             // ... this would be the place to add other extensions this columnprovider also supports.
         }
 

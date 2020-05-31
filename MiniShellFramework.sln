@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.128
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniShellFramework", "MiniShellFramework\MiniShellFramework.csproj", "{A9AB7515-A370-4ED0-A99B-61428F9BC034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniShellFramework", "MiniShellFramework\MiniShellFramework.csproj", "{A9AB7515-A370-4ED0-A99B-61428F9BC034}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VvvSample", "VvvSample\VvvSample.csproj", "{EDD68AE9-F62C-4039-BB2C-2F834A7A9B23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VvvSampleTest", "VvvSampleTest\VvvSampleTest.csproj", "{C138D8AF-2A6C-432D-80DB-BDCD5B199FFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB9FEC68-423A-4DB9-B9DF-025D89103078}"
+	ProjectSection(SolutionItems) = preProject
+		mmsf.ruleset = mmsf.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

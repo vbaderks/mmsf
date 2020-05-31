@@ -2,8 +2,8 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiniShellFramework.ComTypes;
 
 namespace VvvSampleTest
@@ -11,7 +11,7 @@ namespace VvvSampleTest
     /// <summary>
     /// This is a test class for FolderCopyHookTest and is intended
     /// to contain all FolderCopyHookTest Unit Tests
-    ///</summary>
+    /// </summary>
     [TestClass]
     public class FolderCopyHookTest
     {
@@ -28,7 +28,7 @@ namespace VvvSampleTest
         {
             var folderCopyHook = (ICopyHook)CreateFolderCopyHook();
             uint result = folderCopyHook.CopyCallback(new IntPtr(), FileOperation.Delete, 0, "bla", 0, "boe", 0);
-            Assert.AreEqual((uint)6, result);
+            Assert.AreEqual(6U, result);
         }
 
         [TestMethod]

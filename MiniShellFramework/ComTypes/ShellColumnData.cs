@@ -37,7 +37,7 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Reserved for future use.
         /// </summary>
-        private readonly int Reserved;
+        private readonly int reserved;
 
         /// <summary>
         /// Address of file name extension.

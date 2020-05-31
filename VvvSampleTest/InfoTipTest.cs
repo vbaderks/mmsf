@@ -1,20 +1,20 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiniShellFramework.ComTypes;
 
 namespace VvvSampleTest
 {
     /// <summary>
-    ///This is a test class for InfoTipTest and is intended
-    ///to contain all InfoTipTest Unit Tests
-    ///</summary>
-    [TestClass()]
+    /// This is a test class for InfoTipTest and is intended
+    /// to contain all InfoTipTest Unit Tests
+    /// </summary>
+    [TestClass]
     public class InfoTipTest
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        /// Gets or sets the test context which provides
+        /// information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
 
         [TestMethod]

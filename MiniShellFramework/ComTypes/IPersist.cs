@@ -5,7 +5,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace MiniShellFramework.Comtypes
+namespace MiniShellFramework.ComTypes
 {
     /// <summary>
     /// Provides the CLSID of an object that can be stored persistently in the system.

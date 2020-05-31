@@ -22,7 +22,6 @@ namespace MiniShellFramework
     {
         private IStream stream;
 
-        /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the <see cref="T:MiniShellFramework.ComStream" /> class.
         /// </summary>

@@ -24,52 +24,52 @@ namespace MiniShellFramework.ComTypes
         public MenuItemInfoMask Mask;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public MenuItemInfoType Type;           // used if MIIM_TYPE (4.0) or MIIM_FTYPE (>4.0)
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint fState;          // used if MIIM_STATE
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint wID;             // used if MIIM_ID
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hSubMenu;      // used if MIIM_SUBMENU
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hbmpChecked;   // used if MIIM_CHECKMARKS
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hbmpUnchecked; // used if MIIM_CHECKMARKS
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private IntPtr dwItemData;    // used if MIIM_DATA
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string dwTypeData;    // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint cch;             // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hbmpItem;      // used if MIIM_BITMAP
 

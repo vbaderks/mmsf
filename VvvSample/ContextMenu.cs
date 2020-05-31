@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
 using MiniShellFramework;
 using MiniShellFramework.ComTypes;
 
@@ -64,7 +63,7 @@ namespace VvvSample
         {
             var fvi = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
             var text = $"Build with MSF version {fvi.ProductVersion}";
-            MessageBox.Show(text);
+            System.Windows.Forms.MessageBox.Show(text);
         }
 
         public void Dispose()

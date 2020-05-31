@@ -21,7 +21,6 @@ namespace MiniShellFramework
         File = 4
     }
 
-
     /// <summary>
     /// Base class for thumbnail provider shell extension handlers.
     /// </summary>

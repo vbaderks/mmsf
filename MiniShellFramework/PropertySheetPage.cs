@@ -13,8 +13,8 @@ namespace MiniShellFramework
     /// </summary>
     public class PropertySheetPage
     {
-        private string title;
         protected IntPtr dlgTemplate;
+        private string title;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySheetPage"/> class.

@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -31,11 +30,11 @@ namespace VvvSample
             ComUnregister(type, RegistryName);
         }
 
-        protected override DialogResult CopyCallbackCore(IWin32Window owner, FileOperation fileOperation, uint flags, string sourceFolder, uint sourceAttributes, string destinationFolder, uint destinationAttributes)
+        protected override DialogResult CopyCallbackCore(IWin32Window parent, FileOperation fileOperation, uint flags, string sourceFolder, uint sourceAttributes, string destinationFolder, uint destinationAttributes)
         {
             if (fileOperation == FileOperation.Delete && sourceFolder.Contains("VVV-MMSF"))
             {
-                var result = MessageBox.Show(owner,
+                var result = MessageBox.Show(parent,
                                        string.Format(CultureInfo.CurrentCulture, "Are you sure to delete the folder: {0} ?", sourceFolder),
                                        "VVV Question",
                                        MessageBoxButtons.YesNoCancel);

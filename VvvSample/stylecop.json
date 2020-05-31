@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "V.B.A. Derks",
+      "copyrightText": "Copyright (c) V.B.A. Derks.\nSPDX-License-Identifier: LGPL-2.1-only",
+      "xmlHeader": false,
+      "documentInterfaces": true,
+      "documentInternalElements": false
+    },
+     "orderingRules": {
+        "usingDirectivesPlacement": "outsideNamespace"
+    }
+  }
+}

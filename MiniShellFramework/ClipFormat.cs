@@ -9,6 +9,8 @@ namespace MiniShellFramework
     /// </summary>
     public enum ClipFormat
     {
+        None,
+
         /// <summary>
         /// This clipboard format is used when transferring the locations of a group of existing files.
         /// </summary>

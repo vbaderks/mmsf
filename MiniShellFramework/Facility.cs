@@ -2,11 +2,14 @@
 //     Copyright (c) Victor Derks. See README.TXT for the details of the software licence.
 // </copyright>
 
+using System;
+
 namespace MiniShellFramework
 {
     /// <summary>
     /// Specifies the facility (sub-system) that the HResult value belongs too.
     /// </summary>
+    [Flags]
     public enum Facility
     {
         /// <summary>

@@ -16,7 +16,8 @@ namespace VvvSample
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public sealed class ThumbnailProvider : ThumbnailProviderBase
     {
-        public ThumbnailProvider() : base(ThumbnailProviderInitializationOptions.Stream)
+        public ThumbnailProvider()
+            : base(ThumbnailProviderInitializationOptions.Stream)
         {
         }
 

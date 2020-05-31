@@ -15,12 +15,12 @@ namespace MiniShellFramework.ComTypes
         /// <summary>
         /// Initialization flags. Reserved. Set to 0 (dwFlags).
         /// </summary>
-        private readonly int Flags;
+        private readonly int flags;
 
         /// <summary>
         /// Reserved for future use. Set to NULL (dwReserved).
         /// </summary>
-        private readonly int Reserved;
+        private readonly int reserved;
 
         /// <summary>
         /// Fully qualified folder path. Empty if multiple folders are specified (wszFolder[MAX_PATH]).

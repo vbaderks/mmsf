@@ -39,6 +39,5 @@ namespace MiniShellFramework
 
             return medium;
         }
-
     }
 }

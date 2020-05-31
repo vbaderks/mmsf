@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using MiniShellFramework;
 
@@ -15,19 +14,19 @@ namespace VvvSample
     [ClassInterface(ClassInterfaceType.None)]       // Only the functions from the COM interfaces should be accessible.
     public sealed class ShellPropertySheet : ShellPropertySheetBase
     {
-        private const string registryDescription = "VVV ShellPropertySheet (MMSF Sample)";
+        private const string RegistryDescription = "VVV ShellPropertySheet (MMSF Sample)";
 
         [ComRegisterFunction]
         public static void ComRegisterFunction(Type type)
         {
             VvvRootKey.Register();
-            ComRegister(type, registryDescription, VvvRootKey.ProgId);
+            ComRegister(type, RegistryDescription, VvvRootKey.ProgId);
         }
 
         [ComUnregisterFunction]
         public static void ComUnregisterFunction(Type type)
         {
-            ComUnregister(type, registryDescription, VvvRootKey.ProgId);
+            ComUnregister(type, RegistryDescription, VvvRootKey.ProgId);
             VvvRootKey.Unregister();
         }
 

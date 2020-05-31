@@ -20,7 +20,7 @@ namespace MiniShellFramework.ComTypes
 
         /// <summary>
         /// The user is activating the default action, typically by double-clicking.
-        /// This flag provides a hint for the shortcut menu extension to add nothing if it 
+        /// This flag provides a hint for the shortcut menu extension to add nothing if it
         /// does not modify the default item in the menu. A shortcut menu extension or
         /// drag-and-drop handler should not add any menu items if this value is specified.
         /// A namespace extension should at most add only the default item. (CMF_DEFAULTONLY).
@@ -58,10 +58,10 @@ namespace MiniShellFramework.ComTypes
         /// </summary>
         NoDefault = 0x00000020,
 
-        ///<summary>
-        ///The calling application wants extended verbs.
-        ///Normal verbs are displayed when the user right-clicks an object.
-        ///To display extended verbs, the user must right-click while pressing the Shift key. (CMF_EXTENDEDVERBS)
+        /// <summary>
+        /// The calling application wants extended verbs.
+        /// Normal verbs are displayed when the user right-clicks an object.
+        /// To display extended verbs, the user must right-click while pressing the Shift key. (CMF_EXTENDEDVERBS)
         /// </summary>
         ExtendedVerbs = 0x00000100
     }

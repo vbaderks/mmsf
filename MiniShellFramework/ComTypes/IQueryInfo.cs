@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 namespace MiniShellFramework.ComTypes
 {
     /// <summary>
-    /// Exposes methods that the Shell uses to retrieve flags and info tip information for an item that resides 
+    /// Exposes methods that the Shell uses to retrieve flags and info tip information for an item that resides
     /// in an IShellFolder implementation. Info tips are usually displayed inside a ToolTip control.
     /// </summary>
     [ComImport]                                           // Mark that this interface is already defined in a standard COM typelib. Prevent .NET from registering a typelib for it.
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)] // Mark that this interface directly derived from IUnknown in the COM world.
-    [Guid("00021500-0000-0000-C000-000000000046")]        
+    [Guid("00021500-0000-0000-C000-000000000046")]
     public interface IQueryInfo
     {
         /// <summary>

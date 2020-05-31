@@ -5,7 +5,7 @@
 namespace MiniShellFramework.ComTypes
 {
     /// <summary>
-    /// The menu item type. 
+    /// The menu item type.
     /// </summary>
     public enum MenuItemInfoType
     {

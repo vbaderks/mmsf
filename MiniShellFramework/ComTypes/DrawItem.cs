@@ -45,22 +45,22 @@ namespace MiniShellFramework.ComTypes
     public struct RECT
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Left;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Top;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Right;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Bottom;
     }
@@ -72,47 +72,47 @@ namespace MiniShellFramework.ComTypes
     public struct DrawItem
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public OwnerDrawControlType CtlType;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint CtlID;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint itemID;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint itemAction;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public uint itemState;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hwndItem;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr hDC;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public RECT rcItem;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IntPtr itemData;
     }

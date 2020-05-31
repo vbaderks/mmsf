@@ -1,32 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="mmsf rule set" ToolsVersion="15.0">
+<RuleSet Name="mmsf rule set" ToolsVersion="16.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1000" Action="Warning" />
-    <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1002" Action="Warning" />
     <Rule Id="CA1003" Action="Warning" />
     <Rule Id="CA1004" Action="Warning" />
     <Rule Id="CA1005" Action="Warning" />
     <Rule Id="CA1006" Action="Warning" />
     <Rule Id="CA1007" Action="Warning" />
-    <Rule Id="CA1008" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
     <Rule Id="CA1010" Action="Warning" />
     <Rule Id="CA1011" Action="Warning" />
     <Rule Id="CA1012" Action="Warning" />
     <Rule Id="CA1013" Action="Warning" />
-    <Rule Id="CA1014" Action="Warning" />
     <Rule Id="CA1016" Action="Warning" />
     <Rule Id="CA1017" Action="Warning" />
     <Rule Id="CA1018" Action="Warning" />
     <Rule Id="CA1019" Action="Warning" />
     <Rule Id="CA1020" Action="Warning" />
-    <Rule Id="CA1021" Action="Warning" />
     <Rule Id="CA1023" Action="Warning" />
     <Rule Id="CA1024" Action="Warning" />
     <Rule Id="CA1025" Action="Warning" />
-    <Rule Id="CA1027" Action="Warning" />
-    <Rule Id="CA1028" Action="Warning" />
     <Rule Id="CA1030" Action="Warning" />
     <Rule Id="CA1031" Action="Warning" />
     <Rule Id="CA1032" Action="Warning" />
@@ -38,14 +32,12 @@
     <Rule Id="CA1040" Action="Warning" />
     <Rule Id="CA1041" Action="Warning" />
     <Rule Id="CA1043" Action="Warning" />
-    <Rule Id="CA1044" Action="Warning" />
     <Rule Id="CA1045" Action="Warning" />
     <Rule Id="CA1046" Action="Warning" />
     <Rule Id="CA1047" Action="Warning" />
     <Rule Id="CA1048" Action="Warning" />
     <Rule Id="CA1049" Action="Warning" />
     <Rule Id="CA1050" Action="Warning" />
-    <Rule Id="CA1051" Action="Warning" />
     <Rule Id="CA1052" Action="Warning" />
     <Rule Id="CA1053" Action="Warning" />
     <Rule Id="CA1054" Action="Warning" />
@@ -95,26 +87,20 @@
     <Rule Id="CA1702" Action="Warning" />
     <Rule Id="CA1703" Action="Warning" />
     <Rule Id="CA1704" Action="Warning" />
-    <Rule Id="CA1707" Action="Warning" />
     <Rule Id="CA1708" Action="Warning" />
     <Rule Id="CA1709" Action="Warning" />
     <Rule Id="CA1710" Action="Warning" />
-    <Rule Id="CA1711" Action="Warning" />
     <Rule Id="CA1712" Action="Warning" />
     <Rule Id="CA1713" Action="Warning" />
-    <Rule Id="CA1714" Action="Warning" />
     <Rule Id="CA1715" Action="Warning" />
     <Rule Id="CA1716" Action="Warning" />
-    <Rule Id="CA1717" Action="Warning" />
     <Rule Id="CA1719" Action="Warning" />
-    <Rule Id="CA1720" Action="Warning" />
     <Rule Id="CA1721" Action="Warning" />
     <Rule Id="CA1722" Action="Warning" />
     <Rule Id="CA1724" Action="Warning" />
     <Rule Id="CA1725" Action="Warning" />
     <Rule Id="CA1726" Action="Warning" />
     <Rule Id="CA1800" Action="Warning" />
-    <Rule Id="CA1801" Action="Warning" />
     <Rule Id="CA1802" Action="Warning" />
     <Rule Id="CA1804" Action="Warning" />
     <Rule Id="CA1806" Action="Warning" />
@@ -123,7 +109,6 @@
     <Rule Id="CA1812" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
-    <Rule Id="CA1815" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
     <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
@@ -184,7 +169,6 @@
     <Rule Id="CA2149" Action="Warning" />
     <Rule Id="CA2151" Action="Warning" />
     <Rule Id="CA2200" Action="Warning" />
-    <Rule Id="CA2201" Action="Warning" />
     <Rule Id="CA2202" Action="Warning" />
     <Rule Id="CA2205" Action="Warning" />
     <Rule Id="CA2207" Action="Warning" />
@@ -224,6 +208,29 @@
     <Rule Id="CA2243" Action="Warning" />
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
+    <Rule Id="CS1591" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1028" Action="None" />
+    <Rule Id="CA1044" Action="None" />
+    <Rule Id="CA1051" Action="None" />
+    <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1707" Action="None" />
+    <Rule Id="CA1714" Action="None" />
+    <Rule Id="CA1717" Action="None" />
+    <Rule Id="CA1720" Action="None" />
+    <Rule Id="CA1801" Action="None" />
+    <Rule Id="CA1815" Action="None" />
+    <Rule Id="CA1822" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.CSharp.Analyzers" RuleNamespace="Microsoft.CodeQuality.CSharp.Analyzers">
+    <Rule Id="CA1001" Action="None" />
+    <Rule Id="CA1200" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
+    <Rule Id="CA1303" Action="None" />
+  </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA0001" Action="None" />
     <Rule Id="SA1003" Action="None" />
@@ -234,9 +241,16 @@
     <Rule Id="SA1117" Action="None" />
     <Rule Id="SA1118" Action="None" />
     <Rule Id="SA1120" Action="None" />
+    <Rule Id="SA1129" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SA1201" Action="None" />
+    <Rule Id="SA1202" Action="None" />
     <Rule Id="SA1300" Action="None" />
+    <Rule Id="SA1307" Action="None" />
     <Rule Id="SA1401" Action="None" />
     <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1404" Action="None" />
+    <Rule Id="SA1405" Action="None" />
     <Rule Id="SA1413" Action="None" />
     <Rule Id="SA1500" Action="None" />
     <Rule Id="SA1502" Action="None" />
@@ -248,9 +262,16 @@
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1601" Action="None" />
     <Rule Id="SA1602" Action="None" />
+    <Rule Id="SA1606" Action="None" />
     <Rule Id="SA1610" Action="None" />
+    <Rule Id="SA1611" Action="None" />
+    <Rule Id="SA1615" Action="None" />
+    <Rule Id="SA1616" Action="None" />
+    <Rule Id="SA1618" Action="None" />
     <Rule Id="SA1625" Action="None" />
+    <Rule Id="SA1629" Action="None" />
     <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1642" Action="None" />
     <Rule Id="SA1649" Action="None" />
     <Rule Id="SA1652" Action="None" />
   </Rules>

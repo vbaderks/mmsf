@@ -2,6 +2,10 @@
 
 Extension Framework to write Microsoft Windows Shell Extensions in .NET 4.x. Please read the Background Information section about the limitations.
 
+## Status
+
+This project is the development phase. It is made public available to act as an source of information and sample code.
+
 ## Background Information
 
 In the past years Microsoft has communicated different signals if developing shell extensions in .NET 4.x is supported or not. Initially an article in MSDN seemed to support this: [http://msdn.microsoft.com/en-us/magazine/ee819091.aspx](http://msdn.microsoft.com/en-us/magazine/ee819091.aspx). Later Microsoft provided base classes and samples in the Windows API Code Pack 1.1, for a thumbnail provider and preview handler.
@@ -13,7 +17,7 @@ This project is still supported as people may want to use .NET for quick prototy
 
 The projects includes the following 'layers':
 
-* ComType Layer. Managed definition of the COM interfaces used by Shell to interact with shell extensions. The interface definitions are hand tuned  for shell extensions development.
+* ComType Layer. Managed definition of the COM interfaces used by Shell to interact with shell extensions. The interface definitions are hand tuned for shell extensions development.
 * Base Layer. Set of base classes that can be used as starting point for shell extensions.
 * Sample Layer. Set of samples, demonstrating typical shell extensions.
 * Start Layer: Skeleton code that can be used as start for a new shell extension.
@@ -21,9 +25,9 @@ The projects includes the following 'layers':
 ## Supported Shell Extensions
 
 * Info Tip (IQueryInfo)
-* Shell PropertySheet Extension (IShellPropSheetExt) **{planned}**
 * Context Menu Extension (IContextMenu, IContextMenu2, IContextMenu3)
 * Folder Copy Hook Extension (ICopyHook)
+* Shell PropertySheet Extension (IShellPropSheetExt) **{planned}**
 * Extract Image Extension (IExtractImage, IExtractImage2)**{planned}**
 * Shell Folder (IShellView, IShellFolder)**{planned}**
 

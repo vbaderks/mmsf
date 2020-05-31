@@ -3,6 +3,7 @@
 [Dd]ebug/
 [Rr]elease/
 [Cc]hecked/
+obj/
 *.opensdf
 *.sdf
 
